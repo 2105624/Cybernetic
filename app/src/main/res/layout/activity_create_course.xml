@@ -18,12 +18,11 @@
 
             <ImageView
                 android:id="@+id/courseImage"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="46dp"
-                android:layout_marginRight="46dp"
                 android:src="@drawable/add_photo_blue"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/rgVisibility"
@@ -78,9 +77,6 @@
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
                 android:padding="10dp">
-
-
-
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/courseCode"

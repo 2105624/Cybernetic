@@ -1,0 +1,27 @@
+<resources>
+    <!-- Base application theme. -->
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+
+        <item name="colorPrimary">@color/color1</item>
+        <item name="colorAccent">@color/gold</item>
+
+        <item name="android:windowAnimationStyle">@id/none</item>
+
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <!-- BOTTOM NAVIGATION. -->
+    <style name="AppTheme.BottomNavigation" parent="Theme.MaterialComponents.Light">
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="backgroundTint">@color/color1</item>
+        <item name="itemIconTint">#FFFFFF</item>
+        <item name="itemTextColor">#FFFFFF</item>
+    </style>
+
+</resources>

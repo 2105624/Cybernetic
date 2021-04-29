@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/courseImage"
+                android:paddingTop="10dp"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/wits_logo"
+                android:background="#F0F2F5"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="#F0F2F5">
+
+                <TextView
+                    android:id="@+id/courseName"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Course Name"
+                    android:textSize="15dp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/courseDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="Course Description...." />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="By: "/>
+                    <TextView
+                        android:id="@+id/courseInstructor"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="Course Instructor" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

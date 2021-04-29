@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menuHomeStudent"
+        android:enabled="true"
+        android:title="@string/home"
+        android:icon="@drawable/ic_baseline_home_24"/>
+    <item
+        android:id="@+id/menuMyCoursesStudent"
+        android:enabled="true"
+        android:title="@string/my_courses"
+        android:icon="@drawable/ic_baseline_school_24"/>
+    <item
+        android:id="@+id/menuBrowseCourses"
+        android:enabled="true"
+        android:title="@string/browse"
+        android:icon="@drawable/ic_baseline_search_24"/>
+    <item
+        android:id="@+id/menuLogOutStudent"
+        android:enabled="true"
+        android:title="@string/log_out"
+        android:icon="@drawable/ic_baseline_close_24"/>
+</menu>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="shape_height">120dp</dimen>
+
+    <dimen name="text_0">14sp</dimen>
+    <dimen name="text_1">16sp</dimen>
+    <dimen name="text_2">20sp</dimen>
+
+    <dimen name="padding">16dp</dimen>
+    <dimen name="elevation">8dp</dimen>
+    <dimen name="corner">25dp</dimen>
+
+    <dimen name="single">1dp</dimen>
+</resources>

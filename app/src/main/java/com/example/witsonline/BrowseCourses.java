@@ -45,6 +45,9 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_courses);
+
+
+
         //Initializing Views
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -140,10 +143,10 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
                 e.printStackTrace();
             }
             //Adding the request object to the list
-            if (json.getString("courseInstructor").equals("richard.klein")) {
+        //    if (json.getString("courseInstructor").equals("richard.klein")) {
                 listCourseVs.add(courseV);
                 adapter.notifyDataSetChanged();
-            }
+       //     }
 
             /*
             if ((USER.COURSES != null) && (USER.COURSES.contains(json.getString("courseCode")))) {

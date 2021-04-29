@@ -49,6 +49,9 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_courses);
 
+        //testing getting username
+        Toast.makeText(MyCourses.this, USER.USERNAME, Toast.LENGTH_SHORT).show();
+
         //Initializing Views
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -167,7 +170,7 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
                     adapter.notifyDataSetChanged();
                 }
             } else {
-                if (USER.USER_NUM.equals(json.getString("courseInstructor"))) {
+                if (USER.USERNAME.equals(json.getString("courseInstructor"))) {
                     listCourseVs.add(courseV);
                     adapter.notifyDataSetChanged();
                 }
@@ -215,13 +218,13 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
         OkHttpClient client = new OkHttpClient();
 
         RequestBody addinf=new FormBody.Builder()
-                .add("unum", (USER.USER_NUM))
+                .add("unum", (USER.USERNAME))
                 .build();
         Request request = new Request.Builder()
                 .url("https://lamp.ms.wits.ac.za/home/s2105624/lsmakings.php")
                 .post(addinf)
                 .build();
-
+       // "SELECT COURSE_CODE FROM COURSE WHERE INSTRUCTOR_USERNAME='$unum'"
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException exc) {

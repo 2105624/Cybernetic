@@ -49,7 +49,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
         rbStudent = findViewById(R.id.student);
         rbInstructor = findViewById(R.id.instructor);
         userText = (TextInputEditText)findViewById(R.id.loginText);

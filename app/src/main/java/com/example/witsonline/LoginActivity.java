@@ -127,9 +127,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (!validateStudentUsername() | !validateStudentPassword()) {
                         //error messages will be shown
                     } else {
-
-
-
+                        USER.USERNAME = user.getEditText().getText().toString().trim();
                         Intent i = new Intent(LoginActivity.this, Dashboard.class);
                         startActivity(i);
                         finish();
@@ -140,6 +138,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (!validateInstructorUsername() | !validateInstructorPassword()) {
                         //error messages will be shown
                     } else {
+                        USER.USERNAME = user.getEditText().getText().toString().trim();
                         Intent i = new Intent(LoginActivity.this, Dashboard.class);
                         startActivity(i);
                         finish();

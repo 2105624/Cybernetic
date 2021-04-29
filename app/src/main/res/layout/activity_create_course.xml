@@ -4,14 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BrowseCourses">
+    tools:context=".CreateCourse">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_above="@id/dashboardBottomNavigation"/>
+
     <ProgressBar
         android:id="@+id/progressBar1"
         android:layout_width="wrap_content"

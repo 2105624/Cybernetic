@@ -9,7 +9,7 @@ public class COURSE {
 	public static String FACULTY;
 	public static String temp;
 
-//this is just here for future in case we need it
+
 //      public static ArrayList<Content> CONTENT;
 
 }

@@ -387,6 +387,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         return valid;
     }
 
+    //getting and setting bitmap
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -404,6 +405,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
 
     }
 
+    //getting the bitmap of image and encoding it as a string
     private String getStringImage(Bitmap bitmap) {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -414,6 +416,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         return temp;
     }
 
+    //not actually using this anymore. Might be useful later on
     public String getPath(Uri uri){
         String path = "";
         Cursor cursor = getContentResolver().query(uri,null,null,null,null);

@@ -299,7 +299,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         //END activity code
     }
 
-    //START dashbaord code
+    //START dashboard code
     //This method will check if the recyclerview has reached the bottom or not
     private boolean isLastItemDistplaying(RecyclerView recyclerView){
         if(recyclerView.getAdapter().getItemCount() != 0){
@@ -310,7 +310,6 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         }
         return false;
     }
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

@@ -86,6 +86,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
     private boolean imgSelected;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
        // START dashboard & layout code
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_course);

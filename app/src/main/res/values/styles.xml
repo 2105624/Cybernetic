@@ -19,9 +19,6 @@
     <!-- BOTTOM NAVIGATION. -->
     <style name="AppTheme.BottomNavigation" parent="Theme.MaterialComponents.Light">
         <item name="labelVisibilityMode">labeled</item>
-        <item name="backgroundTint">@color/color1</item>
-        <item name="itemIconTint">#FFFFFF</item>
-        <item name="itemTextColor">#FFFFFF</item>
     </style>
 
-</resources>
+       </resources>

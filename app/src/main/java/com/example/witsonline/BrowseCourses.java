@@ -82,7 +82,7 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
         dashboardBottomNavigation.setOnNavigationItemSelectedListener(BrowseCourses.this);
 
         dashboardBottomNavigation.inflateMenu(R.menu.menu_student);
-        dashboardBottomNavigation.setSelectedItemId(R.id.menuBrowseCourses);
+        dashboardBottomNavigation.getMenu().findItem(R.id.menuBrowseCourses).setChecked(true);
     }
 
     //Request to get json from server we are passing an integer here

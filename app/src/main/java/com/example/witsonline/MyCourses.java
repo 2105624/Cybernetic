@@ -79,10 +79,10 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
 
         if (USER.STUDENT) {
             dashboardBottomNavigation.inflateMenu(R.menu.menu_student);
-            dashboardBottomNavigation.setSelectedItemId(R.id.menuMyCoursesStudent);
+            dashboardBottomNavigation.getMenu().findItem(R.id.menuMyCoursesStudent).setChecked(true);
         } else {
             dashboardBottomNavigation.inflateMenu(R.menu.menu_instructor);
-            dashboardBottomNavigation.setSelectedItemId(R.id.menuMyCoursesInstructor);
+            dashboardBottomNavigation.getMenu().findItem(R.id.menuMyCoursesInstructor).setChecked(true);
         }
 
         //get courses and convert from JSON

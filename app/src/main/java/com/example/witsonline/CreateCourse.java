@@ -95,7 +95,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         dashboardBottomNavigation.setOnNavigationItemSelectedListener(CreateCourse.this);
 
         dashboardBottomNavigation.inflateMenu(R.menu.menu_instructor);
-        dashboardBottomNavigation.setSelectedItemId(R.id.menuCreateCourse);
+        dashboardBottomNavigation.getMenu().findItem(R.id.menuCreateCourse).setChecked(true);
         // END dashboard & layout code
 
         //START activity code

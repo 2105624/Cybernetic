@@ -49,11 +49,11 @@ public class Dashboard extends AppCompatActivity implements BottomNavigationView
 
         if (USER.STUDENT) {
             dashboardBottomNavigation.inflateMenu(R.menu.menu_student);
-            dashboardBottomNavigation.setSelectedItemId(R.id.menuHomeStudent);
+            dashboardBottomNavigation.getMenu().findItem(R.id.menuHomeStudent).setChecked(true);
 
         } else {
             dashboardBottomNavigation.inflateMenu(R.menu.menu_instructor);
-            dashboardBottomNavigation.setSelectedItemId(R.id.menuHomeInstructor);
+            dashboardBottomNavigation.getMenu().findItem(R.id.menuHomeInstructor).setChecked(true);
         }
 
         progressBar = findViewById(R.id.dashboardProgressBar);

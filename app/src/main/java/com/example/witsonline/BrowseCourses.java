@@ -82,6 +82,7 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
         dashboardBottomNavigation.setOnNavigationItemSelectedListener(BrowseCourses.this);
 
         dashboardBottomNavigation.inflateMenu(R.menu.menu_student);
+        dashboardBottomNavigation.setSelectedItemId(R.id.menuBrowseCourses);
         dashboardBottomNavigation.getMenu().findItem(R.id.menuBrowseCourses).setChecked(true);
     }
 
@@ -137,8 +138,13 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
 
                 //Adding data to the course object
                 courseV.setCourseName(json.getString("courseName"));
+                courseV.setCourseName(json.getString("courseName"));
                 courseV.setCourseDescription(json.getString("courseDescription"));
                 courseV.setCourseInstructor(json.getString("courseInstructor"));
+                courseV.setCourseCode(json.getString("courseCode"));
+                courseV.setCourseRating(json.getString("courseRating"));
+                courseV.setCourseOutline(json.getString("courseOutline"));
+                courseV.setImageUrl(json.getString("courseImageUrl"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }

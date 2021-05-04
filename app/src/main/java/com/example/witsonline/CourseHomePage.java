@@ -410,6 +410,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
                 CourseHomePage.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        updateRatings(String.valueOf(postReviewRating),reviewDescription);
                         finish();
                         overridePendingTransition(0, 0);
                         startActivity(getIntent());
@@ -420,5 +421,18 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
                 });
             }
         });
+    }
+    public void updateRatings(  String rating , String description){
+        ReviewV reviewV = new ReviewV();
+        reviewV.setReviewDescription(description);
+        reviewV.setReviewRating(rating);
+        reviewV.setStudentFName(USER.FNAME);
+        reviewV.setStudentLName(USER.LNAME);
+        listReviewVs.add(reviewV);
+        float averageRating = 0;
+        for(int i=0;i<listReviewVs.size();i++){
+            averageRating = averageRating+Float.parseFloat(listReviewVs.get(i).getReviewRating());
+        }
+        COURSE.RATING = String.valueOf(averageRating/listReviewVs.size());
     }
 }

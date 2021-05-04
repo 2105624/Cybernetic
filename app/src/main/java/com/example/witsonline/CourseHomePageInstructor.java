@@ -51,7 +51,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements View.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_home_page_instructor);
-        BottomNavigationView dashboardBottomNavigation = findViewById(R.id.dashboardBottomNavigation);
+        BottomNavigationView dashboardBottomNavigation = findViewById(R.id.courseHomeInstructorBottomNavigation);
         dashboardBottomNavigation.setOnNavigationItemSelectedListener(CourseHomePageInstructor.this);
         dashboardBottomNavigation.inflateMenu(R.menu.menu_instructor);
 

@@ -127,7 +127,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    if(USER.STUDENT) {
+                    if(USER.STUDENT){
                         createNewViewDialog();
                     }
                     else{
@@ -167,6 +167,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                     }
                 }
                 else{
+                    dialog.dismiss();
                     createNewViewDialogUnsubscribe();
                 }
             }
@@ -174,6 +175,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
        btnViewDialogViewCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialog.dismiss();
                 Intent i = new Intent(context, CourseHomePage.class);
                 context.startActivity(i);
             }

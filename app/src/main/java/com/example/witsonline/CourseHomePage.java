@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.jetbrains.annotations.NotNull;
@@ -47,8 +49,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
     Button review;
     //Creating a list of Courses
     private ArrayList<ReviewV> listReviewVs;
-    private
-    ImageView image;
+    private ImageView image;
     //This is for the unsubscribe pop up menu
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
@@ -84,6 +85,10 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         image = (ImageView)findViewById(R.id.courseImage);
 
 
+        /*Log.d("HERE",COURSE.IMAGE);
+        if(!COURSE.IMAGE.equals("null")){
+            Glide.with(this).load(COURSE.IMAGE).into(image);
+        }*/
         courseName.setText(COURSE.NAME);
         courseDescription.setText(COURSE.DESCRIPTION);
         courseInstructor.setText("By: "+COURSE.INSTRUCTOR);
@@ -141,10 +146,11 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
             public void onClick(View view) {
                 createNewViewDialogReview();
             }
+
         });
 
 
-        BottomNavigationView dashboardBottomNavigation = findViewById(R.id.dashboardBottomNavigation);
+        BottomNavigationView dashboardBottomNavigation = findViewById(R.id.courseHomeBottomNavigation);
         dashboardBottomNavigation.setOnNavigationItemSelectedListener(CourseHomePage.this);
 
         dashboardBottomNavigation.inflateMenu(R.menu.menu_student);
@@ -411,7 +417,6 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
                     @Override
                     public void run() {
                         updateRatings(String.valueOf(postReviewRating),reviewDescription);
-                        finish();
                         overridePendingTransition(0, 0);
                         startActivity(getIntent());
                         overridePendingTransition(0, 0);

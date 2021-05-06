@@ -28,7 +28,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class CourseHomePageInstructor extends AppCompatActivity implements View.OnScrollChangeListener, BottomNavigationView.OnNavigationItemSelectedListener {
+public class CourseHomePageInstructor extends AppCompatActivity implements View.OnScrollChangeListener {
 
     LinearLayout outlineLayout;
     Button subscribe;
@@ -51,10 +51,6 @@ public class CourseHomePageInstructor extends AppCompatActivity implements View.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_home_page_instructor);
-        BottomNavigationView dashboardBottomNavigation = findViewById(R.id.courseHomeInstructorBottomNavigation);
-        dashboardBottomNavigation.setOnNavigationItemSelectedListener(CourseHomePageInstructor.this);
-        dashboardBottomNavigation.inflateMenu(R.menu.menu_instructor);
-
         TextView courseName =(TextView)findViewById(R.id.courseName);
         TextView courseDescription =(TextView)findViewById(R.id.courseDescription);
         TextView courseInstructor =(TextView)findViewById(R.id.courseInstructor);
@@ -89,45 +85,6 @@ public class CourseHomePageInstructor extends AppCompatActivity implements View.
 
         //initializing our adapter
         adapter = new ReviewCardAdapter(listReviewVs, this);
-    }
-
-    private boolean isLastItemDistplaying(RecyclerView recyclerView){
-        if(recyclerView.getAdapter().getItemCount() != 0){
-            int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
-            if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() -1){
-                return true;
-            }
-        }
-        return false;
-    }
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menuHomeInstructor :
-                Intent intent = new Intent(CourseHomePageInstructor.this, Dashboard.class);
-                startActivity(intent);
-                finish();
-                break;
-
-            case R.id.menuMyCoursesInstructor :
-                Intent intent1 = new Intent(CourseHomePageInstructor.this, MyCourses.class);
-                startActivity(intent1);
-                finish();
-                break;
-
-            case R.id.menuCreateCourse :
-                Intent intent2 = new Intent(CourseHomePageInstructor.this, CreateCourse.class);
-                startActivity(intent2);
-                finish();
-                break;
-
-            case R.id.menuLogOutInstructor :
-                Intent intent3 = new Intent(CourseHomePageInstructor.this, LoginActivity.class);
-                startActivity(intent3);
-                finish();
-                break;
-        }
-        return false;
     }
     //Request to get json from server we are passing an integer here
     //This integer will used to specify the page number for the request ?page = requestCount

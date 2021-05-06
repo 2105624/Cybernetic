@@ -43,7 +43,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class CourseHomePage extends AppCompatActivity implements  View.OnScrollChangeListener,BottomNavigationView.OnNavigationItemSelectedListener{
+public class CourseHomePage extends AppCompatActivity implements  View.OnScrollChangeListener{
     LinearLayout outlineLayout;
     Button subscribe;
     Button review;
@@ -85,7 +85,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         image = (ImageView)findViewById(R.id.courseImage);
 
 
-        /*Log.d("HERE",COURSE.IMAGE);
+        /*
         if(!COURSE.IMAGE.equals("null")){
             Glide.with(this).load(COURSE.IMAGE).into(image);
         }*/
@@ -148,52 +148,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
             }
 
         });
-
-
-        BottomNavigationView dashboardBottomNavigation = findViewById(R.id.courseHomeBottomNavigation);
-        dashboardBottomNavigation.setOnNavigationItemSelectedListener(CourseHomePage.this);
-
-        dashboardBottomNavigation.inflateMenu(R.menu.menu_student);
     }
-    private boolean isLastItemDistplaying(RecyclerView recyclerView){
-        if(recyclerView.getAdapter().getItemCount() != 0){
-            int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
-            if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() -1){
-                return true;
-            }
-        }
-        return false;
-    }
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menuHomeStudent:
-                Intent intent = new Intent(CourseHomePage.this, Dashboard.class);
-                startActivity(intent);
-                finish();
-                break;
-
-            case R.id.menuMyCoursesStudent :
-                Intent intent1 = new Intent(CourseHomePage.this, MyCourses.class);
-                startActivity(intent1);
-                finish();
-                break;
-
-            case R.id.menuBrowseCourses :
-                Intent intent2 = new Intent(CourseHomePage.this,    BrowseCourses.class);
-                startActivity(intent2);
-                finish();
-                break;
-
-            case R.id.menuLogOutStudent :
-                Intent intent3 = new Intent(CourseHomePage.this, LoginActivity.class);
-                startActivity(intent3);
-                finish();
-                break;
-        }
-        return false;
-    }
-
     private JsonArrayRequest getDataFromServer(int requestCount){
         //Initializing progressbar
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.reviewProgressBar);

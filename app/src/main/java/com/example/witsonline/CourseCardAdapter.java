@@ -205,6 +205,8 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                     Toast toast = Toast.makeText(context, "Unsubscribed to "+ COURSE.CODE, Toast.LENGTH_LONG);
                     toast.show();
                     dialog.dismiss();
+                    Intent intent = new Intent(context,MyCourses.class);
+                    context.startActivity(intent);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

@@ -37,7 +37,7 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
-    String webURL = "https://lamp.ms.wits.ac.za/home/s2105624/loadCourses.php?page=";
+    String studWebURL = "https://lamp.ms.wits.ac.za/home/s2105624/studMyCourses.php?page=";
     String instWebURL = "https://lamp.ms.wits.ac.za/home/s2105624/instMyCourses.php?page=";
 
     //Volley Request Queue
@@ -49,9 +49,6 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_courses);
-
-        //testing getting username
-        Toast.makeText(MyCourses.this, USER.USERNAME, Toast.LENGTH_SHORT).show();
 
         //Initializing Views
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
@@ -86,23 +83,6 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
             dashboardBottomNavigation.getMenu().findItem(R.id.menuMyCoursesInstructor).setChecked(true);
         }
 
-     /*   //get courses and convert from JSON
-        USER.COURSES = new ArrayList<String>();
-
-        if (USER.STUDENT){
-            settakings();
-        }
-        else{
-            setmakings();
-        }
-
-        try {
-            Thread.sleep(1500);
-        }
-        catch(InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
-        thels(COURSE.temp); */
     }
 
     //Request to get json from server we are passing an integer here
@@ -120,9 +100,9 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
         //JsonArrayRequest of volley
         JsonArrayRequest jsonArrayRequest;
         if (USER.STUDENT) {
-            jsonArrayRequest = new JsonArrayRequest(webURL + String.valueOf(requestCount),
+            jsonArrayRequest = new JsonArrayRequest(studWebURL + String.valueOf(requestCount)+"&studentNo="+USER.USER_NUM,
                     (response) -> {
-                        //Calling method parseData to parse the json responce
+                        //Calling method parseData to parse the json response
                         try {
                             parseData(response);
                         } catch (JSONException e) {
@@ -188,20 +168,6 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-
-            /*//Adding the request object to the list
-            if (USER.STUDENT) {
-                if (USER.COURSES.contains("courseCode")) {
-                    listCourseVs.add(courseV);
-                    adapter.notifyDataSetChanged();
-                }
-            } else {
-                if (USER.USERNAME.equals(json.getString("courseInstructor"))) {
-                    listCourseVs.add(courseV);
-                    adapter.notifyDataSetChanged();
-                }
-            } */
 
             listCourseVs.add(courseV);
 

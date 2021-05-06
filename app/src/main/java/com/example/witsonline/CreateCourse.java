@@ -119,7 +119,6 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imgSelected = true;
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -394,15 +393,18 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filePath = data.getData();
         }
-        try{
-            ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(),filePath);
-            bitmap = ImageDecoder.decodeBitmap(source);
-            image.setImageBitmap(bitmap);
+        if (filePath != null) {
+            imgSelected = true;
+            try {
+                ImageDecoder.Source source = ImageDecoder.createSource(this.getContentResolver(), filePath);
+                bitmap = ImageDecoder.decodeBitmap(source);
+                image.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            imgSelected = false;
         }
-        catch(IOException e){
-            e.printStackTrace();
-        }
-
     }
 
     //getting the bitmap of image and encoding it as a string
@@ -497,6 +499,13 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(CreateCourse.this,CreateCourse.class);
+        startActivity(intent);
+        finish();
     }
     //END activity code
 

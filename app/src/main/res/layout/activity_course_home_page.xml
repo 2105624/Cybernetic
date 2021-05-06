@@ -84,7 +84,6 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="?attr/actionBarSize"
             >
 
             <LinearLayout
@@ -158,11 +157,4 @@
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/dashboardBottomNavigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        style="@style/AppTheme.BottomNavigation"/>
 </RelativeLayout>

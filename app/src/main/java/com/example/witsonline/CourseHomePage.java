@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.jetbrains.annotations.NotNull;
@@ -41,14 +43,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class CourseHomePage extends AppCompatActivity implements  View.OnScrollChangeListener,BottomNavigationView.OnNavigationItemSelectedListener{
+public class CourseHomePage extends AppCompatActivity implements  View.OnScrollChangeListener{
     LinearLayout outlineLayout;
     Button subscribe;
     Button review;
     //Creating a list of Courses
     private ArrayList<ReviewV> listReviewVs;
-    private
-    ImageView image;
+    private ImageView image;
     //This is for the unsubscribe pop up menu
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
@@ -84,6 +85,10 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         image = (ImageView)findViewById(R.id.courseImage);
 
 
+        /*
+        if(!COURSE.IMAGE.equals("null")){
+            Glide.with(this).load(COURSE.IMAGE).into(image);
+        }*/
         courseName.setText(COURSE.NAME);
         courseDescription.setText(COURSE.DESCRIPTION);
         courseInstructor.setText("By: "+COURSE.INSTRUCTOR);
@@ -141,53 +146,9 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
             public void onClick(View view) {
                 createNewViewDialogReview();
             }
+
         });
-
-
-        BottomNavigationView dashboardBottomNavigation = findViewById(R.id.dashboardBottomNavigation);
-        dashboardBottomNavigation.setOnNavigationItemSelectedListener(CourseHomePage.this);
-
-        dashboardBottomNavigation.inflateMenu(R.menu.menu_student);
     }
-    private boolean isLastItemDistplaying(RecyclerView recyclerView){
-        if(recyclerView.getAdapter().getItemCount() != 0){
-            int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
-            if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() -1){
-                return true;
-            }
-        }
-        return false;
-    }
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menuHomeStudent:
-                Intent intent = new Intent(CourseHomePage.this, Dashboard.class);
-                startActivity(intent);
-                finish();
-                break;
-
-            case R.id.menuMyCoursesStudent :
-                Intent intent1 = new Intent(CourseHomePage.this, MyCourses.class);
-                startActivity(intent1);
-                finish();
-                break;
-
-            case R.id.menuBrowseCourses :
-                Intent intent2 = new Intent(CourseHomePage.this,    BrowseCourses.class);
-                startActivity(intent2);
-                finish();
-                break;
-
-            case R.id.menuLogOutStudent :
-                Intent intent3 = new Intent(CourseHomePage.this, LoginActivity.class);
-                startActivity(intent3);
-                finish();
-                break;
-        }
-        return false;
-    }
-
     private JsonArrayRequest getDataFromServer(int requestCount){
         //Initializing progressbar
         final ProgressBar progressBar = (ProgressBar) findViewById(R.id.reviewProgressBar);
@@ -410,7 +371,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
                 CourseHomePage.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        finish();
+                        updateRatings(String.valueOf(postReviewRating),reviewDescription);
                         overridePendingTransition(0, 0);
                         startActivity(getIntent());
                         overridePendingTransition(0, 0);
@@ -420,5 +381,18 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
                 });
             }
         });
+    }
+    public void updateRatings(  String rating , String description){
+        ReviewV reviewV = new ReviewV();
+        reviewV.setReviewDescription(description);
+        reviewV.setReviewRating(rating);
+        reviewV.setStudentFName(USER.FNAME);
+        reviewV.setStudentLName(USER.LNAME);
+        listReviewVs.add(reviewV);
+        float averageRating = 0;
+        for(int i=0;i<listReviewVs.size();i++){
+            averageRating = averageRating+Float.parseFloat(listReviewVs.get(i).getReviewRating());
+        }
+        COURSE.RATING = String.valueOf(averageRating/listReviewVs.size());
     }
 }

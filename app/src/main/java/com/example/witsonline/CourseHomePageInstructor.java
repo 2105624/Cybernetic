@@ -159,7 +159,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements View.
     }
     void addOutlineTopics(String outline) {
         //this assume every modules is separated by a space
-        String[] outlineTopics = outline.split(" ");
+        String[] outlineTopics = outline.split(";");
 
         outlineLayout.removeAllViews();
 

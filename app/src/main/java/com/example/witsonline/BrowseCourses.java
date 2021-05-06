@@ -34,7 +34,7 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
-    String webURL = "https://lamp.ms.wits.ac.za/home/s2105624/loadCourses.php?page=";
+    String webURL = "https://lamp.ms.wits.ac.za/home/s2105624/courseFeed.php?page=";
 
     //Volley Request Queue
     private RequestQueue requestQueue;
@@ -87,7 +87,7 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
     }
 
     //Request to get json from server we are passing an integer here
-    //This integer will used to specify the page number for the request ?page = requestcount
+    //This integer will used to specify the page number for the request ?page = requestCount
     //This method would return a JsonArrayRequest that will be added to the request queue
     private JsonArrayRequest getDataFromServer(int requestCount){
         //Initializing progressbar
@@ -96,9 +96,9 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
         //Displaying ProgressBar
         progressBar.setVisibility(View.VISIBLE);
         setProgressBarIndeterminateVisibility(true);
-        
+
         //JsonArrayRequest of volley
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(webURL + String.valueOf(requestCount),
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(webURL + String.valueOf(requestCount)+"&studentNo="+USER.USER_NUM,
                 (response) -> {
                     //Calling method parseData to parse the json responce
                     try {
@@ -215,4 +215,9 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
 
         return false;
     }
+    @Override
+    public void onBackPressed(){
+
+    }
+
 }

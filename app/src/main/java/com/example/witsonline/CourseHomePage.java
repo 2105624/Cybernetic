@@ -395,4 +395,11 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         }
         COURSE.RATING = String.valueOf(averageRating/listReviewVs.size());
     }
+
+    @Override
+    public void onBackPressed(){
+        Intent intent = new Intent(CourseHomePage.this, BrowseCourses.class);
+        startActivity(intent);
+        finish();
+    }
 }

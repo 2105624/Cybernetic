@@ -34,7 +34,6 @@ import okhttp3.Response;
 
 public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.ViewHolder> {
     private Context context;
-    private ImageView image;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
     private Button btnViewDialogSubscribe, btnViewDialogViewCourse;
@@ -56,6 +55,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.course_card, parent, false);
         ViewHolder viewHolder = new ViewHolder(v);
+
         try {
             doPostRequest("enrolment.php");
         } catch (IOException e) {
@@ -70,7 +70,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
         final CourseV courseV = coursesVs.get(position);
 
         //Showing data on the views
-
+        holder.setIsRecyclable(false);
         holder.courseName.setText(courseV.getCourseName());
         holder.courseDescription.setText(courseV.getCourseDescription());
         holder.courseInstructor.setText(courseV.getCourseInstructor());
@@ -79,8 +79,8 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
         holder.courseOutline = courseV.getCourseOutline();
         holder.courseRating= courseV.getCourseRating();
         holder.courseImage =courseV.getImageUrl();
-        if(!courseV.getImageUrl().equals("null")){
-            Glide.with(context).load(courseV.getImageUrl()).into(image);
+        if(!holder.courseImage.equals("null")){
+            Glide.with(context).load(holder.courseImage).into(holder.image);
         }
 
     }
@@ -92,13 +92,14 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
 
     class ViewHolder extends RecyclerView.ViewHolder{
         //Views
-       public TextView courseName;
+        public TextView courseName;
         public TextView courseDescription;
         public TextView courseInstructor;
         public TextView courseCode;
         public String courseOutline;
         public String courseRating;
         public String courseImage;
+        public ImageView image;
         public RatingBar courseRatingBar;
 
         //Initializing Views

@@ -86,10 +86,9 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         //To determine which activity we came from (BrowseCourses or MyCourses
         //  Toast.makeText(CourseHomePage.this, act, Toast.LENGTH_LONG).show();
 
-        /*
         if(!COURSE.IMAGE.equals("null")){
             Glide.with(this).load(COURSE.IMAGE).into(image);
-        }*/
+        }
         courseName.setText(COURSE.NAME);
         courseDescription.setText(COURSE.DESCRIPTION);
         courseInstructor.setText("By: "+COURSE.INSTRUCTOR);
@@ -212,16 +211,4 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
             getData();
         }
     }
-   /*    @Override
- public void onBackPressed(){
-        if (browse){
-            Intent intent = new Intent(CourseHomePageInstructor.this, BrowseCourses.class);
-            startActivity(intent);
-            finish();
-        }else{
-            Intent intent = new Intent(CourseHomePageInstructor.this, MyCourses.class);
-            startActivity(intent);
-            finish();
-        }
-    }*/
 }

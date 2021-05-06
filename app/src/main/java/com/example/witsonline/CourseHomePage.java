@@ -47,6 +47,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
     LinearLayout outlineLayout;
     Button subscribe;
     Button review;
+    boolean browse;
     //Creating a list of Courses
     private ArrayList<ReviewV> listReviewVs;
     private ImageView image;
@@ -84,6 +85,16 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         review = (Button)findViewById(R.id.review);
         image = (ImageView)findViewById(R.id.courseImage);
 
+        //To determine which activity we came from (BrowseCourses or MyCourses
+        Bundle extras = getIntent().getExtras();
+        String act = extras.getString("activity");
+        if (act.contains("BrowseCourses")){
+            browse = true;
+        }
+        else{
+            browse = false;
+        }
+      //  Toast.makeText(CourseHomePage.this, act, Toast.LENGTH_LONG).show();
 
         /*
         if(!COURSE.IMAGE.equals("null")){
@@ -398,8 +409,14 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
 
     @Override
     public void onBackPressed(){
-        Intent intent = new Intent(CourseHomePage.this, BrowseCourses.class);
-        startActivity(intent);
-        finish();
+        if (browse){
+            Intent intent = new Intent(CourseHomePage.this, BrowseCourses.class);
+            startActivity(intent);
+            finish();
+        }else{
+            Intent intent = new Intent(CourseHomePage.this, MyCourses.class);
+            startActivity(intent);
+            finish();
+        }
     }
 }

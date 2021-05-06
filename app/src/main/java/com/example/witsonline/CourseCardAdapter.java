@@ -179,6 +179,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
             public void onClick(View v) {
                 dialog.dismiss();
                 Intent i = new Intent(context, CourseHomePage.class);
+                i.putExtra("activity",""+context);
                 context.startActivity(i);
             }
         });

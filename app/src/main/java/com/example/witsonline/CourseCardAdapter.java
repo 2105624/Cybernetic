@@ -162,6 +162,8 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                     Toast toast = Toast.makeText(context, "Subscribed to "+ COURSE.CODE, Toast.LENGTH_LONG);
                         toast.show();
                         dialog.dismiss();
+                        Intent intent = new Intent(context,BrowseCourses.class);
+                        context.startActivity(intent);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -245,11 +247,15 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                 cont.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(responseData.trim().equals("subscribed")){
-                            btnViewDialogSubscribe.setText("UNSUBSCRIBE");
+                        if (btnViewDialogSubscribe != null) {
+                            if (responseData.trim().equals("subscribed")) {
+                                btnViewDialogSubscribe.setText("UNSUBSCRIBE");
+                            }
                         }
-                        if(responseData.trim().equals("unsubscribed")){
-                            btnUnsubscribe.setText("SUBSCRIBE");
+                        if (btnUnsubscribe != null) {
+                            if (responseData.trim().equals("unsubscribed")) {
+                                btnUnsubscribe.setText("SUBSCRIBE");
+                            }
                         }
                     }
                 });

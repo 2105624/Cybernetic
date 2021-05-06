@@ -245,4 +245,8 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
         return false;
     }
 
+    @Override
+    public void onBackPressed(){
+
+    }
 }

@@ -341,7 +341,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
                 float postReviewRating = rtbReviewRating.getRating();
                 String postReviewDescription = edtReviewDescription.getText().toString();
                 if(postReviewDescription.isEmpty()){
-                    Toast toast = Toast.makeText(CourseHomePage.this, "Review description can't be empty"+COURSE.CODE, Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(CourseHomePage.this, "Review description can't be empty", Toast.LENGTH_LONG);
                     toast.show();
                 }
                 else {

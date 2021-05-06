@@ -96,7 +96,7 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
         //Displaying ProgressBar
         progressBar.setVisibility(View.VISIBLE);
         setProgressBarIndeterminateVisibility(true);
-        
+
         //JsonArrayRequest of volley
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(webURL + String.valueOf(requestCount)+"&studentNo="+USER.USER_NUM,
                 (response) -> {
@@ -214,6 +214,10 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
         }
 
         return false;
+    }
+    @Override
+    public void onBackPressed(){
+
     }
 
 }

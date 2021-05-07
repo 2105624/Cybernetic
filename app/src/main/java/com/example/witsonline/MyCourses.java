@@ -37,7 +37,8 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
-    String webURL = "https://lamp.ms.wits.ac.za/home/s2105624/loadCourses.php?page=";
+    String studWebURL = "https://lamp.ms.wits.ac.za/home/s2105624/studMyCourses.php?page=";
+    String instWebURL = "https://lamp.ms.wits.ac.za/home/s2105624/instMyCourses.php?page=";
 
     //Volley Request Queue
     private RequestQueue requestQueue;
@@ -48,9 +49,6 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_courses);
-
-        //testing getting username
-        Toast.makeText(MyCourses.this, USER.USERNAME, Toast.LENGTH_SHORT).show();
 
         //Initializing Views
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
@@ -85,27 +83,10 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
             dashboardBottomNavigation.getMenu().findItem(R.id.menuMyCoursesInstructor).setChecked(true);
         }
 
-        //get courses and convert from JSON
-        USER.COURSES = new ArrayList<String>();
-
-        if (USER.STUDENT){
-            settakings();
-        }
-        else{
-            setmakings();
-        }
-
-        try {
-            Thread.sleep(1500);
-        }
-        catch(InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
-        thels(COURSE.temp);
     }
 
     //Request to get json from server we are passing an integer here
-    //This integer will used to specify the page number for the request ?page = requestcount
+    //This integer will used to specify the page number for the request ?page = requestCount
     //This method would return a JsonArrayRequest that will be added to the request queue
     private JsonArrayRequest getDataFromServer(int requestCount){
         //Initializing progressbar
@@ -115,23 +96,44 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
         progressBar.setVisibility(View.VISIBLE);
         setProgressBarIndeterminateVisibility(true);
 
+
         //JsonArrayRequest of volley
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(webURL + String.valueOf(requestCount),
-                (response) -> {
-                    //Calling method parseData to parse the json responce
-                    try {
-                        parseData(response);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    //Hiding the progressBar
-                    progressBar.setVisibility(View.GONE);
-                },
-                (error) -> {
-                    progressBar.setVisibility(View.GONE);
-                    //If an error occurs that means end of the list has been reached
-                    Toast.makeText(MyCourses.this, "No More Items Available", Toast.LENGTH_SHORT).show();
-                });
+        JsonArrayRequest jsonArrayRequest;
+        if (USER.STUDENT) {
+            jsonArrayRequest = new JsonArrayRequest(studWebURL + String.valueOf(requestCount)+"&studentNo="+USER.USER_NUM,
+                    (response) -> {
+                        //Calling method parseData to parse the json response
+                        try {
+                            parseData(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        //Hiding the progressBar
+                        progressBar.setVisibility(View.GONE);
+                    },
+                    (error) -> {
+                        progressBar.setVisibility(View.GONE);
+                        //If an error occurs that means end of the list has been reached
+                        Toast.makeText(MyCourses.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+                    });
+        }else{
+            jsonArrayRequest = new JsonArrayRequest(instWebURL + String.valueOf(requestCount)+"&username="+USER.USERNAME,
+                    (response) -> {
+                        //Calling method parseData to parse the json responce
+                        try {
+                            parseData(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        //Hiding the progressBar
+                        progressBar.setVisibility(View.GONE);
+                    },
+                    (error) -> {
+                        progressBar.setVisibility(View.GONE);
+                        //If an error occurs that means end of the list has been reached
+                        Toast.makeText(MyCourses.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+                    });
+        }
         //Returning the request
         return jsonArrayRequest;
     }
@@ -156,102 +158,21 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
 
                 //Adding data to the course object
                 courseV.setCourseName(json.getString("courseName"));
+                courseV.setCourseName(json.getString("courseName"));
                 courseV.setCourseDescription(json.getString("courseDescription"));
                 courseV.setCourseInstructor(json.getString("courseInstructor"));
+                courseV.setCourseCode(json.getString("courseCode"));
+                courseV.setCourseRating(json.getString("courseRating"));
+                courseV.setCourseOutline(json.getString("courseOutline"));
+                courseV.setImageUrl(json.getString("courseImageUrl"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-
-            //Adding the request object to the list
-            if (USER.STUDENT) {
-                if (USER.COURSES.contains("courseCode")) {
-                    listCourseVs.add(courseV);
-                    adapter.notifyDataSetChanged();
-                }
-            } else {
-                if (USER.USERNAME.equals(json.getString("courseInstructor"))) {
-                    listCourseVs.add(courseV);
-                    adapter.notifyDataSetChanged();
-                }
-            }
-
-            //listCourseVs.add(courseV);
+            listCourseVs.add(courseV);
 
             //Notifying the adapter that data has been added or changed
-            //adapter.notifyDataSetChanged();
-        }
-    }
-
-    public void settakings(){
-
-        OkHttpClient client = new OkHttpClient();
-
-        RequestBody addinf=new FormBody.Builder()
-                .add("unum", (USER.USER_NUM))
-                .build();
-        Request request = new Request.Builder()
-                .url("https://lamp.ms.wits.ac.za/home/s2105624/lstakings.php")
-                .post(addinf)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException exc) {
-                exc.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-
-                if (response.isSuccessful()) {
-                    COURSE.temp=(response.body().string());
-                } else {
-                    throw new IOException("Unexpected code " + response);
-                }
-            }
-        });
-    }
-
-    public void setmakings(){
-
-        OkHttpClient client = new OkHttpClient();
-
-        RequestBody addinf=new FormBody.Builder()
-                .add("unum", (USER.USERNAME))
-                .build();
-        Request request = new Request.Builder()
-                .url("https://lamp.ms.wits.ac.za/home/s2105624/lsmakings.php")
-                .post(addinf)
-                .build();
-       // "SELECT COURSE_CODE FROM COURSE WHERE INSTRUCTOR_USERNAME='$unum'"
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException exc) {
-                exc.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-
-                if (response.isSuccessful()) {
-                    COURSE.temp=(response.body().string());
-                } else {
-                    throw new IOException("Unexpected code " + response);
-                }
-            }
-        });
-    }
-
-    public void thels(String json){
-        try {
-            JSONArray all = new JSONArray(json);
-            for (int i=0; i<all.length(); i++){
-                JSONObject item=all.getJSONObject(i);
-                USER.COURSES.add(item.getString("COURSE_CODE"));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+            adapter.notifyDataSetChanged();
         }
     }
 
@@ -322,5 +243,10 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
         }
 
         return false;
+    }
+
+    @Override
+    public void onBackPressed(){
+
     }
 }

@@ -14,8 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CreateCourse"></activity>
-        <activity android:name=".MyCourses"></activity>
+        <activity android:name=".CourseHomePageInstructor"></activity>
+        <activity android:name=".CourseHomePage" />
+        <activity android:name=".CreateCourse" />
+        <activity android:name=".MyCourses" />
         <activity
             android:name=".RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar" />

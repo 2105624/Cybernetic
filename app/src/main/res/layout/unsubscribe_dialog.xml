@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#F0F2F5"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:textSize="25dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:text="Are you sure you want to unsubscribe?"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/unSubscribe"
+            android:text="UNSUBSCRIBE"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:background="@color/color1"
+            android:textColor="@color/white"
+            android:layout_gravity="center"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/unsubscribeCancel"
+            android:text="CANCEL"
+            android:layout_alignParentRight="true"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:background="@color/color1"
+            android:textColor="@color/white"
+            android:layout_gravity="center"/>
+    </RelativeLayout>
+
+
+</LinearLayout>

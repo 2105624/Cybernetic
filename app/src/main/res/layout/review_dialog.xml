@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/courseOutline"
+    android:background="#F0F2F5"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_gravity="center"
+        android:text="Review this course below"/>
+
+    <RatingBar
+        android:id="@+id/dialogCourseRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:layout_gravity="center"
+        android:paddingTop="10dp"
+        android:rating="0" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:gravity="top"
+        android:id="@+id/dialogCourseDescription"
+        android:layout_height="150dp"
+        android:background="@color/white"
+        app:errorEnabled="true"
+        app:counterEnabled="true"
+        app:counterMaxLength="280"
+        android:hint="Review"
+        android:inputType="textMultiLine" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialogPostReview"
+        android:text="POST"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:background="@color/color1"
+        android:textColor="@color/white"
+        android:layout_gravity="center"/>
+</LinearLayout>

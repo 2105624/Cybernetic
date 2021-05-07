@@ -20,7 +20,7 @@
 
             <ImageView
                 android:id="@+id/courseImage"
-                android:paddingTop="10dp"
+                android:padding="10dp"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/wits_logo"
@@ -30,29 +30,37 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:background="#F0F2F5">
-
-                <TextView
-                    android:id="@+id/courseName"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:text="Course Name"
-                    android:textSize="15dp"
-                    android:textStyle="bold"/>
+                    android:layout_height="wrap_content"
+                    android:paddingRight="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/courseName"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:text="Course Name"
+                        android:textSize="15dp"
+                        android:textStyle="bold"/>
+
+                </RelativeLayout>
 
                 <TextView
                     android:id="@+id/courseDescription"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="1dp"
+                    android:visibility="invisible"
                     android:text="Course Description...." />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="30dp"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="30dp"
                         android:text="By: "/>
                     <TextView
                         android:id="@+id/courseInstructor"
@@ -60,6 +68,22 @@
                         android:layout_height="30dp"
                         android:text="Course Instructor" />
                 </LinearLayout>
+
+                <RatingBar
+                    android:id="@+id/courseRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingTop="5dp"
+                    android:rating="0"
+                    style="@style/customRatingBar" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:visibility="invisible"
+                    android:id="@+id/codeContainer"/>
+
 
             </LinearLayout>
 

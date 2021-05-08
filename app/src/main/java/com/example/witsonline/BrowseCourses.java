@@ -2,6 +2,7 @@ package com.example.witsonline;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,8 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -29,6 +32,11 @@ import java.util.ArrayList;
 public class BrowseCourses extends AppCompatActivity implements View.OnScrollChangeListener, BottomNavigationView.OnNavigationItemSelectedListener  {
     //Creating a list of Courses
     private ArrayList<CourseV> listCourseVs;
+
+    //This is for the logout pop up menu
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+    private Button btnLogout, btnCancel;
 
     //CreatingViews
     private RecyclerView recyclerView;
@@ -188,6 +196,36 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
         }
     }
 
+    public void createNewViewDialog(){
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View viewPopUp = LayoutInflater.from(this)
+                .inflate(R.layout.logout_dialog, null);
+
+        btnLogout = (Button) viewPopUp.findViewById(R.id.btnLogout);
+        btnCancel = (Button) viewPopUp.findViewById(R.id.btnLogoutCancel);
+
+        dialogBuilder.setView(viewPopUp);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent5 = new Intent(BrowseCourses.this,LoginActivity.class);
+                startActivity(intent5);
+                finish();
+                dialog.dismiss();
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -207,9 +245,7 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
                 break;
 
             case R.id.menuLogOutStudent :
-                Intent intent2 = new Intent(BrowseCourses.this, LoginActivity.class);
-                startActivity(intent2);
-                finish();
+                createNewViewDialog();
                 break;
         }
 

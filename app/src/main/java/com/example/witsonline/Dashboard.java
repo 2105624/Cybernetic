@@ -2,22 +2,27 @@ package com.example.witsonline;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -25,6 +30,11 @@ import java.util.Objects;
 public class Dashboard extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     TextView name;
     ProgressBar progressBar;
+
+    //This is for the logout pop up menu
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+    private Button btnLogout, btnCancel;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -116,6 +126,36 @@ public class Dashboard extends AppCompatActivity implements BottomNavigationView
         progressBar.setVisibility(View.GONE);
     }
 
+    public void createNewViewDialog(){
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View viewPopUp = LayoutInflater.from(this)
+                .inflate(R.layout.logout_dialog, null);
+
+        btnLogout = (Button) viewPopUp.findViewById(R.id.btnLogout);
+        btnCancel = (Button) viewPopUp.findViewById(R.id.btnLogoutCancel);
+
+        dialogBuilder.setView(viewPopUp);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Intent intent5 = new Intent(Dashboard.this,LoginActivity.class);
+                    startActivity(intent5);
+                    finish();
+                    dialog.dismiss();
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -136,9 +176,7 @@ public class Dashboard extends AppCompatActivity implements BottomNavigationView
                 break;
 
             case R.id.menuLogOutStudent :
-                Intent intent2 = new Intent(Dashboard.this, LoginActivity.class);
-                startActivity(intent2);
-                finish();
+                createNewViewDialog();
                 break;
 
             case R.id.menuHomeInstructor :
@@ -157,12 +195,12 @@ public class Dashboard extends AppCompatActivity implements BottomNavigationView
                 break;
 
             case R.id.menuLogOutInstructor :
-                Intent intent5 = new Intent(Dashboard.this,LoginActivity.class);
-                startActivity(intent5);
-                finish();
+                createNewViewDialog();
                 break;
         }
 
         return false;
     }
+
+
 }

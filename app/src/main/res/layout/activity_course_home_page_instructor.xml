@@ -110,7 +110,16 @@
                 android:layout_height="wrap_content"
                 android:textSize="25dp">
             </LinearLayout>
-
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/addLesson"
+                android:text="Add a lesson"
+                android:padding="10dp"
+                android:layout_margin="10dp"
+                android:background="@color/color1"
+                android:textColor="@color/white"
+                android:layout_gravity="center"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -138,5 +147,6 @@
 
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>
 </RelativeLayout>

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -69,6 +70,9 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     //Volley Request Queue
     private RequestQueue requestQueue;
 
+    //button for adding a lesson
+    private Button btnAddLesson;
+
     //The request counter to send ?page=1, ?page=2 requests
     private int reviewCount = 1;
     @SuppressLint("WrongConstant")
@@ -83,8 +87,6 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         outlineLayout = findViewById(R.id.courseOutline);
         image = (ImageView)findViewById(R.id.courseImage);
 
-        //To determine which activity we came from (BrowseCourses or MyCourses
-        //  Toast.makeText(CourseHomePage.this, act, Toast.LENGTH_LONG).show();
 
         if(!COURSE.IMAGE.equals("null")){
             Glide.with(this).load(COURSE.IMAGE).into(image);
@@ -116,6 +118,17 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
 
         //Adding adapter to recyclerview
         recyclerView.setAdapter(adapter);
+
+        //Adding on-click for adding a lesson
+        btnAddLesson = findViewById(R.id.addLesson);
+        btnAddLesson.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CourseHomePageInstructor.this, CreateLesson.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
     }
     private JsonArrayRequest getDataFromServer(int requestCount){

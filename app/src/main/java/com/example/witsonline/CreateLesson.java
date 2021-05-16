@@ -130,15 +130,15 @@ public class CreateLesson extends AppCompatActivity {
         });
 
         //Displaying the video
-      //  videoView = findViewById(R.id.videoView);
-      //  mediaController = new MediaController(this);
-      //  mediaController.setAnchorView(videoView);
-       // videoView.setMediaController(mediaController);
-    //   Uri uri = Uri.parse("http://web.logiclabsolutions.com/xxx.mp4");
+       videoView = findViewById(R.id.videoView);
+        mediaController = new MediaController(this);
+        mediaController.setAnchorView(videoView);
+        videoView.setMediaController(mediaController);
+       Uri uri = Uri.parse("http://web.logiclabsolutions.com/xxx.mp4");
        // Uri uri = Uri.parse("https://www.youtube.com/watch?v=teiIw6Zp6X8");
-      //  videoView.setVideoURI(uri);
-      //  videoView.requestFocus();
-      //  videoView.start();
+        videoView.setVideoURI(uri);
+        videoView.requestFocus();
+       videoView.start();
 
 
 

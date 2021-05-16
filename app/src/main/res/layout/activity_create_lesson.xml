@@ -85,6 +85,11 @@
             android:text="Create lesson"
             android:textColor="@color/color3" />
 
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
 
     </LinearLayout>
 

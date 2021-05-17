@@ -97,7 +97,7 @@ public class CreateLesson extends AppCompatActivity {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isEmpty(lessonName) | isEmpty(lessonText) | isEmpty(lessonURL) | !isValidURL()){
+                if (isEmpty(lessonName) | isEmpty(lessonText) | !isValidURL()){
                     //error messages will be displayed
                 }else{
 
@@ -221,12 +221,17 @@ public class CreateLesson extends AppCompatActivity {
 
     //This function validates whether a URL is valid or not
     public boolean isValidURL(){
-        String url = lessonURL.getEditText().getText().toString().trim();
-        try{
-            new URL(url).toURI();
-            return true;
-        }catch (Exception e){
-            lessonURL.setError("Invalid URL");
+        if(!isEmpty(lessonURL)) {
+            String url = lessonURL.getEditText().getText().toString().trim();
+            try {
+                new URL(url).toURI();
+                return true;
+            } catch (Exception e) {
+                lessonURL.setError("Invalid URL");
+                return false;
+            }
+        }else{
+            lessonURL.setError("Field can't be empty");
             return false;
         }
     }

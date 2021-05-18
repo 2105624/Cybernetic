@@ -31,6 +31,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputLayout;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -129,16 +132,28 @@ public class CreateLesson extends AppCompatActivity {
             }
         });
 
-        //Displaying the video
+
+        /*Displaying the video
        videoView = findViewById(R.id.videoView);
         mediaController = new MediaController(this);
         mediaController.setAnchorView(videoView);
         videoView.setMediaController(mediaController);
-       Uri uri = Uri.parse("http://web.logiclabsolutions.com/xxx.mp4");
-       // Uri uri = Uri.parse("https://www.youtube.com/watch?v=teiIw6Zp6X8");
+        Uri uri = Uri.parse("http://web.logiclabsolutions.com/xxx.mp4");
+        //Uri uri = Uri.parse("https://www.youtube.com/watch?v=teiIw6Zp6X8");
         videoView.setVideoURI(uri);
         videoView.requestFocus();
-       videoView.start();
+       videoView.start();*
+         */
+        YouTubePlayerView youTubePlayerView = findViewById(R.id.youtube_player_view);
+        getLifecycle().addObserver(youTubePlayerView);
+        youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+            @Override
+            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                String videoId = "teiIw6Zp6X8";
+                youTubePlayer.cueVideo(videoId, 0);
+
+            }
+        });
 
 
 

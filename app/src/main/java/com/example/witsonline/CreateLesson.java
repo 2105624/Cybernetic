@@ -50,6 +50,7 @@ public class CreateLesson extends AppCompatActivity {
     //Lesson components
     private TextInputLayout lessonName;
     private TextInputLayout lessonText;
+    private TextInputLayout lessonURL;
     private Button btnCreate;
 
     //for adding a pdf
@@ -75,6 +76,7 @@ public class CreateLesson extends AppCompatActivity {
         //finding views
         lessonName = findViewById(R.id.lessonName);
         lessonText = findViewById(R.id.lessonText);
+        lessonURL = findViewById(R.id.lessonURL);
         btnCreate = findViewById(R.id.buttonCreateLesson);
         selectedFile = findViewById(R.id.selectedFileText);
         btnUploadFile = findViewById(R.id.imageButtonUploadFile);
@@ -95,7 +97,7 @@ public class CreateLesson extends AppCompatActivity {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isEmpty(lessonName) | isEmpty(lessonText)){
+                if (isEmpty(lessonName) | isEmpty(lessonText) | isEmpty(lessonURL)){
                     //error messages will be displayed
                 }else{
                     if (!fileSelected){
@@ -118,6 +120,7 @@ public class CreateLesson extends AppCompatActivity {
                             parameters.put("name", lessonName.getEditText().getText().toString().trim());
                             parameters.put("course", COURSE.CODE);
                             parameters.put("text", lessonText.getEditText().getText().toString().trim());
+                            parameters.put("url",lessonURL.getEditText().getText().toString().trim());
                             parameters.put(("fs"),encodedPDF);
                             return parameters;
                         }
@@ -149,7 +152,7 @@ public class CreateLesson extends AppCompatActivity {
         youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                String videoId = "teiIw6Zp6X8";
+                String videoId = "wMl31x7uYZc";
                 youTubePlayer.cueVideo(videoId, 0);
 
             }

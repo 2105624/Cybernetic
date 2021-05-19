@@ -253,6 +253,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
                                 parameters.put("instructor", USER.USERNAME);
                                 parameters.put("faculty", facultyIDs.get(facultyPos).toString());
                                 parameters.put("bitmap", getStringImage(bitmap));
+                                parameters.put("tags", tags.getEditText().getText().toString().trim());
                                 //   parameters.put("path", getPath(filePath));
                                 //   parameters.put("ext", ext);
                                 return parameters;
@@ -285,6 +286,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
                                 parameters.put("visibility", visibility);
                                 parameters.put("instructor", USER.USERNAME);
                                 parameters.put("faculty", facultyIDs.get(facultyPos).toString());
+                                parameters.put("tags", tags.getEditText().getText().toString().trim());
                                 return parameters;
                             }
                         };

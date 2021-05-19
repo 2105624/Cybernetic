@@ -47,6 +47,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
     LinearLayout outlineLayout;
     Button subscribe;
     Button review;
+    Button viewLessons;
     boolean browse;
     //Creating a list of Courses
     private ArrayList<ReviewV> listReviewVs;
@@ -84,6 +85,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         outlineLayout = findViewById(R.id.courseOutline);
         review = (Button)findViewById(R.id.review);
         image = (ImageView)findViewById(R.id.courseImage);
+        viewLessons = (Button)findViewById(R.id.viewLessons);
 
         //To determine which activity we came from (BrowseCourses or MyCourses
         Bundle extras = getIntent().getExtras();
@@ -157,6 +159,13 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
                 createNewViewDialogReview();
             }
 
+        });
+        viewLessons.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CourseHomePage.this,BrowseLessons.class);
+                startActivity(intent);
+            }
         });
     }
     private JsonArrayRequest getDataFromServer(int requestCount){

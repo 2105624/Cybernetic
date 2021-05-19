@@ -59,6 +59,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.*;
+
+
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class CreateCourse extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener  {
 
@@ -81,6 +84,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
     private TextInputLayout name;
     private TextInputLayout description;
     private TextInputLayout outline;
+    private TextInputLayout tags;
     private Button btnCreate;
     private RadioButton rbPublic;
     private RadioButton rbPrivate;
@@ -118,6 +122,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         name = findViewById(R.id.courseName);
         description = findViewById(R.id.courseDescription);
         outline = findViewById(R.id.courseOutline);
+        tags = findViewById(R.id.courseTags);
         btnCreate = findViewById(R.id.buttonCreateCourse);
         image = findViewById(R.id.courseImage);
 
@@ -221,9 +226,9 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isEmpty(name) | isEmpty(description) | isEmpty(outline) | noFacultySelected() | !validCourseCode()){
+                if (isEmpty(name) | isEmpty(description) | isEmpty(outline) | noFacultySelected() | !validCourseCode()) {
                     //error messages will be displayed
-                }else{
+                } else {
                     if (imgSelected) {
                         //    String ext = FilenameUtils.getExtension(getPath(filePath)); //get extension of image
                         StringRequest request = new StringRequest(Request.Method.POST, insertURL, new Response.Listener<String>() {
@@ -247,7 +252,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
                                 parameters.put("visibility", visibility);
                                 parameters.put("instructor", USER.USERNAME);
                                 parameters.put("faculty", facultyIDs.get(facultyPos).toString());
-                                parameters.put("bitmap",getStringImage(bitmap));
+                                parameters.put("bitmap", getStringImage(bitmap));
                                 //   parameters.put("path", getPath(filePath));
                                 //   parameters.put("ext", ext);
                                 return parameters;
@@ -258,7 +263,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
                         Intent i = new Intent(CreateCourse.this, Dashboard.class);
                         startActivity(i);
                         finish();
-                    }else{
+                    } else {
                         StringRequest request = new StringRequest(Request.Method.POST, insertNoImageURL, new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
@@ -284,6 +289,8 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
                             }
                         };
                         requestQueue.add(request);
+
+
                         Toast.makeText(CreateCourse.this, "Course creation successful", Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(CreateCourse.this, Dashboard.class);
                         startActivity(i);
@@ -298,12 +305,13 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
                 //try get extension from the getStringImage function like how you used getPathCOMS
                 //   Toast.makeText(CreateCourseActivity.this, getStringImage(bitmap), Toast.LENGTH_SHORT).show();
 
+                //This should update the tags in the database
 
             }
         });
-
-        //END activity code
     }
+        //END activity code
+
 
     //START dashboard code
     //This method will check if the recyclerview has reached the bottom or not

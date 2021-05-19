@@ -37,6 +37,9 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -97,10 +100,12 @@ public class CreateLesson extends AppCompatActivity {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (isEmpty(lessonName) | isEmpty(lessonText) | isEmpty(lessonURL)){
                     //error messages will be displayed
                 }else{
-                    if (!fileSelected){
+
+                   if (!fileSelected){
                         encodedPDF = "nofile";
                     }
                     StringRequest request = new StringRequest(Request.Method.POST, insertURL, new Response.Listener<String>() {
@@ -162,6 +167,7 @@ public class CreateLesson extends AppCompatActivity {
 
     }
 
+    //code for getting pdf input stream
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -188,6 +194,7 @@ public class CreateLesson extends AppCompatActivity {
         }
     }
 
+    //request permission to access external storage
     private void requestStoragePermission(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
             return;
@@ -228,6 +235,38 @@ public class CreateLesson extends AppCompatActivity {
         return empty;
     }
 
+    //This function validates whether a URL is valid or not
+    public boolean isValidURL(){
+        if(!isEmpty(lessonURL)) {
+            String url = lessonURL.getEditText().getText().toString().trim();
+            try {
+                new URL(url).toURI();
+                return true;
+            } catch (Exception e) {
+                lessonURL.setError("Invalid URL");
+                return false;
+            }
+        }else{
+            lessonURL.setError("Field can't be empty");
+            return false;
+        }
+    }
+
+    OkHttp obj = new OkHttp();
+    public boolean urlExists(){
+        String url = lessonURL.getEditText().getText().toString().trim();
+        if (isValidURL()) {
+            try {
+                obj.validateURL(url);
+                return true;
+            } catch (Exception e) {
+                lessonURL.setError("Video not found on server");
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
     @Override
     public void onBackPressed(){
         Intent i = new Intent(this,CourseHomePageInstructor.class);

@@ -66,7 +66,7 @@
                 android:layout_gravity="left"
                 android:ems="10"
                 android:maxLength="280"
-                android:hint="Lesson URL"
+                android:hint="YouTube Video URL"
                 android:inputType="textMultiLine" />
         </com.google.android.material.textfield.TextInputLayout>
 

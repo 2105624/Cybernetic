@@ -42,13 +42,11 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CreateLesson extends AppCompatActivity {
 
-    //for displaying a video
-    private Uri uri;
-    private VideoView videoView;
-    private MediaController mediaController;
 
     //Lesson components
     private TextInputLayout lessonName;
@@ -64,6 +62,9 @@ public class CreateLesson extends AppCompatActivity {
     public static final int STORAGE_PERMISSION_CODE = 123;
     private boolean fileSelected = false;
 
+    //Displaying YouTube videos
+    private YouTubePlayerView youTubePlayerView;
+
 
     //Insertion
     private RequestQueue requestQueue;
@@ -73,7 +74,7 @@ public class CreateLesson extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_lesson);
 
-        //reuqest storage permission
+        //request storage permission
         requestStoragePermission();
 
         //finding views
@@ -101,10 +102,11 @@ public class CreateLesson extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (isEmpty(lessonName) | isEmpty(lessonText) | isEmpty(lessonURL)){
+                if (isEmpty(lessonName) | isEmpty(lessonText) | !isYoutubeUrl()){
                     //error messages will be displayed
                 }else{
-
+                    String url = lessonURL.getEditText().getText().toString().trim();
+                    String video_ID = getVideoIdFromYoutubeUrl(url);
                    if (!fileSelected){
                         encodedPDF = "nofile";
                     }
@@ -125,7 +127,7 @@ public class CreateLesson extends AppCompatActivity {
                             parameters.put("name", lessonName.getEditText().getText().toString().trim());
                             parameters.put("course", COURSE.CODE);
                             parameters.put("text", lessonText.getEditText().getText().toString().trim());
-                            parameters.put("url",lessonURL.getEditText().getText().toString().trim());
+                            parameters.put("url",video_ID);
                             parameters.put(("fs"),encodedPDF);
                             return parameters;
                         }
@@ -147,12 +149,13 @@ public class CreateLesson extends AppCompatActivity {
         mediaController.setAnchorView(videoView);
         videoView.setMediaController(mediaController);
         Uri uri = Uri.parse("http://web.logiclabsolutions.com/xxx.mp4");
-        //Uri uri = Uri.parse("https://www.youtube.com/watch?v=teiIw6Zp6X8");
+
         videoView.setVideoURI(uri);
         videoView.requestFocus();
        videoView.start();*
          */
-        YouTubePlayerView youTubePlayerView = findViewById(R.id.youtube_player_view);
+        //Display the video
+        youTubePlayerView = findViewById(R.id.youtube_player_view);
         getLifecycle().addObserver(youTubePlayerView);
         youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
@@ -162,8 +165,6 @@ public class CreateLesson extends AppCompatActivity {
 
             }
         });
-
-
 
     }
 
@@ -235,38 +236,55 @@ public class CreateLesson extends AppCompatActivity {
         return empty;
     }
 
-    //This function validates whether a URL is valid or not
-    public boolean isValidURL(){
-        if(!isEmpty(lessonURL)) {
-            String url = lessonURL.getEditText().getText().toString().trim();
-            try {
-                new URL(url).toURI();
-                return true;
-            } catch (Exception e) {
-                lessonURL.setError("Invalid URL");
-                return false;
-            }
-        }else{
-            lessonURL.setError("Field can't be empty");
-            return false;
+    // Test if URL is a valid URL
+    public boolean isYoutubeUrl()
+    {
+        String youTubeURl = lessonURL.getEditText().getText().toString().trim();
+        boolean success;
+        String pattern = "^(http(s)?:\\/\\/)?((w){3}.)?youtu(be|.be)?(\\.com)?\\/.+";
+        if (!youTubeURl.isEmpty() && youTubeURl.matches(pattern))
+        {
+            lessonURL.setError(null);
+            success = true;
         }
+        else
+        {
+            // Not Valid youtube URL
+            if (youTubeURl.isEmpty()){
+                lessonURL.setError("Field can't be empty");
+            }else{
+                lessonURL.setError("Invalid YouTube URL");
+            }
+            success = false;
+        }
+        return success;
     }
 
-    OkHttp obj = new OkHttp();
-    public boolean urlExists(){
-        String url = lessonURL.getEditText().getText().toString().trim();
-        if (isValidURL()) {
-            try {
-                obj.validateURL(url);
-                return true;
-            } catch (Exception e) {
-                lessonURL.setError("Video not found on server");
-                return false;
-            }
-        }else{
-            return false;
+    //Get the ID of the youtube video
+    public static String getVideoIdFromYoutubeUrl(String youtubeUrl)
+    {
+       /*
+           Possibile Youtube urls.
+           http://www.youtube.com/watch?v=WK0YhfKqdaI
+           http://www.youtube.com/embed/WK0YhfKqdaI
+           http://www.youtube.com/v/WK0YhfKqdaI
+           http://www.youtube-nocookie.com/v/WK0YhfKqdaI?version=3&hl=en_US&rel=0
+           http://www.youtube.com/watch?v=WK0YhfKqdaI
+           http://www.youtube.com/watch?feature=player_embedded&v=WK0YhfKqdaI
+           http://www.youtube.com/e/WK0YhfKqdaI
+           http://youtu.be/WK0YhfKqdaI
+        */
+        String pattern = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%\u200C\u200B2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        //url is youtube url for which you want to extract the id.
+        Matcher matcher = compiledPattern.matcher(youtubeUrl);
+        if (matcher.find()) {
+            return matcher.group();
         }
+        return null;
     }
+
+
     @Override
     public void onBackPressed(){
         Intent i = new Intent(this,CourseHomePageInstructor.class);

@@ -50,6 +50,11 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     boolean browse;
     //Creating a list of Courses
     private ArrayList<ReviewV> listReviewVs;
+
+    //Creating a list of tags
+    private ArrayList<String> tags;
+    private ArrayList<TagV> listTagVs;
+
     private ImageView image;
     //This is for the unsubscribe pop up menu
     private AlertDialog.Builder dialogBuilder;
@@ -61,11 +66,21 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     private RatingBar rtbReviewRating;
     private Button btnReviewPostReview;
 
+    //This is for the add tag pop up menu
+    private TextView DialogueInstruction;
+
+    //this if for adding a tag
+    private Button tagAdd;
+
     //CreatingViews
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
+    private RecyclerView recyclerViewTags;
+    private RecyclerView.LayoutManager layoutManagerTags;
+    private RecyclerView.Adapter adapterTags;
     String webURL = "https://lamp.ms.wits.ac.za/home/s2105624/loadReviews.php?page=";
+    String tagURL = "https://lamp.ms.wits.ac.za/home/s2105624/tagretrieve.php?ccode=";
 
     //Volley Request Queue
     private RequestQueue requestQueue;
@@ -87,6 +102,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         RatingBar courseRating = (RatingBar)findViewById(R.id.courseRating);
         outlineLayout = findViewById(R.id.courseOutline);
         image = (ImageView)findViewById(R.id.courseImage);
+        tagAdd = (Button)findViewById(R.id.tagadd);
 
 
         if(!COURSE.IMAGE.equals("null")){
@@ -104,21 +120,32 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
+        recyclerViewTags = (RecyclerView)findViewById(R.id.tagsRecyclerViewInstructor);
+        recyclerViewTags.setHasFixedSize(true);
+        layoutManagerTags = new LinearLayoutManager(this);
+        recyclerViewTags.setLayoutManager(layoutManagerTags);
+
         //Initializing our Course list
         listReviewVs = new ArrayList<>();
+        listTagVs = new ArrayList<>();
+        tags = new ArrayList<>();
         requestQueue = Volley.newRequestQueue(this);
 
-        //Calling method getData to fetch data
+        //Calling methods getData to fetch data
         getData();
+        getTagData();
 
         //Adding an scroll change listener to recyclerView
         recyclerView.setOnScrollChangeListener(this);
+        recyclerViewTags.setOnScrollChangeListener(this);
 
-        //initializing our adapter
+        //initializing our adapters
         adapter = new ReviewCardAdapter(listReviewVs, this);
+        adapterTags = new TagAdapter(listTagVs, this);
 
-        //Adding adapter to recyclerview
+        //Adding adapter to recyclerviews's
         recyclerView.setAdapter(adapter);
+        recyclerViewTags.setAdapter(adapterTags);
 
         //Adding on-click for adding a lesson
         btnAddLesson = findViewById(R.id.addLesson);
@@ -139,6 +166,12 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
                 Intent intent = new Intent(CourseHomePageInstructor.this, BrowseLessons.class);
                 startActivity(intent);
                // finish();
+            }
+        });
+        tagAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                createNewViewTagReview();
             }
         });
 
@@ -167,13 +200,80 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         //Returning the request
         return jsonArrayRequest;
     }
-    //This method will get Data from the web api
+    private JsonArrayRequest getTagDataFromServer(){
+        Log.i("method", "getTagDataFromServer() called");
+        //Initializing progressbar
+        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.tagsProgressBarInstructor);
+
+        //Displaying ProgressBar
+        progressBar.setVisibility(View.VISIBLE);
+        setProgressBarIndeterminateVisibility(true);
+
+        //JsonArrayRequest of volley
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(tagURL + COURSE.CODE,
+                (response) -> {
+                    //Creating an array of tags making use of taglist method
+                    String[] taglist=taglist(response);
+                    Log.i("Length", "Length: "+Integer.toString(taglist.length));
+                    for (int i=0; i<taglist.length; i++){
+                        tags.add(taglist[i]);
+                        Log.i(Integer.toString(i), taglist[i]);
+                    }
+                    //Hiding the progressBar
+                    progressBar.setVisibility(View.GONE);
+                },
+                (error) -> {
+                    progressBar.setVisibility(View.GONE);
+                    //If an error occurs that means end of the list has been reached
+                    //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+                });
+        //Returning the request
+        return jsonArrayRequest;
+    }
+
+    //These methods will get Data from the web api
     private void getData(){
         //Adding the method to the queue by calling the method getDatafromServer
         requestQueue.add(getDataFromServer(reviewCount));
         //Incrementing the course counter
         reviewCount++;
     }
+    private void getTagData(){
+        //Adding the method to the queue by calling the method getTagData
+        requestQueue.add(getTagDataFromServer());
+    }
+
+    //This method will parse json Data
+    private String[] taglist(JSONArray all){
+        String[] tagTemps = null;
+        for(int i = 0; i< all.length(); i++){
+            // Tag object
+            JSONObject json = null;
+            try {
+                //getting json
+                JSONObject item = all.getJSONObject(i);
+
+                //Adding data to tag object
+                COURSE.TAGS = item.getString("Course_Tags");
+                String[] tagtemp = COURSE.TAGS.split(";");
+                tagTemps = tagtemp;
+                for(String j : tagtemp){
+                    TagV tagV = new TagV();
+                    tagV.setTag(j);
+                    if(j != "null"){
+
+                        listTagVs.add(tagV);
+                    }
+                }
+
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        adapterTags.notifyDataSetChanged();
+        return tagTemps;
+    }
+
     //This method will parse json Data
     private void parseData(JSONArray array){
         for (int i = 0; i< array.length(); i++){
@@ -235,5 +335,83 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
             //Calling the method getData again
             getData();
         }
+    }
+    public void createNewViewTagReview(){
+        dialogBuilder = new AlertDialog.Builder(this);
+        final View viewPopUp = LayoutInflater.from(this)
+                .inflate(R.layout.review_dialog, null);
+
+        dialogBuilder.setView(viewPopUp);
+        dialog = dialogBuilder.create();
+        dialog.show();
+        DialogueInstruction = viewPopUp.findViewById(R.id.dialogTitle);
+        DialogueInstruction.setText("Please Enter Tag Below");
+        btnReviewPostReview = (Button) viewPopUp.findViewById(R.id.dialogPostReview);
+        btnReviewPostReview.setText("Add");
+        rtbReviewRating = (RatingBar) viewPopUp.findViewById(R.id.dialogCourseRating);
+        rtbReviewRating.setVisibility (View.GONE);
+        edtReviewDescription = (EditText) viewPopUp.findViewById(R.id.dialogCourseDescription);
+        edtReviewDescription.setHint("Tag Description");
+
+        btnReviewPostReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newtag= edtReviewDescription.getText().toString();
+                Log.i("newtag", "newtag = "+newtag);
+                if(newtag.isEmpty()){
+                    Toast toast = Toast.makeText(CourseHomePageInstructor.this, "Please Insert Tag Name", Toast.LENGTH_LONG);
+                    toast.show();
+                }
+                else {
+                    try {
+                        doTagAdd("taginsert.php", newtag);
+                        dialog.dismiss();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+    }
+    private void doTagAdd(String phpFile, String tag)throws IOException {
+        Log.i("newtag", "doTagAdd called");
+        String alltags=COURSE.TAGS+";"+tag;
+        Log.i("newtag", "alltags = "+alltags);
+        OkHttpClient client = new OkHttpClient();
+
+        HttpUrl.Builder urlBuilder = HttpUrl.parse("https://lamp.ms.wits.ac.za/home/s2105624/" + phpFile).newBuilder();
+        urlBuilder.addQueryParameter("ccode",COURSE.CODE);
+        urlBuilder.addQueryParameter("tags", alltags);
+        String url = urlBuilder.build().toString();
+        Log.i("newtag", url);
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                e.printStackTrace();
+                Log.i("newtag", "it failed");
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                final String responseData = response.body().string();
+                Log.i("newtag", "it passed");
+                CourseHomePageInstructor.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        overridePendingTransition(0, 0);
+                        startActivity(getIntent());
+                        overridePendingTransition(0, 0);
+                        Toast toast = Toast.makeText(CourseHomePageInstructor.this, "Tag posted", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                });
+            }
+        });
     }
 }

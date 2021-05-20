@@ -25,6 +25,19 @@
                 android:background="#F0F2F5">
 
                 <TextView
+                    android:id="@+id/viewLessonUrl"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:visibility="invisible"
+                    android:text="Course Description...." />
+                <TextView
+                    android:id="@+id/viewLessonText"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:visibility="invisible"
+                    android:text="Course Instructor" />
+
+                <TextView
                     android:id="@+id/viewLessonName"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
@@ -32,19 +45,7 @@
                     android:textSize="15dp"
                     android:textStyle="bold"/>
 
-                <TextView
-                    android:id="@+id/viewLessonUrl"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:visibility="invisible"
-                    android:text="Course Description...." />
 
-                <TextView
-                    android:id="@+id/viewLessonText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="20dp"
-                    android:text="Course Instructor" />
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="0dp"

@@ -18,10 +18,10 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
     private Context context;
 
     //List to store all Courses
-    ArrayList<String>  tags;
+    ArrayList<TagV>  tags;
 
     //Constructor of this class
-    public TagAdapter(ArrayList<String> tags, Context context ){
+    public TagAdapter(ArrayList<TagV> tags, Context context ){
         super();
         //Getting all requests
         this.tags = tags;
@@ -42,10 +42,10 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         //Getting the particular item from the list
-        final String tag =  tags.get(position);
+        final TagV tag =  tags.get(position);
 
         //Showing data on the view
-        holder.tag.setText(tag);
+        holder.tag.setText(tag.getTag());
 
     }
 

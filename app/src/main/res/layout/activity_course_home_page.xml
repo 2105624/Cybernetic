@@ -162,16 +162,7 @@
                         android:id="@+id/tagsProgressBar"
                         android:layout_centerInParent="true"/>
                 </RelativeLayout>
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tagadd"
-                    android:text="Add Tag"
-                    android:padding="10dp"
-                    android:layout_margin="10dp"
-                    android:background="@color/color1"
-                    android:textColor="@color/white"
-                    android:layout_gravity="center"/>
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

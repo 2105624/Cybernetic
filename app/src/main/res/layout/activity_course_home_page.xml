@@ -116,18 +116,41 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/viewLessons"
-                    android:text="View Lessons"
+                    android:id="@+id/subscribe"
+                    android:text="SUBSCRIBE"
                     android:padding="10dp"
                     android:layout_margin="10dp"
                     android:background="@color/color1"
                     android:textColor="@color/white"
                     android:layout_gravity="center"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tags"
+                    android:textStyle="bold"
+                    android:textSize="25dp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/tagsRecyclerView"
+                        android:layout_centerInParent="true"/>
+                    <ProgressBar
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/tagsProgressBar"
+                        android:layout_centerInParent="true"/>
+                </RelativeLayout>
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/subscribe"
-                    android:text="SUBSCRIBE"
+                    android:id="@+id/tagadd"
+                    android:text="Add Tag"
                     android:padding="10dp"
                     android:layout_margin="10dp"
                     android:background="@color/color1"

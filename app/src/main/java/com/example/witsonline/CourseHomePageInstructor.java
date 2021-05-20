@@ -260,8 +260,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
                 for(String j : tagtemp){
                     TagV tagV = new TagV();
                     tagV.setTag(j);
-                    if(j != "null"){
-
+                    if(j != "null" && !j.equals("null")){
                         listTagVs.add(tagV);
                     }
                 }
@@ -384,7 +383,15 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     }
     private void doTagAdd(String phpFile, String tag)throws IOException {
         Log.i("newtag", "doTagAdd called");
-        String alltags=COURSE.TAGS+";"+tag;
+        Log.i("newtag", COURSE.TAGS);
+        String alltags;
+        if(COURSE.TAGS == "null" && COURSE.TAGS.equals("null")) {
+            alltags = tag;
+        }
+        else{
+            alltags=COURSE.TAGS+";"+tag;
+        }
+
         Log.i("newtag", "alltags = "+alltags);
         OkHttpClient client = new OkHttpClient();
 

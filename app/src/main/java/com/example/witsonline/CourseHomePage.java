@@ -278,7 +278,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
                 for(String j : tagtemp){
                     TagV tagV = new TagV();
                     tagV.setTag(j);
-                    if(j != "null"){
+                    if(j != "null" && !j.equals("null")){
                         listTagVs.add(tagV);
                     }
                 }

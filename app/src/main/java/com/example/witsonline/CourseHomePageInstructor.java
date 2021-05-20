@@ -385,7 +385,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         Log.i("newtag", "doTagAdd called");
         Log.i("newtag", COURSE.TAGS);
         String alltags;
-        if(COURSE.TAGS == "null" && COURSE.TAGS.equals("null")) {
+        if(COURSE.TAGS == "null" || COURSE.TAGS.equals("null")) {
             alltags = tag;
         }
         else{

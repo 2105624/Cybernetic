@@ -336,6 +336,14 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
             getData();
         }
     }
+
+    @Override
+    public void onBackPressed(){
+        Intent i = new Intent(CourseHomePageInstructor.this,MyCourses.class);
+        startActivity(i);
+        finish();
+    }
+
     public void createNewViewTagReview(){
         dialogBuilder = new AlertDialog.Builder(this);
         final View viewPopUp = LayoutInflater.from(this)

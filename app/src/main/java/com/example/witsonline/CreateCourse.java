@@ -226,7 +226,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isEmpty(name) | isEmpty(description) | isEmpty(outline) | noFacultySelected() | !validCourseCode()) {
+                if (isEmpty(name) | isEmpty(description) | isEmpty(outline) | isEmpty(tags) | noFacultySelected() | !validCourseCode()) {
                     //error messages will be displayed
                 } else {
                     if (imgSelected) {

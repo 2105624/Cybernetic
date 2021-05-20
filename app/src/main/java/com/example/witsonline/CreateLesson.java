@@ -62,10 +62,6 @@ public class CreateLesson extends AppCompatActivity {
     public static final int STORAGE_PERMISSION_CODE = 123;
     private boolean fileSelected = false;
 
-    //Displaying YouTube videos
-    private YouTubePlayerView youTubePlayerView;
-
-
     //Insertion
     private RequestQueue requestQueue;
     private String insertURL = "https://lamp.ms.wits.ac.za/home/s2105624/lessonInsert.php";
@@ -142,29 +138,6 @@ public class CreateLesson extends AppCompatActivity {
             }
         });
 
-
-        /*Displaying the video
-       videoView = findViewById(R.id.videoView);
-        mediaController = new MediaController(this);
-        mediaController.setAnchorView(videoView);
-        videoView.setMediaController(mediaController);
-        Uri uri = Uri.parse("http://web.logiclabsolutions.com/xxx.mp4");
-
-        videoView.setVideoURI(uri);
-        videoView.requestFocus();
-       videoView.start();*
-         */
-        //Display the video
-        youTubePlayerView = findViewById(R.id.youtube_player_view);
-        getLifecycle().addObserver(youTubePlayerView);
-        youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
-            @Override
-            public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                String videoId = "wMl31x7uYZc";
-                youTubePlayer.cueVideo(videoId, 0);
-
-            }
-        });
 
     }
 

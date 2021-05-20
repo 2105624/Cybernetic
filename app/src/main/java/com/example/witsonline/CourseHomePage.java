@@ -45,10 +45,11 @@ import okhttp3.Response;
 
 public class CourseHomePage extends AppCompatActivity implements  View.OnScrollChangeListener{
     LinearLayout outlineLayout;
-    Button subscribe;
-    Button review;
-    Button tagadd;
-    boolean browse;
+    private Button subscribe;
+    private Button review;
+    private Button tagadd;
+    private boolean browse;
+    private Button viewLesson;
     //Creating a list of Courses
     private ArrayList<ReviewV> listReviewVs;
     private ArrayList<String> tags;
@@ -92,6 +93,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         review = (Button)findViewById(R.id.review);
         tagadd = (Button)findViewById(R.id.tagadd);
         image = (ImageView)findViewById(R.id.courseImage);
+        viewLesson = (Button)findViewById(R.id.viewLessons);
 
         //To determine which activity we came from (BrowseCourses or MyCourses
         Bundle extras = getIntent().getExtras();
@@ -174,6 +176,16 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
                 createNewViewDialogReview();
             }
 
+        });
+
+        viewLesson.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CourseHomePage.this, BrowseLessons.class);
+           //     intent.putExtra("activity","student");
+                startActivity(intent);
+            //    finish();
+            }
         });
 
         tagadd.setOnClickListener(new View.OnClickListener() {

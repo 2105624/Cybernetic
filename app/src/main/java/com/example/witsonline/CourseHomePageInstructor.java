@@ -70,8 +70,9 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     //Volley Request Queue
     private RequestQueue requestQueue;
 
-    //button for adding a lesson
+    //button for a lesson
     private Button btnAddLesson;
+    private Button btnViewLesson;
 
     //The request counter to send ?page=1, ?page=2 requests
     private int reviewCount = 1;
@@ -125,8 +126,19 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CourseHomePageInstructor.this, CreateLesson.class);
+              //  intent.putExtra("activity","instructor");
                 startActivity(intent);
-                finish();
+              //  finish();
+            }
+        });
+
+        btnViewLesson = findViewById(R.id.viewLessons);
+        btnViewLesson.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CourseHomePageInstructor.this, BrowseLessons.class);
+                startActivity(intent);
+               // finish();
             }
         });
 

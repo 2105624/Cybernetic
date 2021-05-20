@@ -30,6 +30,8 @@ public class BrowseLessons extends AppCompatActivity implements View.OnScrollCha
     //Creating a list of Courses
     private ArrayList<LessonV> listLessonVs;
 
+
+
     //This is for the logout pop up menu
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
@@ -73,6 +75,10 @@ public class BrowseLessons extends AppCompatActivity implements View.OnScrollCha
 
         //Adding adapter to recyclerview
         recyclerView.setAdapter(adapter);
+
+        //determine where we came from
+        //To determine which activity we came from (BrowseCourses or MyCourses
+
 
         /*
         USER.COURSES = new ArrayList<String>();
@@ -243,4 +249,6 @@ public class BrowseLessons extends AppCompatActivity implements View.OnScrollCha
 
         return false;
     }
+
+
 }

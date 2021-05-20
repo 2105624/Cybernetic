@@ -43,14 +43,14 @@
             android:layout_height="wrap_content"
             app:errorEnabled="true"
             app:counterEnabled="true"
-            app:counterMaxLength="280">
+            app:counterMaxLength="2000">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
                 android:ems="10"
-                android:maxLength="280"
+                android:maxLength="2000"
                 android:hint="Lesson Text"
                 android:inputType="textMultiLine" />
         </com.google.android.material.textfield.TextInputLayout>

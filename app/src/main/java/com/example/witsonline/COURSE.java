@@ -13,6 +13,7 @@ public class COURSE {
 	public static String OUTLINE;
 	public static String FACULTY;
 	public static String temp;
+	public static String TAGS;
 
 //      public static ArrayList<Content> CONTENT;
 

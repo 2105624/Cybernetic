@@ -82,12 +82,12 @@ public class BrowseLessons extends AppCompatActivity implements View.OnScrollCha
         USER.COURSES.add("DUMMY1000");
         */
 
-        BottomNavigationView dashboardBottomNavigation = findViewById(R.id.dashboardBottomNavigation);
+       /* BottomNavigationView dashboardBottomNavigation = findViewById(R.id.dashboardBottomNavigation);
         dashboardBottomNavigation.setOnNavigationItemSelectedListener(BrowseLessons.this);
 
         dashboardBottomNavigation.inflateMenu(R.menu.menu_student);
         dashboardBottomNavigation.setSelectedItemId(R.id.menuBrowseCourses);
-        dashboardBottomNavigation.getMenu().findItem(R.id.menuBrowseCourses).setChecked(true);
+        dashboardBottomNavigation.getMenu().findItem(R.id.menuBrowseCourses).setChecked(true);*/
     }
 
     //Request to get json from server we are passing an integer here

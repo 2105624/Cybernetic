@@ -149,6 +149,23 @@
                         android:inputType="textMultiLine" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/courseTags"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:orientation="horizontal"
+                    app:errorEnabled="true"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="500">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Course Tags (separate tags with ';' )"
+                        android:maxLength="500"
+                        android:inputType="textMultiLine" />
+                </com.google.android.material.textfield.TextInputLayout>
                 <Spinner
                     android:id="@+id/spFaculty"
                     android:layout_width="match_parent"

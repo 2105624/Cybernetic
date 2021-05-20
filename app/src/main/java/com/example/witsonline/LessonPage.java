@@ -22,7 +22,7 @@ public class LessonPage extends AppCompatActivity {
     TextView lessonName;
     TextView lessonCourse;
     TextView lessonText;
-    TextView lessonResource;
+    //TextView lessonResource;
     DownloadManager downloadManager;
 
     // for downloading the pdf
@@ -42,13 +42,14 @@ public class LessonPage extends AppCompatActivity {
         lessonName = (TextView)findViewById(R.id.lessonPageName);
         lessonCourse = (TextView)findViewById(R.id.lessonPageCourse);
         lessonText = (TextView)findViewById(R.id.lessonPageText);
-        lessonResource = (TextView)findViewById(R.id.lessonPageResource);
+        //lessonResource = (TextView)findViewById(R.id.lessonPageResource);
 
         //Setting text to views
         lessonName.setText(LESSON.Name);
         lessonCourse.setText(COURSE.NAME);
         lessonText.setText(LESSON.Text);
-        lessonResource.setText(LESSON.Resource);
+        //lessonResource.setText(LESSON.Resource);
+
 
         // download the pdf resource
         downloadButton.setOnClickListener(new View.OnClickListener() {

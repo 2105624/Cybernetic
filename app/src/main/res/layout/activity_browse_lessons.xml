@@ -10,19 +10,11 @@
         android:id="@+id/recyclerViewLessons"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_above="@id/dashboardBottomNavigation"/>
+        android:layout_centerInParent="true" />
     <ProgressBar
         android:id="@+id/progressBarLessons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/dashboardBottomNavigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        style="@style/AppTheme.BottomNavigation"/>
 
 </RelativeLayout>

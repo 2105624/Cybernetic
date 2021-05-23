@@ -123,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (rbStudent.isChecked()) {
 
-                    if (!validateStudentUsername() | !validateStudentPassword()) {
+                    if (!validateStudentUsername(user,student) | !validateStudentPassword(password,student,studIndex)) {
                         //error messages will be shown
                     } else {
                         USER.USERNAME = user.getEditText().getText().toString().trim();
@@ -134,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 } else {
-                    if (!validateInstructorUsername() | !validateInstructorPassword()) {
+                    if (!validateInstructorUsername(user, instructor) | !validateInstructorPassword(password,instructor,instructorIndex)) {
                         //error messages will be shown
                     } else {
                         USER.USERNAME = user.getEditText().getText().toString().trim();
@@ -157,102 +157,101 @@ public class LoginActivity extends AppCompatActivity {
     int instructorIndex = -1;
     MD5Hash m;
 
-    private boolean validateInstructorUsername() {
-        String usernameInput = user.getEditText().getText().toString().trim();
+    public boolean validateInstructorUsername(TextInputLayout userText,ArrayList<ArrayList<String>> instructorList) {
+        String usernameInput = userText.getEditText().getText().toString().trim();
         boolean userExists = false;
-        for (int i = 0; i < instructor.size(); i++) {
-            if (usernameInput.equals(instructor.get(i).get(0))) {
+        for (int i = 0; i < instructorList.size(); i++) {
+            if (usernameInput.equals(instructorList.get(i).get(0))) {
                 userExists = true;
                 instructorIndex = i;
-                USER.USER_NUM=instructor.get(i).get(0);
+                USER.USER_NUM=instructorList.get(i).get(0);
                 USER.STUDENT=false;
             }
         }
-
         if (usernameInput.isEmpty()) {
-            user.setError("Field can't be empty");
+            userText.setError("Field can't be empty");
             return false;
         } else if (usernameInput.length() > 20) {
-            user.setError("Username too long");
+            userText.setError("Username too long");
             return false;
         } else if (!userExists) {
-            user.setError("Username does not exist");
+            userText.setError("Username does not exist");
             return false;
         } else {
-            user.setError(null);
+            userText.setError(null);
             return true;
         }
     }
 
-    private boolean validateInstructorPassword() {
-        String passwordInput = password.getEditText().getText().toString().trim();
+    public boolean validateInstructorPassword(TextInputLayout passwordText,ArrayList<ArrayList<String>> instructorList,int index) {
+        String passwordInput = passwordText.getEditText().getText().toString().trim();
         boolean correctPassword = false;
-        if (!passwordInput.isEmpty() && instructorIndex != -1){
-            if (m.md5(passwordInput).equals(instructor.get(instructorIndex).get(1))) {
+        if (!passwordInput.isEmpty() && index != -1){
+            if (m.md5(passwordInput).equals(instructorList.get(index).get(1))) {
                 correctPassword = true;
             }
         }
         if (passwordInput.isEmpty()) {
-            password.setError("Field can't be empty");
+            passwordText.setError("Field can't be empty");
             return false;
         }
         else if(!correctPassword){
-            password.setError("Incorrect password");
+            passwordText.setError("Incorrect password");
             return false;
         }
         else {
-            password.setError(null);
+            passwordText.setError(null);
             return true;
         }
     }
 
 
 
-    private boolean validateStudentUsername() {
-        String usernameInput = user.getEditText().getText().toString().trim();
+    public boolean validateStudentUsername(TextInputLayout userText,ArrayList<ArrayList<String>> StudentList) {
+        String usernameInput = userText.getEditText().getText().toString().trim();
         boolean userExists = false;
-        for (int i = 0; i < student.size(); i++) {
-            if (usernameInput.equals(student.get(i).get(0))) {
+        for (int i = 0; i < StudentList.size(); i++) {
+            if (usernameInput.equals(StudentList.get(i).get(0))) {
                 userExists = true;
                 studIndex = i;
-                USER.USER_NUM=student.get(i).get(0);
+                USER.USER_NUM=StudentList.get(i).get(0);
                 USER.STUDENT=true;
             }
         }
         if (usernameInput.isEmpty()) {
-            user.setError("Field can't be empty");
+            userText.setError("Field can't be empty");
             return false;
         } else if (usernameInput.length() > 20) {
-            user.setError("Username too long");
+            userText.setError("Username too long");
             return false;
         } else if (!userExists) {
-            user.setError("Username does not exist");
+            userText.setError("Username does not exist");
             return false;
         } else {
-            user.setError(null);
+            userText.setError(null);
             return true;
         }
     }
 
-    private boolean validateStudentPassword() {
-        String passwordInput = password.getEditText().getText().toString().trim();
+    public boolean validateStudentPassword(TextInputLayout passwordText,ArrayList<ArrayList<String>> StudentList,int index) {
+        String passwordInput = passwordText.getEditText().getText().toString().trim();
         boolean correctPassword = false;
-        if (!passwordInput.isEmpty() && studIndex != -1 ){
-            if (m.md5(passwordInput).equals(student.get(studIndex).get(1))) {
+        if (!passwordInput.isEmpty() && index != -1 ){
+            if (m.md5(passwordInput).equals(StudentList.get(index).get(1))) {
                 correctPassword = true;
             }
         }
 
         if (passwordInput.isEmpty()) {
-            password.setError("Field can't be empty");
+            passwordText.setError("Field can't be empty");
             return false;
         }
         else if(!correctPassword){
-            password.setError("Incorrect password");
+            passwordText.setError("Incorrect password");
             return false;
         }
         else {
-            password.setError(null);
+            passwordText.setError(null);
             return true;
         }
     }

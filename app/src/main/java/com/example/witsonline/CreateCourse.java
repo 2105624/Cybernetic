@@ -226,7 +226,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isEmpty(name) | isEmpty(description) | isEmpty(outline) | isEmpty(tags) | noFacultySelected() | !validCourseCode()) {
+                if (isEmpty(name) | isEmpty(description) | isEmpty(outline) | isEmpty(tags) | noFacultySelected(facultySelected) | !validCourseCode(code,courseCodes)) {
                     //error messages will be displayed
                 } else {
                     if (imgSelected) {
@@ -399,8 +399,8 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
     }
 
     // This function checks to see if no faculty was selected. This will produce an error
-    public boolean noFacultySelected(){
-        if (facultySelected == false){
+    public boolean noFacultySelected(Boolean check){
+        if (check == false){
             Toast toast = Toast.makeText(CreateCourse.this, "Select a faculty", Toast.LENGTH_LONG);
             toast.show();
             return true;
@@ -410,23 +410,23 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
     }
 
     //This function checks if the course code already exists
-    public boolean validCourseCode(){
-        String codeInput = code.getEditText().getText().toString().trim();
+    public boolean validCourseCode(TextInputLayout text,List<String> codes){
+        String codeInput = text.getEditText().getText().toString().trim();
         boolean codeExists = false;
         boolean valid = false;
-        for (int i = 0; i < courseCodes.size(); i++) {
-            if (codeInput.equals(courseCodes.get(i))) {
+        for (int i = 0; i < codes.size(); i++) {
+            if (codeInput.equals(codes.get(i))) {
                 codeExists = true;
             }
         }
         if (codeExists){
-            code.setError("Course code already exists");
+            text.setError("Course code already exists");
         }
         else if (codeInput.isEmpty()){
-            code.setError("Field can't be empty");
+            text.setError("Field can't be empty");
         }
         else{
-            code.setError(null);
+            text.setError(null);
             valid = true;
         }
         return valid;
@@ -483,7 +483,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         return path;
     }
 
-    private void requestStoragePermission(){
+    public void requestStoragePermission(){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
             return;
         }

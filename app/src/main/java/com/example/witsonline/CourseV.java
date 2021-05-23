@@ -34,7 +34,7 @@ public class CourseV {
     public String getImageUrl(){ return strImageUrl; }
     public String getCourseRating(){
 
-        if(!strCourseRating.equals("null")) {
+        if(strCourseRating!=null) {
             return strCourseRating;
         }
         else{

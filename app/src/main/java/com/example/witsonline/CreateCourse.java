@@ -61,7 +61,6 @@ import java.util.Map;
 
 import okhttp3.*;
 
-
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class CreateCourse extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener  {
 

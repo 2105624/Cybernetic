@@ -1,13 +1,13 @@
 package com.example.witsonline;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.PatternsCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -40,6 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Button register;
     private ArrayList<String> studentNumbers = new ArrayList<>();
     private ArrayList<String> instructorUsernames = new ArrayList<>();
+    private Boolean instructorCheck=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +51,15 @@ public class RegisterActivity extends AppCompatActivity {
         studentNumbers = extras.getStringArrayList("students");
         instructorUsernames = extras.getStringArrayList("instructors");
 
+
         rbStudent = findViewById(R.id.student);
         rbInstructor = findViewById(R.id.instructor);
         userText = (TextInputEditText) findViewById(R.id.RegisterText);
         userText.setHint("Student Number");
         rgRegister = findViewById((R.id.rbUserType));
+        if(rbInstructor.isChecked()){
+            instructorCheck=true;
+        }
 
         rgRegister.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -107,7 +112,7 @@ public class RegisterActivity extends AppCompatActivity {
                 }
 
                 try {
-                    processInfo(username, firstName, lastName, email, password, confirmPass, phpFile[0], userType[0]);
+                    processInfo(username, firstName, lastName, email, password, confirmPass, phpFile[0], userType[0],instructorUsernames,studentNumbers,instructorCheck);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -172,20 +177,20 @@ public class RegisterActivity extends AppCompatActivity {
         return empty;
     }
 
-    public boolean userExists() {
-        String usernameInput = username.getEditText().getText().toString().trim();
+    public boolean userExists(TextInputLayout text,ArrayList<String> InstructorNames,ArrayList<String> StudentNums,Boolean Instructor) {
+        String usernameInput = text.getEditText().getText().toString().trim();
         boolean exists = false;
-        if (rbInstructor.isChecked()) {
-            for (int i = 0; i < instructorUsernames.size(); i++) {
-                if (usernameInput.equals(instructorUsernames.get(i))) {
-                    username.setError("Username already exists");
+        if (Instructor==true) {
+            for (int i = 0; i < InstructorNames.size(); i++) {
+                if (usernameInput.equals(InstructorNames.get(i))) {
+                    text.setError("Username already exists");
                     exists = true;
                 }
             }
         } else {
-            for (int i = 0; i < studentNumbers.size(); i++) {
-                if (usernameInput.equals(studentNumbers.get(i))) {
-                    username.setError("Username already exists");
+            for (int i = 0; i < StudentNums.size(); i++) {
+                if (usernameInput.equals(StudentNums.get(i))) {
+                    text.setError("Username already exists");
                     exists = true;
                 }
             }
@@ -194,17 +199,18 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     //this function validates email
-    private boolean validateEmail() {
+    public boolean validateEmail(TextInputLayout text) {
         boolean valid = true;
-        String emailInput = email.getEditText().getText().toString().trim();
+
+        String emailInput = text.getEditText().getText().toString().trim();
         if (emailInput.isEmpty()) {
-            email.setError("Field can't be empty");
+            text.setError("Field can't be empty");
             valid =  false;
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(emailInput).matches()) {
-            email.setError("Please enter a valid email address");
+        } else if (!PatternsCompat.EMAIL_ADDRESS.matcher(emailInput).matches()) {
+            text.setError("Please enter a valid email address");
             valid = false;
         } else {
-            email.setError(null);
+            text.setError(null);
             valid = true;
         }
         return valid;
@@ -236,16 +242,16 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     //This function processes data for registration
-    public boolean processInfo(TextInputLayout user, TextInputLayout name, TextInputLayout surname, TextInputLayout emailAdd, TextInputLayout pass, TextInputLayout confirmPass,String phpFile, String userType) throws IOException {
+    public boolean processInfo(TextInputLayout user, TextInputLayout name, TextInputLayout surname, TextInputLayout emailAdd, TextInputLayout pass, TextInputLayout confirmPass,String phpFile, String userType,ArrayList<String> InstructorNames,ArrayList<String> StudentNums,Boolean instructor) throws IOException {
         boolean valid = true;
         isEmpty(user);
         isEmpty(name);
         isEmpty(surname);
         isEmpty(emailAdd);
         isEmpty(pass);
-        userExists();
-        validateEmail();
-        if(!(isEmpty(user) && isEmpty(name) && isEmpty(surname) && isEmpty(pass) && userExists()) && validatePassword(pass,confirmPass) && validateEmail() ){
+        userExists(user,InstructorNames,StudentNums,instructor);
+        validateEmail(emailAdd);
+        if(!(isEmpty(user) && isEmpty(name) && isEmpty(surname) && isEmpty(pass) && userExists(user,InstructorNames,StudentNums,instructor)) && validatePassword(pass,confirmPass) && validateEmail(emailAdd) ){
             doPostRequest(user, name, surname, emailAdd, pass, phpFile, userType);
         }
         else{

@@ -89,6 +89,9 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     private Button btnAddLesson;
     private Button btnViewLesson;
 
+    //button for editing a course
+    private Button btnEditCourse;
+
     //The request counter to send ?page=1, ?page=2 requests
     private int reviewCount = 1;
     @SuppressLint("WrongConstant")
@@ -172,6 +175,16 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
             @Override
             public void onClick(View view){
                 createNewViewTagReview();
+            }
+        });
+
+        //edit course
+        btnEditCourse = findViewById(R.id.editCourse);
+        btnEditCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CourseHomePageInstructor.this, EditCourse.class);
+                startActivity(intent);
             }
         });
 

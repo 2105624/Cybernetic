@@ -14,7 +14,7 @@
         android:id="@+id/menuCreateCourse"
         android:enabled="true"
         android:title="@string/create"
-        android:icon="@drawable/ic_baseline_create_24"/>
+        android:icon="@drawable/add"/>
     <item
         android:id="@+id/menuLogOutInstructor"
         android:enabled="true"

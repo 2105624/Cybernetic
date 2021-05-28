@@ -188,6 +188,16 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
             }
         });
 
+        //edit course
+        btnEditCourse = findViewById(R.id.editCourse);
+        btnEditCourse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CourseHomePageInstructor.this, EditCourse.class);
+                startActivity(intent);
+            }
+        });
+
     }
     private JsonArrayRequest getDataFromServer(int requestCount){
         //Initializing progressbar

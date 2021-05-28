@@ -167,6 +167,7 @@ public class CreateLesson extends AppCompatActivity {
             }
         }
     }
+    //Escape aphzostrophe
 
     //request permission to access external storage
     private void requestStoragePermission(){

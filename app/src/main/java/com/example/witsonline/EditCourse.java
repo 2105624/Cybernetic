@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -27,17 +29,32 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class EditCourse extends AppCompatActivity {
 
+    private List<String> faculties = new ArrayList<>();
+    private List<Integer>facultyIDs = new ArrayList<>();
+    private List<String> courseCodes  = new ArrayList<>();
+    
     //creating views
     private ImageView image;
     private Button btnEdit;
+    private TextInputLayout code;
+    private TextInputLayout name;
+    private TextInputLayout description;
+    private TextInputLayout outline;
+    private TextInputLayout tags;
+    private RadioGroup rgVisibility;
+    private RadioButton rbPublic;
+    private RadioButton rbPrivate;
 
     //for editing image
     public static final int IMAGE_REQUEST_CODE = 3;
@@ -59,8 +76,21 @@ public class EditCourse extends AppCompatActivity {
         //linking views
         image = findViewById(R.id.courseEditImage);
         btnEdit = findViewById(R.id.buttonEditCourse);
+        rgVisibility = findViewById(R.id.rgVisibility);
+        rbPrivate = findViewById(R.id.privateVisibility);
+        rbPublic = findViewById(R.id.publicVisibility);
+        code = findViewById(R.id.courseCode);
+        name = findViewById(R.id.courseName);
+        description = findViewById(R.id.courseDescription);
+        outline = findViewById(R.id.courseOutline);
+        tags = findViewById(R.id.courseTags);
 
         //setting views
+        code.getEditText().setText(COURSE.CODE);
+        name.getEditText().setText(COURSE.NAME);
+        description.getEditText().setText(COURSE.DESCRIPTION);
+        outline.getEditText().setText(COURSE.OUTLINE);
+        tags.getEditText().setText(COURSE.TAGS);
         if(!COURSE.IMAGE.equals("null")){
             Glide.with(this).load(COURSE.IMAGE).into(image);
         }
@@ -97,8 +127,8 @@ public class EditCourse extends AppCompatActivity {
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> parameters = new HashMap<>();
                             parameters.put("code", COURSE.CODE);
-                            //parameters.put("name", name.getEditText().getText().toString().trim());
-                            //parameters.put("description", description.getEditText().getText().toString().trim());
+                            parameters.put("name", name.getEditText().getText().toString().trim());
+                            parameters.put("description", description.getEditText().getText().toString().trim());
                             //parameters.put("outline", outline.getEditText().getText().toString().trim());
                             //parameters.put("visibility", visibility);
                             //parameters.put("instructor", USER.USERNAME);

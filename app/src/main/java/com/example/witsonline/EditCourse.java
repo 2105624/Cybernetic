@@ -107,11 +107,21 @@ public class EditCourse extends AppCompatActivity {
         });
 
         //edit button on click
+        boolean validInput = true; //just using it for now to test course Images
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (imgChanged){
+                if (validInput==false){
+
+                }else{
+
+                    String bm = "nofile";
+                    if (imgChanged){
+                        bm = getStringImage(bitmap);
+                    }
+                    final String file = bm;
+
                     StringRequest request = new StringRequest(Request.Method.POST, updateURL, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -133,7 +143,7 @@ public class EditCourse extends AppCompatActivity {
                             //parameters.put("visibility", visibility);
                             //parameters.put("instructor", USER.USERNAME);
                             //parameters.put("faculty", facultyIDs.get(facultyPos).toString());
-                            parameters.put("bitmap", getStringImage(bitmap));
+                            parameters.put("bitmap",file);
                             //parameters.put("tags", tags.getEditText().getText().toString().trim());
                             //   parameters.put("path", getPath(filePath));
                             //   parameters.put("ext", ext);
@@ -142,12 +152,10 @@ public class EditCourse extends AppCompatActivity {
                     };
                     requestQueue.add(request);
                     Toast.makeText(EditCourse.this, "Course update successful", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(EditCourse.this, CourseHomePageInstructor.class);
-                    startActivity(i);
-                    finish();
-                   // Toast.makeText(EditCourse.this, "Image changed", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(EditCourse.this, "Image unchanged", Toast.LENGTH_SHORT).show();
+                    //Intent i = new Intent(EditCourse.this, CourseHomePageInstructor.class);
+                    //startActivity(i);
+                    //finish();
+                    // Toast.makeText(EditCourse.this, "Image changed", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -212,6 +220,13 @@ public class EditCourse extends AppCompatActivity {
                 Toast.makeText(this, "Permission denied",Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    @Override
+    public void onBackPressed(){
+        Intent i = new Intent(EditCourse.this, CourseHomePageInstructor.class);
+        startActivity(i);
+        finish();
     }
 
 

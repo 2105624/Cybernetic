@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -56,6 +57,11 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     private ArrayList<TagV> listTagVs;
 
     private ImageView image;
+    private TextView courseName;
+    private TextView courseDescription;
+    private TextView courseInstructor;
+    private RatingBar courseRating;
+
     //This is for the unsubscribe pop up menu
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
@@ -81,6 +87,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     private RecyclerView.Adapter adapterTags;
     String webURL = "https://lamp.ms.wits.ac.za/home/s2105624/loadReviews.php?page=";
     String tagURL = "https://lamp.ms.wits.ac.za/home/s2105624/tagretrieve.php?ccode=";
+    String courseURL = "https://lamp.ms.wits.ac.za/home/s2105624/getCourseInfo.php?ccode=";
 
     //Volley Request Queue
     private RequestQueue requestQueue;
@@ -99,23 +106,13 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_course_home_page_instructor);
         super.onCreate(savedInstanceState);
-        TextView courseName =(TextView)findViewById(R.id.courseName);
-        TextView courseDescription =(TextView)findViewById(R.id.courseDescription);
-        TextView courseInstructor =(TextView)findViewById(R.id.courseInstructor);
-        RatingBar courseRating = (RatingBar)findViewById(R.id.courseRating);
+        courseName =(TextView)findViewById(R.id.courseName);
+        courseDescription =(TextView)findViewById(R.id.courseDescription);
+        courseInstructor =(TextView)findViewById(R.id.courseInstructor);
+        courseRating = (RatingBar)findViewById(R.id.courseRating);
         outlineLayout = findViewById(R.id.courseOutline);
         image = (ImageView)findViewById(R.id.courseImage);
         tagAdd = (Button)findViewById(R.id.tagadd);
-
-
-        if(!COURSE.IMAGE.equals("null")){
-            Glide.with(this).load(COURSE.IMAGE).into(image);
-        }
-        courseName.setText(COURSE.NAME);
-        courseDescription.setText(COURSE.DESCRIPTION);
-        courseInstructor.setText("By: "+COURSE.INSTRUCTOR);
-        courseRating.setRating(Float.parseFloat(COURSE.RATING));
-        addOutlineTopics(COURSE.OUTLINE);
 
         //Initializing Views
         recyclerView = (RecyclerView)findViewById(R.id.reviewRecyclerView);
@@ -134,10 +131,6 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         tags = new ArrayList<>();
         requestQueue = Volley.newRequestQueue(this);
 
-        //Calling methods getData to fetch data
-        getData();
-        getTagData();
-
         //Adding an scroll change listener to recyclerView
         recyclerView.setOnScrollChangeListener(this);
         recyclerViewTags.setOnScrollChangeListener(this);
@@ -149,6 +142,22 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         //Adding adapter to recyclerviews's
         recyclerView.setAdapter(adapter);
         recyclerViewTags.setAdapter(adapterTags);
+
+        //Calling methods getData to fetch data
+        getData();
+        getTagData();
+        getCourseData();
+
+        //The setting of views happens within the parseCourseData function now
+        /*//set views
+        if(!COURSE.IMAGE.equals("null")){
+            Glide.with(this).load(COURSE.IMAGE).into(image);
+        }
+        courseName.setText(COURSE.NAME);
+        courseDescription.setText(COURSE.DESCRIPTION);
+        courseInstructor.setText("By: "+COURSE.INSTRUCTOR);
+        courseRating.setRating(Float.parseFloat(COURSE.RATING));
+        addOutlineTopics(COURSE.OUTLINE); */
 
         //Adding on-click for adding a lesson
         btnAddLesson = findViewById(R.id.addLesson);
@@ -195,6 +204,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
             public void onClick(View v) {
                 Intent intent = new Intent(CourseHomePageInstructor.this, EditCourse.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -254,6 +264,31 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         return jsonArrayRequest;
     }
 
+    private JsonArrayRequest getCourseDataFromServer(){
+        //Initializing progressbar
+        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.tagsProgressBarInstructor);
+
+        //Displaying ProgressBar
+        progressBar.setVisibility(View.VISIBLE);
+        setProgressBarIndeterminateVisibility(true);
+
+        //JsonArrayRequest of volley
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(courseURL + COURSE.CODE,
+                (response) -> {
+                    //parse JSON response in parseCourseData method
+                    parseCourseData(response);
+                    //Hiding the progressBar
+                    progressBar.setVisibility(View.GONE);
+                },
+                (error) -> {
+                    progressBar.setVisibility(View.GONE);
+                    //If an error occurs that means end of the list has been reached
+                    //Toast.makeText(CourseHomePage.this, "No More Items Available", Toast.LENGTH_SHORT).show();
+                });
+        //Returning the request
+        return jsonArrayRequest;
+    }
+
     //These methods will get Data from the web api
     private void getData(){
         //Adding the method to the queue by calling the method getDatafromServer
@@ -264,6 +299,10 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     private void getTagData(){
         //Adding the method to the queue by calling the method getTagData
         requestQueue.add(getTagDataFromServer());
+    }
+    private void getCourseData(){
+        //Adding the method to the queue by calling the method getTagData
+        requestQueue.add(getCourseDataFromServer());
     }
 
     //This method will parse json Data
@@ -294,6 +333,36 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         }
         adapterTags.notifyDataSetChanged();
         return tagTemps;
+    }
+
+    //This method will parse json Data for course
+    private void parseCourseData(JSONArray array){
+        for (int i = 0; i< array.length(); i++){
+            // Creating the Course object
+            JSONObject json = null;
+            try {
+                //Getting json
+                json = array.getJSONObject(i);
+
+                //Adding data to the course object
+                COURSE.NAME = json.getString("Course_Name");
+                COURSE.DESCRIPTION = json.getString("Course_Description");
+                COURSE.OUTLINE = json.getString("Course_Outline");
+                COURSE.IMAGE = json.getString("Course_Image");
+                COURSE.TAGS = json.getString("Course_Tags");
+                //set views
+                if(!COURSE.IMAGE.equals("null")){
+                    Glide.with(this).load(COURSE.IMAGE).into(image);
+                }
+                courseName.setText(COURSE.NAME);
+                courseDescription.setText(COURSE.DESCRIPTION);
+                courseInstructor.setText("By: "+COURSE.INSTRUCTOR);
+                courseRating.setRating(Float.parseFloat(COURSE.RATING));
+                addOutlineTopics(COURSE.OUTLINE);
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     //This method will parse json Data

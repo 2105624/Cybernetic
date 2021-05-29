@@ -82,8 +82,14 @@ public class LessonCardAdapter extends RecyclerView.Adapter<LessonCardAdapter.Vi
                     LESSON.Resource = lessonResource.getText().toString();
                     LESSON.Url = lessonUrl.getText().toString();
 
-                    Intent i = new Intent(context, LessonPage.class);
-                    context.startActivity(i);
+                    if(USER.STUDENT){
+                        Intent i = new Intent(context, LessonPage.class);
+                        context.startActivity(i);
+                    }
+                    else{
+                        Intent i = new Intent(context, LessonPageInstructor.class);
+                        context.startActivity(i);
+                    }
                 }
             });
 

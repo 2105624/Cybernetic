@@ -16,7 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".EditCourse"></activity>
+        <activity android:name=".EditLesson"></activity>
+        <activity android:name=".LessonPageInstructor" />
+        <activity android:name=".EditCourse" />
         <activity android:name=".LessonPage" />
         <activity android:name=".BrowseLessons" />
         <activity android:name=".CreateLesson" />

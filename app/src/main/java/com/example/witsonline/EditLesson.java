@@ -69,6 +69,11 @@ public class EditLesson extends AppCompatActivity {
         selectedFileEdit = findViewById(R.id.selectedFileTextEdit);
         btnUploadFileEdit = findViewById(R.id.imageButtonUploadFileEdit);
 
+        //check if there is a resource or nor
+        if (LESSON.Resource.equals("null")){
+            selectedFileEdit.setText("Select a file");
+        }
+
         //setting views
         editLessonName.getEditText().setText(LESSON.Name);
         editLessonText.getEditText().setText(LESSON.Text);
@@ -80,8 +85,8 @@ public class EditLesson extends AppCompatActivity {
             public void onClick(View v) {
                 Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
                 chooseFile.setType("application/pdf");
-                chooseFile = Intent.createChooser(chooseFile,"Choose a file");
-                startActivityForResult(chooseFile,REQ_PDF);
+                chooseFile = Intent.createChooser(chooseFile, "Choose a file");
+                startActivityForResult(chooseFile, REQ_PDF);
             }
         });
 
@@ -91,12 +96,11 @@ public class EditLesson extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (isEmpty(editLessonName) | isEmpty(editLessonText) | !isYoutubeUrl()){
+                if (isEmpty(editLessonName) | isEmpty(editLessonText) | !isYoutubeUrl()) {
                     //error messages will be displayed
-                }else{
+                } else {
                     String url = editLessonURL.getEditText().getText().toString().trim();
-                    String video_ID = getVideoIdFromYoutubeUrl(url);
-                    if (!fileSelected){
+                    if (!fileSelected) {
                         encodedPDF = "nofile";
                     }
                     StringRequest request = new StringRequest(Request.Method.POST, insertURL, new Response.Listener<String>() {
@@ -115,28 +119,25 @@ public class EditLesson extends AppCompatActivity {
                             Map<String, String> parameters = new HashMap<>();
                             parameters.put("name", editLessonName.getEditText().getText().toString().trim());
                             parameters.put("text", editLessonText.getEditText().getText().toString().trim());
-                            parameters.put("url",video_ID);
-                            parameters.put("id",LESSON.ID);
-                            parameters.put(("fs"),encodedPDF);
+                            parameters.put("url", url);
+                            parameters.put("id", LESSON.ID);
+                            parameters.put(("fs"), encodedPDF);
                             return parameters;
                         }
                     };
                     requestQueue.add(request);
                     Toast.makeText(EditLesson.this, "Lesson update successful", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(EditLesson.this, CourseHomePageInstructor.class);
-                    startActivity(i);
-                    finish();
-
                 }
             }
         });
     }
+
     //code for getting pdf input stream
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQ_PDF && resultCode == RESULT_OK && data != null){
+        if (requestCode == REQ_PDF && resultCode == RESULT_OK && data != null) {
             Uri path = data.getData();
             if (path != null) {
                 try {
@@ -151,8 +152,7 @@ public class EditLesson extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-            else{
+            } else {
                 fileSelected = false;
             }
         }
@@ -160,30 +160,29 @@ public class EditLesson extends AppCompatActivity {
     //Escape aphzostrophe
 
     //request permission to access external storage
-    private void requestStoragePermission(){
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+    private void requestStoragePermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_EXTERNAL_STORAGE)){
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
             //can explain here why you need this permission.
         }
         //ask for permission
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},STORAGE_PERMISSION_CODE);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
     }
 
     //This method will be called when user taps on allow or deny
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
         //Checking if request code is our request
-        if (requestCode == STORAGE_PERMISSION_CODE){
+        if (requestCode == STORAGE_PERMISSION_CODE) {
 
             //if granted
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(this, "Permission granted",Toast.LENGTH_LONG).show();
-            }
-            else{
-                Toast.makeText(this, "Permission denied",Toast.LENGTH_LONG).show();
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permission granted", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -194,29 +193,25 @@ public class EditLesson extends AppCompatActivity {
         if (text.getEditText().getText().toString().isEmpty()) {
             text.setError("Field can't be empty");
             empty = true;
-        }else{
+        } else {
             text.setError(null);
         }
         return empty;
     }
 
     // Test if URL is a valid URL
-    public boolean isYoutubeUrl()
-    {
+    public boolean isYoutubeUrl() {
         String youTubeURl = editLessonURL.getEditText().getText().toString().trim();
         boolean success;
         String pattern = "^(http(s)?:\\/\\/)?((w){3}.)?youtu(be|.be)?(\\.com)?\\/.+";
-        if (!youTubeURl.isEmpty() && youTubeURl.matches(pattern))
-        {
+        if (!youTubeURl.isEmpty() && youTubeURl.matches(pattern)) {
             editLessonURL.setError(null);
             success = true;
-        }
-        else
-        {
+        } else {
             // Not Valid youtube URL
-            if (youTubeURl.isEmpty()){
+            if (youTubeURl.isEmpty()) {
                 editLessonURL.setError("Field can't be empty");
-            }else{
+            } else {
                 editLessonURL.setError("Invalid YouTube URL");
             }
             success = false;
@@ -224,34 +219,11 @@ public class EditLesson extends AppCompatActivity {
         return success;
     }
 
-    //Get the ID of the youtube video
-    public static String getVideoIdFromYoutubeUrl(String youtubeUrl)
-    {
-       /*
-           Possibile Youtube urls.
-           http://www.youtube.com/watch?v=WK0YhfKqdaI
-           http://www.youtube.com/embed/WK0YhfKqdaI
-           http://www.youtube.com/v/WK0YhfKqdaI
-           http://www.youtube-nocookie.com/v/WK0YhfKqdaI?version=3&hl=en_US&rel=0
-           http://www.youtube.com/watch?v=WK0YhfKqdaI
-           http://www.youtube.com/watch?feature=player_embedded&v=WK0YhfKqdaI
-           http://www.youtube.com/e/WK0YhfKqdaI
-           http://youtu.be/WK0YhfKqdaI
-        */
-        String pattern = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%\u200C\u200B2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";
-        Pattern compiledPattern = Pattern.compile(pattern);
-        //url is youtube url for which you want to extract the id.
-        Matcher matcher = compiledPattern.matcher(youtubeUrl);
-        if (matcher.find()) {
-            return matcher.group();
-        }
-        return null;
-    }
 
 
     @Override
     public void onBackPressed(){
-        Intent i = new Intent(this,CourseHomePageInstructor.class);
+        Intent i = new Intent(this,BrowseLessons.class);
         startActivity(i);
         finish();
     }

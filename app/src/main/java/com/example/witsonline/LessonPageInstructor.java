@@ -18,6 +18,9 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class LessonPageInstructor extends AppCompatActivity {
 
     TextView lessonName;
@@ -78,7 +81,7 @@ public class LessonPageInstructor extends AppCompatActivity {
         youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                String videoId = LESSON.Url;
+                String videoId = getVideoIdFromYoutubeUrl(LESSON.Url);
                 youTubePlayer.cueVideo(videoId, 0);
 
             }
@@ -87,12 +90,41 @@ public class LessonPageInstructor extends AppCompatActivity {
         editLesson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(LessonPageInstructor.this, LESSON.ID, Toast.LENGTH_SHORT).show();
-
+                //Toast.makeText(LessonPageInstructor.this, LESSON.ID, Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(LessonPageInstructor.this,EditLesson.class);
                 startActivity(i);
             }
         });
 
+    }
+    //Get the ID of the youtube video
+    public static String getVideoIdFromYoutubeUrl(String youtubeUrl)
+    {
+       /*
+           Possibile Youtube urls.
+           http://www.youtube.com/watch?v=WK0YhfKqdaI
+           http://www.youtube.com/embed/WK0YhfKqdaI
+           http://www.youtube.com/v/WK0YhfKqdaI
+           http://www.youtube-nocookie.com/v/WK0YhfKqdaI?version=3&hl=en_US&rel=0
+           http://www.youtube.com/watch?v=WK0YhfKqdaI
+           http://www.youtube.com/watch?feature=player_embedded&v=WK0YhfKqdaI
+           http://www.youtube.com/e/WK0YhfKqdaI
+           http://youtu.be/WK0YhfKqdaI
+        */
+        String pattern = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%\u200C\u200B2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        //url is youtube url for which you want to extract the id.
+        Matcher matcher = compiledPattern.matcher(youtubeUrl);
+        if (matcher.find()) {
+            return matcher.group();
+        }
+        return null;
+    }
+
+    @Override
+    public void onBackPressed(){
+        Intent i = new Intent(this,BrowseLessons.class);
+        startActivity(i);
+        finish();
     }
 }

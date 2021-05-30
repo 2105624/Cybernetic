@@ -102,7 +102,6 @@ public class CreateLesson extends AppCompatActivity {
                     //error messages will be displayed
                 }else{
                     String url = lessonURL.getEditText().getText().toString().trim();
-                    String video_ID = getVideoIdFromYoutubeUrl(url);
                    if (!fileSelected){
                         encodedPDF = "nofile";
                     }
@@ -123,7 +122,7 @@ public class CreateLesson extends AppCompatActivity {
                             parameters.put("name", lessonName.getEditText().getText().toString().trim());
                             parameters.put("course", COURSE.CODE);
                             parameters.put("text", lessonText.getEditText().getText().toString().trim());
-                            parameters.put("url",video_ID);
+                            parameters.put("url",url);
                             parameters.put(("fs"),encodedPDF);
                             return parameters;
                         }
@@ -233,32 +232,6 @@ public class CreateLesson extends AppCompatActivity {
         }
         return success;
     }
-
-    //Get the ID of the youtube video
-    public static String getVideoIdFromYoutubeUrl(String youtubeUrl)
-    {
-       /*
-           Possibile Youtube urls.
-           http://www.youtube.com/watch?v=WK0YhfKqdaI
-           http://www.youtube.com/embed/WK0YhfKqdaI
-           http://www.youtube.com/v/WK0YhfKqdaI
-           http://www.youtube-nocookie.com/v/WK0YhfKqdaI?version=3&hl=en_US&rel=0
-           http://www.youtube.com/watch?v=WK0YhfKqdaI
-           http://www.youtube.com/watch?feature=player_embedded&v=WK0YhfKqdaI
-           http://www.youtube.com/e/WK0YhfKqdaI
-           http://youtu.be/WK0YhfKqdaI
-        */
-        String pattern = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%\u200C\u200B2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";
-        Pattern compiledPattern = Pattern.compile(pattern);
-        //url is youtube url for which you want to extract the id.
-        Matcher matcher = compiledPattern.matcher(youtubeUrl);
-        if (matcher.find()) {
-            return matcher.group();
-        }
-        return null;
-    }
-
-
     @Override
     public void onBackPressed(){
         Intent i = new Intent(this,CourseHomePageInstructor.class);

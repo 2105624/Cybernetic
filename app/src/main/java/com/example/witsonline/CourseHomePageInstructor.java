@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -98,6 +100,10 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
 
     //button for editing a course
     private Button btnEditCourse;
+
+    //This is for the delay while loading correct course info
+    private ProgressBar progressBar;
+    private RelativeLayout relativeLayout;
 
     //The request counter to send ?page=1, ?page=2 requests
     private int reviewCount = 1;
@@ -207,7 +213,10 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
                 finish();
             }
         });
-
+        //Progress bar for the whole page and the page's relative layout
+        progressBar = findViewById(R.id.progressBar);
+        relativeLayout = findViewById(R.id.CourseHomeInstructorLayout);
+        progressBar.setVisibility(View.VISIBLE);
     }
     private JsonArrayRequest getDataFromServer(int requestCount){
         //Initializing progressbar
@@ -359,6 +368,10 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
                 courseInstructor.setText("By: "+COURSE.INSTRUCTOR);
                 courseRating.setRating(Float.parseFloat(COURSE.RATING));
                 addOutlineTopics(COURSE.OUTLINE);
+
+                //Make the page visible after displaying the correct course info
+                relativeLayout.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
             } catch (JSONException e){
                 e.printStackTrace();
             }

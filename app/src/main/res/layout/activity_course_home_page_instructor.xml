@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/LoginLayout"
+    android:id="@+id/CourseHomeLayout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:scrollbarThumbVertical="@null"
-    tools:context=".CourseHomePageInstructor"><LinearLayout
+    tools:context=".CourseHomePageInstructor">
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/CourseHomeInstructorLayout"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+    <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +42,7 @@
                 android:id="@+id/courseName"
                 android:gravity="center_horizontal"
                 android:padding="10dp"
-                android:text="Course Name"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="40dp"
                 android:textStyle="bold" />
@@ -61,7 +73,7 @@
                 android:layout_height="100dp"
                 android:id="@+id/courseDescription"
                 android:gravity="center"
-                android:text="Course Description"
+                android:text=""
                 android:textSize="25dp"
                 android:fontFamily="cursive"
                 android:textColor="@color/white"/>
@@ -79,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/courseInstructor"
                 android:layout_alignParentLeft="true"
-                android:text="Course Instructor"
+                android:text=""
                 android:textSize="20dp"
                 android:paddingStart="10dp"
                 android:textColor="@color/white"
@@ -225,4 +237,5 @@
     </ScrollView>
 
 </LinearLayout>
+</RelativeLayout>
 </RelativeLayout>

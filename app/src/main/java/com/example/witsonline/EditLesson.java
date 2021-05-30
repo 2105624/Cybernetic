@@ -51,7 +51,7 @@ public class EditLesson extends AppCompatActivity {
 
     //Insertion
     private RequestQueue requestQueue;
-    private String insertURL = "https://lamp.ms.wits.ac.za/home/s2105624/lessonInsert.php";
+    private String insertURL = "https://lamp.ms.wits.ac.za/home/s2105624/lessonUpdate.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +73,6 @@ public class EditLesson extends AppCompatActivity {
         editLessonName.getEditText().setText(LESSON.Name);
         editLessonText.getEditText().setText(LESSON.Text);
         editLessonURL.getEditText().setText(LESSON.Url);
-        selectedFileEdit.setText(LESSON.Resource);
 
         //selecting a file
         btnUploadFileEdit.setOnClickListener(new View.OnClickListener() {
@@ -115,15 +114,15 @@ public class EditLesson extends AppCompatActivity {
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> parameters = new HashMap<>();
                             parameters.put("name", editLessonName.getEditText().getText().toString().trim());
-                            parameters.put("course", COURSE.CODE);
                             parameters.put("text", editLessonText.getEditText().getText().toString().trim());
                             parameters.put("url",video_ID);
+                            parameters.put("id",LESSON.ID);
                             parameters.put(("fs"),encodedPDF);
                             return parameters;
                         }
                     };
                     requestQueue.add(request);
-                    Toast.makeText(EditLesson.this, "Lesson creation successful", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditLesson.this, "Lesson update successful", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(EditLesson.this, CourseHomePageInstructor.class);
                     startActivity(i);
                     finish();

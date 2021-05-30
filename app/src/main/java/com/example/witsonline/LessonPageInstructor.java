@@ -87,6 +87,8 @@ public class LessonPageInstructor extends AppCompatActivity {
         editLesson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(LessonPageInstructor.this, LESSON.ID, Toast.LENGTH_SHORT).show();
+
                 Intent i = new Intent(LessonPageInstructor.this,EditLesson.class);
                 startActivity(i);
             }

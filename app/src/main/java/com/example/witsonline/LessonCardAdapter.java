@@ -50,6 +50,7 @@ public class LessonCardAdapter extends RecyclerView.Adapter<LessonCardAdapter.Vi
         holder.lessonText.setText(lessonV.getLessonText());
         holder.lessonResource.setText(lessonV.getLessonResource());
         holder.lessonUrl.setText(lessonV.getLessonUrl());
+        holder.lessonID.setText(lessonV.getLessonID());
 
     }
 
@@ -64,6 +65,7 @@ public class LessonCardAdapter extends RecyclerView.Adapter<LessonCardAdapter.Vi
         public TextView lessonText;
         public TextView lessonResource;
         public TextView lessonUrl;
+        public TextView lessonID;
 
 
         //Initializing Views
@@ -73,6 +75,7 @@ public class LessonCardAdapter extends RecyclerView.Adapter<LessonCardAdapter.Vi
             lessonText = (TextView) itemView.findViewById(R.id.viewLessonText);
             lessonResource = (TextView) itemView.findViewById(R.id.viewLessonResource);
             lessonUrl = (TextView) itemView.findViewById(R.id.viewLessonUrl);
+            lessonID = (TextView)itemView.findViewById(R.id.viewLessonID);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -81,6 +84,7 @@ public class LessonCardAdapter extends RecyclerView.Adapter<LessonCardAdapter.Vi
                     LESSON.Name = lessonName.getText().toString();
                     LESSON.Resource = lessonResource.getText().toString();
                     LESSON.Url = lessonUrl.getText().toString();
+                    LESSON.ID = lessonID.getText().toString();
 
                     if(USER.STUDENT){
                         Intent i = new Intent(context, LessonPage.class);

@@ -6,5 +6,7 @@ public class LESSON {
     public static String Text;
     public static String Resource;
     public static String Url;
+    public static String ID;
+
 
 }

@@ -11,7 +11,7 @@ public class COURSE {
 	public static String IMAGE;
 	public static String RATING;
 	public static String OUTLINE;
-	public static String FACULTY;
+	public static int FACULTY;
 	public static String temp;
 	public static String TAGS;
 

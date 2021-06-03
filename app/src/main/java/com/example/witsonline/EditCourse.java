@@ -50,14 +50,11 @@ import java.util.Map;
 
 public class EditCourse extends AppCompatActivity {
 
-    private List<String> faculties = new ArrayList<>();
-    private List<Integer>facultyIDs = new ArrayList<>();
     private List<String> courseCodes  = new ArrayList<>();
     
     //creating views
     private ImageView image;
     private Button btnEdit;
-    private TextInputLayout code;
     private TextInputLayout name;
     private TextInputLayout description;
     private TextInputLayout outline;
@@ -65,9 +62,7 @@ public class EditCourse extends AppCompatActivity {
     private RadioGroup rgVisibility;
     private RadioButton rbPublic;
     private RadioButton rbPrivate;
-    private Spinner spinner;
     private TextView numOfTags;
-    private boolean facultySelected = false;
     private TextView numOfOutlines;
     private Button addOutline;
     private Button addTag;
@@ -93,13 +88,14 @@ public class EditCourse extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_course);
 
+        Toast.makeText(EditCourse.this, ""+COURSE.FACULTY, Toast.LENGTH_SHORT).show();
+
         //linking views
         image = findViewById(R.id.courseEditImage);
         btnEdit = findViewById(R.id.buttonEditCourse);
         rgVisibility = findViewById(R.id.rgVisibility);
         rbPrivate = findViewById(R.id.privateVisibility);
         rbPublic = findViewById(R.id.publicVisibility);
-        code = findViewById(R.id.courseCode);
         name = findViewById(R.id.courseName);
         description = findViewById(R.id.courseDescription);
         outline = findViewById(R.id.courseOutline);
@@ -110,7 +106,6 @@ public class EditCourse extends AppCompatActivity {
         numOfTags = findViewById(R.id.numberOfTags);
 
         //setting views
-        code.getEditText().setText(COURSE.CODE);
         name.getEditText().setText(COURSE.NAME);
         description.getEditText().setText(COURSE.DESCRIPTION);
         if(!COURSE.IMAGE.equals("null")){
@@ -138,17 +133,8 @@ public class EditCourse extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(intent,"Complete action using"), IMAGE_REQUEST_CODE);
             }
         });
-        faculties.add(0,"Select a faculty");
-        facultyIDs.add(0);
-        spinner = findViewById(R.id.spFaculty);
+
         PHPRequest req = new PHPRequest("https://lamp.ms.wits.ac.za/home/s2105624/");
-        req.doRequest(EditCourse.this, "faculty",
-                new ResponseHandler() {
-                    @Override
-                    public void processResponse(String response) {
-                        addFacultyNames(response);
-                    }
-                });
 
         //Get Course data
         req.doRequest(EditCourse.this, "courseCodes",
@@ -182,50 +168,6 @@ public class EditCourse extends AppCompatActivity {
             }
         });
 
-        ArrayAdapter<String> adapter = new ArrayAdapter(EditCourse.this,android.R.layout.simple_spinner_item,faculties){
-
-            @Override
-            public boolean isEnabled(int position){
-                if(position == 0)
-                {
-                    //Disable the first item of spinner.
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
-            }
-
-            @Override
-            public View getDropDownView(int position, View convertView, ViewGroup parent) {
-                View view = super.getDropDownView(position, convertView, parent);
-                TextView textview = (TextView) view;
-                if (position == 0) {
-                    textview.setTextColor(Color.GRAY);
-                } else {
-                    textview.setTextColor(Color.BLACK);
-                }
-                return view;
-            }
-
-
-        };
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setSelection(0,false);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                facultyPos = position;
-                facultySelected = true;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         //Add course outline button on click
         addOutline.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -276,7 +218,7 @@ public class EditCourse extends AppCompatActivity {
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isEmpty(name) | isEmpty(description) | validateOutlineAndTag(numOfOutlines,outline,numOfTags,tags) | noFacultySelected(facultySelected) | !validCourseCode(code,courseCodes)){
+                if (isEmpty(name) | isEmpty(description) | validateOutlineAndTag(numOfOutlines,outline,numOfTags,tags) ){
 
                 }else{
 
@@ -307,7 +249,6 @@ public class EditCourse extends AppCompatActivity {
                             parameters.put("description", description.getEditText().getText().toString().trim());
                             parameters.put("outline", finalOutline);
                             parameters.put("visibility", visibility);
-                            parameters.put("faculty", facultyIDs.get(facultyPos).toString());
                             parameters.put("bitmap",file);
                             parameters.put("tags", finalTags);
                             //parameters.put("path", getPath(filePath));
@@ -471,24 +412,7 @@ public class EditCourse extends AppCompatActivity {
             }
         }
     }
-    //append JSON data into faculty arraylists
-    public void addFacultyNames(String json){
 
-        try {
-            JSONArray all = new JSONArray(json);
-            for (int i = 0; i < all.length();i++){
-                JSONObject obj = all.getJSONObject(i);
-                int id = obj.getInt("Faculty_ID");
-                String name = obj.getString("Faculty_Name");
-                faculties.add(name);
-                facultyIDs.add(id);
-            }
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-    }
     //get course codes to see if course already exists
     public void getCourseCodes(String json){
 

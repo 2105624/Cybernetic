@@ -256,7 +256,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
                 (response) -> {
                     //Creating an array of tags making use of taglist method
                     String[] taglist=taglist(response);
-                    Log.i("Length", "Length: "+Integer.toString(taglist.length));
+//                    Log.i("Length", "Length: "+Integer.toString(taglist.length));
                     for (int i=0; i<taglist.length; i++){
                         tags.add(taglist[i]);
                         Log.i(Integer.toString(i), taglist[i]);
@@ -359,6 +359,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
                 COURSE.OUTLINE = json.getString("Course_Outline");
                 COURSE.IMAGE = json.getString("Course_Image");
                 COURSE.TAGS = json.getString("Course_Tags");
+                COURSE.FACULTY = json.getInt("Course_Faculty");
                 //set views
                 if(!COURSE.IMAGE.equals("null")){
                     Glide.with(this).load(COURSE.IMAGE).into(image);

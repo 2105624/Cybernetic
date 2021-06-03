@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +35,15 @@ import java.util.Objects;
 
 public class Dashboard extends AppCompatActivity implements View.OnScrollChangeListener, BottomNavigationView.OnNavigationItemSelectedListener {
     TextView name;
+    //This is for the delay while loading user full name
     ProgressBar progressBar;
+    private RelativeLayout relativeLayout; // for the entire page
+
+    //delay for loading featured courses
+    private ProgressBar progressBarFeatCourses;
+    private LinearLayout featuredCourses;  // for the featured courses
+
+
 
     //This is for the logout pop up menu
     private AlertDialog.Builder dialogBuilder;
@@ -69,17 +78,17 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         BottomNavigationView dashboardBottomNavigation = findViewById(R.id.dashboardBottomNavigation);
         dashboardBottomNavigation.setOnNavigationItemSelectedListener(Dashboard.this);
 
-        LinearLayout featuredCourses = findViewById(R.id.dashboardFeaturedCourses);
+        featuredCourses = findViewById(R.id.dashboardFeaturedCourses);
+        progressBarFeatCourses = findViewById(R.id.featCoursesProgressBar);
         if (USER.STUDENT) {
             dashboardBottomNavigation.inflateMenu(R.menu.menu_student);
             dashboardBottomNavigation.getMenu().findItem(R.id.menuHomeStudent).setChecked(true);
             featuredCourses.setVisibility(LinearLayout.VISIBLE);
-
             displayFeaturedCourses();
         } else {
+            progressBarFeatCourses.setVisibility(View.GONE);
             dashboardBottomNavigation.inflateMenu(R.menu.menu_instructor);
             dashboardBottomNavigation.getMenu().findItem(R.id.menuHomeInstructor).setChecked(true);
-
             featuredCourses.setVisibility(LinearLayout.INVISIBLE);
         }
 
@@ -87,8 +96,8 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         getName(USER.USER_NUM);
 
         progressBar = findViewById(R.id.dashboardProgressBar);
+        relativeLayout = findViewById(R.id.dashboardRelLayout);
         progressBar.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.GONE);
     }
 
     public void createNewViewDialog(){
@@ -126,6 +135,13 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
 
         String getStudentNameMethod = "getStudentName";
         String getInstructorNameMethod = "getInstructorName";
+
+        //Initializing progressbar
+        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.dashboardProgressBar);
+
+        //Displaying ProgressBar
+        progressBar.setVisibility(View.VISIBLE);
+        setProgressBarIndeterminateVisibility(true);
 
         if (USER.STUDENT) {
             PHPRequestBuilder requestBuilder = new PHPRequestBuilder(URL, getStudentNameMethod);
@@ -173,9 +189,17 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
 
         name.setText(FName + " " + LName);
         progressBar.setVisibility(View.GONE);
+        relativeLayout.setVisibility(View.VISIBLE);
     }
 
     private void displayFeaturedCourses() {
+        //Initializing progressbar
+        final ProgressBar progressBarFeatCourses = (ProgressBar) findViewById(R.id.featCoursesProgressBar);
+
+        //Displaying ProgressBar
+        progressBarFeatCourses.setVisibility(View.VISIBLE);
+        setProgressBarIndeterminateVisibility(true);
+
         //Initializing Views
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -196,6 +220,9 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
             //Adding adapter to recyclerview
             recyclerView.setAdapter(adapter);
         }
+
+        progressBarFeatCourses.setVisibility(View.GONE);
+        featuredCourses.setVisibility(View.VISIBLE);
     }
 
     @Override

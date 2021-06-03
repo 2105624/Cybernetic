@@ -11,6 +11,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/dashboardRelLayout"
+        android:visibility="gone"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/dashboardLinearLayout"
@@ -46,11 +51,18 @@
 
         </LinearLayout>
 
+       <ProgressBar
+            android:id="@+id/featCoursesProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
     <LinearLayout
         android:id="@+id/dashboardFeaturedCourses"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:visibility="gone"
         android:layout_below="@id/dashboardLinearLayout"
         android:gravity="center">
 
@@ -61,15 +73,15 @@
             android:textColor="@color/color5"
             android:textSize="@dimen/text_2"/>
 
-    </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_below="@id/dashboardFeaturedCourses"
+            android:layout_above="@id/dashboardBottomNavigation" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_below="@id/dashboardFeaturedCourses"
-        android:layout_above="@id/dashboardBottomNavigation" />
+    </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/dashboardBottomNavigation"
@@ -78,4 +90,5 @@
         android:layout_alignParentBottom="true"
         style="@style/AppTheme.BottomNavigation"/>
 
+    </RelativeLayout>
 </RelativeLayout>

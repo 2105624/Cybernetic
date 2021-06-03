@@ -18,6 +18,9 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class LessonPage extends AppCompatActivity {
     TextView lessonName;
     TextView lessonCourse;
@@ -73,11 +76,35 @@ public class LessonPage extends AppCompatActivity {
         youTubePlayerView.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
             public void onReady(@NonNull YouTubePlayer youTubePlayer) {
-                String videoId = LESSON.Url;
+                String videoId = getVideoIdFromYoutubeUrl(LESSON.Url);
                 youTubePlayer.cueVideo(videoId, 0);
 
             }
         });
 
+    }
+
+    //Get the ID of the youtube video
+    public static String getVideoIdFromYoutubeUrl(String youtubeUrl)
+    {
+       /*
+           Possibile Youtube urls.
+           http://www.youtube.com/watch?v=WK0YhfKqdaI
+           http://www.youtube.com/embed/WK0YhfKqdaI
+           http://www.youtube.com/v/WK0YhfKqdaI
+           http://www.youtube-nocookie.com/v/WK0YhfKqdaI?version=3&hl=en_US&rel=0
+           http://www.youtube.com/watch?v=WK0YhfKqdaI
+           http://www.youtube.com/watch?feature=player_embedded&v=WK0YhfKqdaI
+           http://www.youtube.com/e/WK0YhfKqdaI
+           http://youtu.be/WK0YhfKqdaI
+        */
+        String pattern = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%\u200C\u200B2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        //url is youtube url for which you want to extract the id.
+        Matcher matcher = compiledPattern.matcher(youtubeUrl);
+        if (matcher.find()) {
+            return matcher.group();
+        }
+        return null;
     }
 }

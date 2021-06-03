@@ -127,6 +127,8 @@ public class EditLesson extends AppCompatActivity {
                     };
                     requestQueue.add(request);
                     Toast.makeText(EditLesson.this, "Lesson update successful", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(EditLesson.this, LessonPageInstructor.class);
+                    startActivity(intent);
                 }
             }
         });

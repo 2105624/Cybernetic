@@ -10,6 +10,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -26,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 
@@ -42,6 +44,8 @@ public class LoginActivity extends AppCompatActivity {
     private ArrayList<String> studentNumbers = new ArrayList<>();
     private ArrayList<String> instructorUsernames = new ArrayList<>();
     private ArrayList<ArrayList<String> > instructor = new ArrayList<>();
+
+    String URL = "https://lamp.ms.wits.ac.za/home/s2105624/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +131,14 @@ public class LoginActivity extends AppCompatActivity {
                         //error messages will be shown
                     } else {
                         USER.USERNAME = user.getEditText().getText().toString().trim();
+
+                        String getStudentNameMethod = "getStudentName";
+                        getName(URL, getStudentNameMethod);
+
+                        String getFeaturedCoursesMethod = "getFeaturedCourses";
+                        ArrayList<CourseV> courses = new ArrayList<CourseV>();
+                        getFeaturedCourses(URL, getFeaturedCoursesMethod, courses);
+
                         Intent i = new Intent(LoginActivity.this, Dashboard.class);
                         startActivity(i);
                         finish();
@@ -138,13 +150,15 @@ public class LoginActivity extends AppCompatActivity {
                         //error messages will be shown
                     } else {
                         USER.USERNAME = user.getEditText().getText().toString().trim();
+
+                        String getInstructorNameMethod = "getInstructorName";
+                        getName(URL, getInstructorNameMethod);
+
                         Intent i = new Intent(LoginActivity.this, Dashboard.class);
                         startActivity(i);
                         finish();
-
                     }
                 }
-
             }
         });
 
@@ -298,5 +312,82 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    private void getName(String URL, String method) {
+        if (USER.STUDENT) {
+            PHPRequestBuilder requestBuilder = new PHPRequestBuilder(URL, method);
+
+            ArrayList<String> parameter = new ArrayList<String>();
+            parameter.add("Student_Number");
+            parameter.add(USER.USERNAME);
+
+            ArrayList<ArrayList<String>> Parameters = new ArrayList<ArrayList<String>>();
+            Parameters.add(parameter);
+
+            requestBuilder.doBuild(Parameters);
+            requestBuilder.doRequest(LoginActivity.this, response -> setName(response));
+        } else {
+            PHPRequestBuilder requestBuilder = new PHPRequestBuilder(URL, method);
+
+            ArrayList<String> parameter = new ArrayList<String>();
+            parameter.add("Instructor_Username");
+            parameter.add(USER.USERNAME);
+
+            ArrayList<ArrayList<String>> Parameters = new ArrayList<ArrayList<String>>();
+            Parameters.add(parameter);
+
+            requestBuilder.doBuild(Parameters);
+            requestBuilder.doRequest(LoginActivity.this, response -> setName(response));
+        }
+    }
+
+    private void setName(String JSON) throws JSONException {
+        JSONObject NAMES = new JSONObject(JSON);
+
+        String FName;
+        String LName;
+
+        if (USER.STUDENT) {
+            FName = NAMES.getString("Student_FName");
+            LName = NAMES.getString("Student_LName");
+        } else {
+            FName = NAMES.getString("Instructor_FName");
+            LName = NAMES.getString("Instructor_LName");
+        }
+
+        USER.FNAME = FName;
+        USER.LNAME = LName;
+    }
+
+    private void getFeaturedCourses(String URL, String method, ArrayList<CourseV> courses) {
+        PHPRequestBuilder requestBuilder = new PHPRequestBuilder(URL, method);
+        requestBuilder.doRequest(LoginActivity.this, new ResponseHandler() {
+            @Override
+            public void processResponse(String response) throws JSONException {
+                setFeaturedCourses(response, courses);
+            }
+        });
+
+    }
+
+    private void setFeaturedCourses(String JSON, ArrayList<CourseV> courses) throws JSONException {
+        JSONArray featuredCourses = new JSONArray(JSON);
+        for (int index = 0; index < featuredCourses.length(); index++) {
+            JSONObject featuredCourse = featuredCourses.getJSONObject(index);
+            CourseV course = new CourseV();
+
+            course.setCourseCode(featuredCourse.getString("Course_Code"));
+            course.setCourseName(featuredCourse.getString("Course_Name"));
+            course.setCourseDescription(featuredCourse.getString("Course_Description"));
+            course.setCourseOutline(featuredCourse.getString("Course_Outline"));
+            course.setImageUrl(featuredCourse.getString("Course_Image"));
+            course.setCourseRating(featuredCourse.getString("Course_Rating"));
+            course.setCourseInstructor(featuredCourse.getString("Course_Instructor"));
+
+            courses.add(course);
+        }
+
+        USER.FEATURED_COURSES = courses;
     }
 }

@@ -517,7 +517,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
             startActivity(intent);
             finish();
         }else{
-            Intent intent = new Intent(CourseHomePage.this, MyCourses.class);
+            Intent intent = new Intent(CourseHomePage.this, Dashboard.class);
             startActivity(intent);
             finish();
         }

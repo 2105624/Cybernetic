@@ -54,8 +54,6 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_courses);
 
-
-
         //Initializing Views
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);

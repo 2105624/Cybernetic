@@ -14,4 +14,6 @@
     <string name="course_code">Course Code</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="featured_courses">Featured Courses</string>
 </resources>

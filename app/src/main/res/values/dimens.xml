@@ -7,8 +7,10 @@
     <dimen name="text_2">20sp</dimen>
 
     <dimen name="padding">16dp</dimen>
+    <dimen name="half_padding">8dp</dimen>
     <dimen name="elevation">8dp</dimen>
     <dimen name="corner">25dp</dimen>
+    <dimen name="corner_tag">50dp</dimen>
 
     <dimen name="single">1dp</dimen>
 </resources>

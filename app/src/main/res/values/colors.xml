@@ -12,4 +12,7 @@
     <color name="blue">#003B5B</color>
     <color name="blue_dark">#001E2E</color>
     <color name="gold">#FAAC37</color>
+
+    <color name="color4">#9A9B99</color>
+    <color name="color5">#787977</color>
 </resources>

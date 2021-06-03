@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class COURSE {
 
-        public static String CODE;
-        public static String NAME;
+	public static String CODE;
+	public static String NAME;
 	public static String DESCRIPTION;
 	public static String INSTRUCTOR;
 	public static String IMAGE;

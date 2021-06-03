@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +20,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONException;
@@ -27,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 
-public class Dashboard extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class Dashboard extends AppCompatActivity implements View.OnScrollChangeListener, BottomNavigationView.OnNavigationItemSelectedListener {
     TextView name;
     ProgressBar progressBar;
 
@@ -36,11 +41,18 @@ public class Dashboard extends AppCompatActivity implements BottomNavigationView
     private AlertDialog dialog;
     private Button btnLogout, btnCancel;
 
+    //CreatingViews
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.Adapter adapter;
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onBackPressed(){
 
     }
+
+    @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,72 +69,26 @@ public class Dashboard extends AppCompatActivity implements BottomNavigationView
         BottomNavigationView dashboardBottomNavigation = findViewById(R.id.dashboardBottomNavigation);
         dashboardBottomNavigation.setOnNavigationItemSelectedListener(Dashboard.this);
 
+        LinearLayout featuredCourses = findViewById(R.id.dashboardFeaturedCourses);
         if (USER.STUDENT) {
             dashboardBottomNavigation.inflateMenu(R.menu.menu_student);
             dashboardBottomNavigation.getMenu().findItem(R.id.menuHomeStudent).setChecked(true);
+            featuredCourses.setVisibility(LinearLayout.VISIBLE);
 
+            displayFeaturedCourses();
         } else {
             dashboardBottomNavigation.inflateMenu(R.menu.menu_instructor);
             dashboardBottomNavigation.getMenu().findItem(R.id.menuHomeInstructor).setChecked(true);
+
+            featuredCourses.setVisibility(LinearLayout.INVISIBLE);
+        }
+
+        if ((USER.FNAME != null) && (USER.LNAME != null)) {
+            name.setText(USER.FNAME + " " + USER.LNAME);
         }
 
         progressBar = findViewById(R.id.dashboardProgressBar);
         progressBar.setVisibility(View.VISIBLE);
-
-        getName(USER.USER_NUM);
-    }
-
-    private void getName(String user) {
-        String URL = "https://lamp.ms.wits.ac.za/home/s2105624/";
-
-        String getStudentNameMethod = "getStudentName";
-        String getInstructorNameMethod = "getInstructorName";
-
-        if (USER.STUDENT) {
-            PHPRequestBuilder requestBuilder = new PHPRequestBuilder(URL, getStudentNameMethod);
-
-            ArrayList<String> parameter = new ArrayList<String>();
-            parameter.add("Student_Number");
-            parameter.add(user);
-
-            ArrayList<ArrayList<String>> Parameters = new ArrayList<ArrayList<String>>();
-            Parameters.add(parameter);
-
-            requestBuilder.doBuild(Parameters);
-            requestBuilder.doRequest(Dashboard.this, response -> addName(response));
-        } else {
-            PHPRequestBuilder requestBuilder = new PHPRequestBuilder(URL, getInstructorNameMethod);
-
-            ArrayList<String> parameter = new ArrayList<String>();
-            parameter.add("Instructor_Username");
-            parameter.add(user);
-
-            ArrayList<ArrayList<String>> Parameters = new ArrayList<ArrayList<String>>();
-            Parameters.add(parameter);
-
-            requestBuilder.doBuild(Parameters);
-            requestBuilder.doRequest(Dashboard.this, response -> addName(response));
-        }
-    }
-
-    private void addName(String JSON) throws JSONException {
-        JSONObject NAMES = new JSONObject(JSON);
-
-        String FName;
-        String LName;
-
-        if (USER.STUDENT) {
-            FName = NAMES.getString("Student_FName");
-            LName = NAMES.getString("Student_LName");
-        } else {
-            FName = NAMES.getString("Instructor_FName");
-            LName = NAMES.getString("Instructor_LName");
-        }
-
-        USER.FNAME = FName;
-        USER.LNAME = LName;
-
-        name.setText(FName + " " + LName);
         progressBar.setVisibility(View.GONE);
     }
 
@@ -154,6 +120,29 @@ public class Dashboard extends AppCompatActivity implements BottomNavigationView
             }
         });
 
+    }
+
+    private void displayFeaturedCourses() {
+        //Initializing Views
+        recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        //Initializing our Course list
+        //Creating a list of Courses
+        if (USER.FEATURED_COURSES != null) {
+            ArrayList<CourseV> listCourseVs = USER.FEATURED_COURSES;
+
+            //Adding an scroll change listener to recyclerView
+            recyclerView.setOnScrollChangeListener(this);
+
+            //initializing our adapter
+            adapter = new CourseCardAdapter(listCourseVs, this);
+
+            //Adding adapter to recyclerview
+            recyclerView.setAdapter(adapter);
+        }
     }
 
     @Override
@@ -202,5 +191,22 @@ public class Dashboard extends AppCompatActivity implements BottomNavigationView
         return false;
     }
 
+    //This method will check if the recyclerview has reached the bottom or not
+    private boolean isLastItemDistplaying(RecyclerView recyclerView){
+        if(recyclerView.getAdapter().getItemCount() != 0){
+            int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+            if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() -1){
+                return true;
+            }
+        }
+        return false;
+    }
 
+    @Override
+    public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+        //if Scrolled at last then
+        if(isLastItemDistplaying(recyclerView)){
+            //Calling the method getData again
+        }
+    }
 }

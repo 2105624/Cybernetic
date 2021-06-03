@@ -58,6 +58,17 @@ public class MyCourses extends AppCompatActivity implements View.OnScrollChangeL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_courses);
 
+        //To determine which activity we came from
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String act = extras.getString("activity");
+            if (act.contains("Dashboard")) {
+                Intent intent = new Intent(MyCourses.this, Dashboard.class);
+                startActivity(intent);
+                finish();
+            }
+        }
+
         //Initializing Views
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);

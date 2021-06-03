@@ -56,7 +56,7 @@ public class LessonPageInstructor extends AppCompatActivity {
     private RequestQueue requestQueue;
 
     //
-    String lessonURL="https://lamp.ms.wits.ac.za/home/s2105624/getLessonInfo.php?ccode=";
+    String lessonURL = "https://lamp.ms.wits.ac.za/home/s2105624/getLessonInfo.php?ccode=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,10 +65,10 @@ public class LessonPageInstructor extends AppCompatActivity {
 
         //Initializing views
 
-        downloadButton = (Button)findViewById(R.id.lessonDownload);
-        lessonName = (TextView)findViewById(R.id.lessonPageName);
-        lessonCourse = (TextView)findViewById(R.id.lessonPageCourse);
-        lessonText = (TextView)findViewById(R.id.lessonPageText);
+        downloadButton = (Button) findViewById(R.id.lessonDownload);
+        lessonName = (TextView) findViewById(R.id.lessonPageName);
+        lessonCourse = (TextView) findViewById(R.id.lessonPageCourse);
+        lessonText = (TextView) findViewById(R.id.lessonPageText);
         editLesson = (ImageButton) findViewById(R.id.editLesson);
         //lessonResource = (TextView)findViewById(R.id.lessonPageResource);
 
@@ -81,12 +81,12 @@ public class LessonPageInstructor extends AppCompatActivity {
         //getting the data for the page
         getLessonData();
 
-        // download the pdf resource
+       /* // download the pdf resource
         downloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    downloadManager = (DownloadManager)getSystemService(Context.DOWNLOAD_SERVICE);
+                    downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
                     Uri uri = Uri.parse(LESSON.Resource);
                     DownloadManager.Request request = new DownloadManager.Request(uri);
                     request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
@@ -95,7 +95,7 @@ public class LessonPageInstructor extends AppCompatActivity {
                     Toast.makeText(LessonPageInstructor.this, "No resources available", Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        }); */
 
         //Display the video
         youTubePlayerView = findViewById(R.id.lessonYoutubePlayer);
@@ -113,15 +113,16 @@ public class LessonPageInstructor extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(LessonPageInstructor.this, LESSON.ID, Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(LessonPageInstructor.this,EditLesson.class);
+                Intent i = new Intent(LessonPageInstructor.this, EditLesson.class);
                 startActivity(i);
+                finish();
             }
         });
 
     }
+
     //Get the ID of the youtube video
-    public static String getVideoIdFromYoutubeUrl(String youtubeUrl)
-    {
+    public static String getVideoIdFromYoutubeUrl(String youtubeUrl) {
        /*
            Possibile Youtube urls.
            http://www.youtube.com/watch?v=WK0YhfKqdaI
@@ -142,7 +143,15 @@ public class LessonPageInstructor extends AppCompatActivity {
         }
         return null;
     }
-    private JsonArrayRequest getLessonDataFromServer(){
+
+    private JsonArrayRequest getLessonDataFromServer() {
+
+        //Initializing progressbar
+        final ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBarLessonPageInstructor);
+
+        //Displaying ProgressBar
+        progressBar.setVisibility(View.VISIBLE);
+        setProgressBarIndeterminateVisibility(true);
 
         //JsonArrayRequest of volley
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(lessonURL + LESSON.ID,
@@ -162,13 +171,14 @@ public class LessonPageInstructor extends AppCompatActivity {
         return jsonArrayRequest;
     }
 
-    private void getLessonData(){
+    private void getLessonData() {
         //Adding the method to the queue by calling the method getLessonData
         requestQueue.add(getLessonDataFromServer());
     }
+
     //This method will parse json Data for lesson
-    private void parseLessonData(JSONArray array){
-        for (int i = 0; i< array.length(); i++){
+    private void parseLessonData(JSONArray array) {
+        for (int i = 0; i < array.length(); i++) {
             // Creating the lesson object
             JSONObject json = null;
             try {
@@ -186,17 +196,35 @@ public class LessonPageInstructor extends AppCompatActivity {
                 lessonCourse.setText(COURSE.NAME);
                 lessonText.setText(LESSON.Text);
 
+                // download the pdf resource
+                downloadButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+                            Uri uri = Uri.parse(LESSON.Resource);
+                            DownloadManager.Request request = new DownloadManager.Request(uri);
+                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                            Long reference = downloadManager.enqueue(request);
+                        } catch (Exception e) {
+                            Toast.makeText(LessonPageInstructor.this, "No resources available", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
                 //Make the page visible after displaying the correct lesson info
                 progressBar.setVisibility(View.GONE);
                 relativeLayout.setVisibility(View.VISIBLE);
-            } catch (JSONException e){
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     }
+
     @Override
-    public void onBackPressed(){
-        Intent i = new Intent(this,BrowseLessons.class);
+    public void onBackPressed() {
+        Intent i = new Intent(this, BrowseLessons.class);
         startActivity(i);
         finish();
     }

@@ -164,6 +164,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                         toast.show();
                         dialog.dismiss();
                         Intent intent = new Intent(context,BrowseCourses.class);
+                        intent.putExtra("activity",""+context);
                         context.startActivity(intent);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -208,6 +209,7 @@ public class CourseCardAdapter extends RecyclerView.Adapter<CourseCardAdapter.Vi
                     toast.show();
                     dialog.dismiss();
                     Intent intent = new Intent(context,MyCourses.class);
+                    intent.putExtra("activity",""+context);
                     context.startActivity(intent);
                 } catch (IOException e) {
                     e.printStackTrace();

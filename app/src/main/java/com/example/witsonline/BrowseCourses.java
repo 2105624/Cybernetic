@@ -54,6 +54,17 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse_courses);
 
+        //To determine which activity we came from
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String act = extras.getString("activity");
+            if (act.contains("Dashboard")) {
+                Intent intent = new Intent(BrowseCourses.this, Dashboard.class);
+                startActivity(intent);
+                finish();
+            }
+        }
+
         //Initializing Views
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);

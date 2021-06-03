@@ -127,8 +127,6 @@ public class EditLesson extends AppCompatActivity {
                     };
                     requestQueue.add(request);
                     Toast.makeText(EditLesson.this, "Lesson update successful", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(EditLesson.this, LessonPageInstructor.class);
-                    startActivity(intent);
                 }
             }
         });
@@ -221,12 +219,10 @@ public class EditLesson extends AppCompatActivity {
         return success;
     }
 
-
-
     @Override
-    public void onBackPressed(){
-        Intent i = new Intent(this,BrowseLessons.class);
-        startActivity(i);
+    public void onBackPressed() {
+        Intent intent = new Intent(EditLesson.this, LessonPageInstructor.class);
+        startActivity(intent);
         finish();
     }
 

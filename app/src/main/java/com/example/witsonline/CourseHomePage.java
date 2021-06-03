@@ -47,7 +47,9 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
     LinearLayout outlineLayout;
     private Button subscribe;
     private Button review;
-    private boolean browse;
+    private boolean browse = false;
+    private boolean mycourses = false;
+    private boolean dashboard = false;
     private Button viewLesson;
     //Creating a list of Courses
     private ArrayList<ReviewV> listReviewVs;
@@ -102,8 +104,12 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         if (act.contains("BrowseCourses")){
             browse = true;
         }
+        else if (act.contains("Dashboard")){
+            dashboard = true;
+
+        }
         else{
-            browse = false;
+            mycourses = true;
         }
       //  Toast.makeText(CourseHomePage.this, act, Toast.LENGTH_LONG).show();
 
@@ -516,8 +522,12 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
             Intent intent = new Intent(CourseHomePage.this, BrowseCourses.class);
             startActivity(intent);
             finish();
-        }else{
+        }else if (dashboard){
             Intent intent = new Intent(CourseHomePage.this, Dashboard.class);
+            startActivity(intent);
+            finish();
+        }else{
+            Intent intent = new Intent(CourseHomePage.this, MyCourses.class);
             startActivity(intent);
             finish();
         }

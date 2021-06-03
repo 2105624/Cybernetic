@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/LoginLayout"
+    android:id="@+id/CourseHomeLayout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:scrollbarThumbVertical="@null"
-    tools:context=".CourseHomePageInstructor"><LinearLayout
+    tools:context=".CourseHomePageInstructor">
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/CourseHomeInstructorLayout"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+    <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,16 +31,32 @@
         android:orientation="vertical"
         android:background="@color/color1">
 
-        <TextView
+      <!--  <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/courseName"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="Course Name"
-            android:textColor="@color/white"
-            android:textSize="40dp"
-            android:textStyle="bold" />
+            android:orientation="horizontal"> -->
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/courseName"
+                android:gravity="center_horizontal"
+                android:padding="10dp"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="40dp"
+                android:textStyle="bold" />
+
+          <!--  <ImageButton
+                android:id="@+id/imageButtonEditCourse"
+                android:layout_width="60dp"
+                android:layout_height="80dp"
+                app:srcCompat="@drawable/edit_white"
+                android:background="@color/color1"/> -->
+
+    <!--    </LinearLayout> -->
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="100dp"
@@ -45,7 +73,7 @@
                 android:layout_height="100dp"
                 android:id="@+id/courseDescription"
                 android:gravity="center"
-                android:text="Course Description"
+                android:text=""
                 android:textSize="25dp"
                 android:fontFamily="cursive"
                 android:textColor="@color/white"/>
@@ -63,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/courseInstructor"
                 android:layout_alignParentLeft="true"
-                android:text="Course Instructor"
+                android:text=""
                 android:textSize="20dp"
                 android:paddingStart="10dp"
                 android:textColor="@color/white"
@@ -118,7 +146,7 @@
 
                 <Button
                     android:id="@+id/viewLessons"
-                    android:layout_width="150dp"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:background="@color/color1"
@@ -127,13 +155,22 @@
                     android:textColor="@color/white" />
 
                 <Button
-                    android:layout_width="150dp"
+                    android:id="@+id/editCourse"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@color/color1"
+                    android:padding="10dp"
+                    android:text="Edit Course"
+                    android:textColor="@color/white" />
+
+                <Button
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/addLesson"
                     android:text="Add a lesson"
                     android:padding="10dp"
                     android:layout_alignParentRight="true"
-
                     android:background="@color/color1"
                     android:textColor="@color/white" />
             </RelativeLayout>
@@ -200,4 +237,5 @@
     </ScrollView>
 
 </LinearLayout>
+</RelativeLayout>
 </RelativeLayout>

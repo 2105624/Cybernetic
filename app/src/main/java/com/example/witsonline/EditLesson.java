@@ -13,15 +13,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -31,32 +26,24 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputLayout;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.ProtocolException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CreateLesson extends AppCompatActivity {
-
-
+public class EditLesson extends AppCompatActivity {
     //Lesson components
-    private TextInputLayout lessonName;
-    private TextInputLayout lessonText;
-    private TextInputLayout lessonURL;
-    private Button btnCreate;
+    private TextInputLayout editLessonName;
+    private TextInputLayout editLessonText;
+    private TextInputLayout editLessonURL;
+    private Button btnEdit;
 
     //for adding a pdf
-    private TextView selectedFile;
-    private ImageButton btnUploadFile;
+    private TextView selectedFileEdit;
+    private ImageButton btnUploadFileEdit;
     private int REQ_PDF = 21;
     private String encodedPDF;
     public static final int STORAGE_PERMISSION_CODE = 123;
@@ -64,45 +51,56 @@ public class CreateLesson extends AppCompatActivity {
 
     //Insertion
     private RequestQueue requestQueue;
-    private String insertURL = "https://lamp.ms.wits.ac.za/home/s2105624/lessonInsert.php";
+    private String insertURL = "https://lamp.ms.wits.ac.za/home/s2105624/lessonUpdate.php";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_lesson);
+        setContentView(R.layout.activity_edit_lesson);
 
         //request storage permission
         requestStoragePermission();
 
         //finding views
-        lessonName = findViewById(R.id.lessonName);
-        lessonText = findViewById(R.id.lessonText);
-        lessonURL = findViewById(R.id.lessonURL);
-        btnCreate = findViewById(R.id.buttonCreateLesson);
-        selectedFile = findViewById(R.id.selectedFileText);
-        btnUploadFile = findViewById(R.id.imageButtonUploadFile);
+        editLessonName = findViewById(R.id.editLessonName);
+        editLessonText = findViewById(R.id.editLessonText);
+        editLessonURL = findViewById(R.id.editLessonURL);
+        btnEdit = findViewById(R.id.buttonEditLesson);
+        selectedFileEdit = findViewById(R.id.selectedFileTextEdit);
+        btnUploadFileEdit = findViewById(R.id.imageButtonUploadFileEdit);
+
+        //check if there is a resource or nor
+        if (LESSON.Resource.equals("null")){
+            selectedFileEdit.setText("Select a file");
+        }
+
+        //setting views
+        editLessonName.getEditText().setText(LESSON.Name);
+        editLessonText.getEditText().setText(LESSON.Text);
+        editLessonURL.getEditText().setText(LESSON.Url);
 
         //selecting a file
-        btnUploadFile.setOnClickListener(new View.OnClickListener() {
+        btnUploadFileEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
                 chooseFile.setType("application/pdf");
-                chooseFile = Intent.createChooser(chooseFile,"Choose a file");
-                startActivityForResult(chooseFile,REQ_PDF);
+                chooseFile = Intent.createChooser(chooseFile, "Choose a file");
+                startActivityForResult(chooseFile, REQ_PDF);
             }
         });
 
         //the insertion
         requestQueue = Volley.newRequestQueue(getApplicationContext());
-        btnCreate.setOnClickListener(new View.OnClickListener() {
+        btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (isEmpty(lessonName) | isEmpty(lessonText) | !isYoutubeUrl()){
+                if (isEmpty(editLessonName) | isEmpty(editLessonText) | !isYoutubeUrl()) {
                     //error messages will be displayed
-                }else{
-                    String url = lessonURL.getEditText().getText().toString().trim();
-                   if (!fileSelected){
+                } else {
+                    String url = editLessonURL.getEditText().getText().toString().trim();
+                    if (!fileSelected) {
                         encodedPDF = "nofile";
                     }
                     StringRequest request = new StringRequest(Request.Method.POST, insertURL, new Response.Listener<String>() {
@@ -119,25 +117,21 @@ public class CreateLesson extends AppCompatActivity {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> parameters = new HashMap<>();
-                            parameters.put("name", lessonName.getEditText().getText().toString().trim());
-                            parameters.put("course", COURSE.CODE);
-                            parameters.put("text", lessonText.getEditText().getText().toString().trim());
-                            parameters.put("url",url);
-                            parameters.put(("fs"),encodedPDF);
+                            parameters.put("name", editLessonName.getEditText().getText().toString().trim());
+                            parameters.put("text", editLessonText.getEditText().getText().toString().trim());
+                            parameters.put("url", url);
+                            parameters.put("id", LESSON.ID);
+                            parameters.put(("fs"), encodedPDF);
                             return parameters;
                         }
                     };
                     requestQueue.add(request);
-                    Toast.makeText(CreateLesson.this, "Lesson creation successful", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(CreateLesson.this, CourseHomePageInstructor.class);
-                    startActivity(i);
-                    finish();
-
+                    Toast.makeText(EditLesson.this, "Lesson update successful", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(EditLesson.this, LessonPageInstructor.class);
+                    startActivity(intent);
                 }
             }
         });
-
-
     }
 
     //code for getting pdf input stream
@@ -145,23 +139,22 @@ public class CreateLesson extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQ_PDF && resultCode == RESULT_OK && data != null){
+        if (requestCode == REQ_PDF && resultCode == RESULT_OK && data != null) {
             Uri path = data.getData();
             if (path != null) {
                 try {
                     fileSelected = true;
-                    InputStream inputStream = CreateLesson.this.getContentResolver().openInputStream(path);
+                    InputStream inputStream = EditLesson.this.getContentResolver().openInputStream(path);
                     byte[] pdfInBytes = new byte[inputStream.available()];
                     inputStream.read(pdfInBytes);
                     encodedPDF = Base64.encodeToString(pdfInBytes, Base64.DEFAULT);
 
                     //Toast.makeText(CreateLesson.this, "Document selected",Toast.LENGTH_SHORT).show();
-                    selectedFile.setText("File selected");
+                    selectedFileEdit.setText("File selected");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-            else{
+            } else {
                 fileSelected = false;
             }
         }
@@ -169,30 +162,29 @@ public class CreateLesson extends AppCompatActivity {
     //Escape aphzostrophe
 
     //request permission to access external storage
-    private void requestStoragePermission(){
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+    private void requestStoragePermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.READ_EXTERNAL_STORAGE)){
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
             //can explain here why you need this permission.
         }
         //ask for permission
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},STORAGE_PERMISSION_CODE);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
     }
 
     //This method will be called when user taps on allow or deny
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
         //Checking if request code is our request
-        if (requestCode == STORAGE_PERMISSION_CODE){
+        if (requestCode == STORAGE_PERMISSION_CODE) {
 
             //if granted
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(this, "Permission granted",Toast.LENGTH_LONG).show();
-            }
-            else{
-                Toast.makeText(this, "Permission denied",Toast.LENGTH_LONG).show();
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permission granted", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -203,39 +195,39 @@ public class CreateLesson extends AppCompatActivity {
         if (text.getEditText().getText().toString().isEmpty()) {
             text.setError("Field can't be empty");
             empty = true;
-        }else{
+        } else {
             text.setError(null);
         }
         return empty;
     }
 
     // Test if URL is a valid URL
-    public boolean isYoutubeUrl()
-    {
-        String youTubeURl = lessonURL.getEditText().getText().toString().trim();
+    public boolean isYoutubeUrl() {
+        String youTubeURl = editLessonURL.getEditText().getText().toString().trim();
         boolean success;
         String pattern = "^(http(s)?:\\/\\/)?((w){3}.)?youtu(be|.be)?(\\.com)?\\/.+";
-        if (!youTubeURl.isEmpty() && youTubeURl.matches(pattern))
-        {
-            lessonURL.setError(null);
+        if (!youTubeURl.isEmpty() && youTubeURl.matches(pattern)) {
+            editLessonURL.setError(null);
             success = true;
-        }
-        else
-        {
+        } else {
             // Not Valid youtube URL
-            if (youTubeURl.isEmpty()){
-                lessonURL.setError("Field can't be empty");
-            }else{
-                lessonURL.setError("Invalid YouTube URL");
+            if (youTubeURl.isEmpty()) {
+                editLessonURL.setError("Field can't be empty");
+            } else {
+                editLessonURL.setError("Invalid YouTube URL");
             }
             success = false;
         }
         return success;
     }
+
+
+
     @Override
     public void onBackPressed(){
-        Intent i = new Intent(this,CourseHomePageInstructor.class);
+        Intent i = new Intent(this,BrowseLessons.class);
         startActivity(i);
         finish();
     }
+
 }

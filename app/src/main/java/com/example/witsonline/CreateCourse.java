@@ -29,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -53,6 +54,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Console;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,7 +62,6 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.*;
-
 
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class CreateCourse extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener  {
@@ -85,7 +86,11 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
     private TextInputLayout description;
     private TextInputLayout outline;
     private TextInputLayout tags;
+    private TextView numOfTags;
+    private TextView numOfOutlines;
     private Button btnCreate;
+    private Button addOutline;
+    private Button addTag;
     private RadioButton rbPublic;
     private RadioButton rbPrivate;
     private Bitmap bitmap;
@@ -95,6 +100,8 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
     private String insertURL = "https://lamp.ms.wits.ac.za/home/s2105624/courseInsert.php";
     private String insertNoImageURL = "https://lamp.ms.wits.ac.za/home/s2105624/courseInsertNoImage.php";
     private boolean imgSelected;
+    private ArrayList<String>allTags = new ArrayList<String>();
+    private ArrayList<String>allOutlines=new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -125,6 +132,10 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         tags = findViewById(R.id.courseTags);
         btnCreate = findViewById(R.id.buttonCreateCourse);
         image = findViewById(R.id.courseImage);
+        addOutline = findViewById(R.id.buttonAddCourseOutline);
+        addTag =  findViewById(R.id.buttonAddTag);
+        numOfOutlines = findViewById(R.id.numberOfCourseOutlines);
+        numOfTags = findViewById(R.id.numberOfTags);
 
         requestStoragePermission();
 
@@ -221,14 +232,51 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
             }
         });
 
+        //Add course outline button on click
+        addOutline.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(validateCourseOutlineOrTag(outline,allOutlines)){
+                    //error will be displayed
+                }
+                else{
+                    Integer numberOfOutlines = Integer.valueOf(numOfOutlines.getText().toString())+1;
+                    allOutlines.add(outline.getEditText().getText().toString());
+                    numOfOutlines.setText(Integer.toString(numberOfOutlines));
+                }
+
+            }
+        });
+
+        //Add course tag button on click
+        addTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(validateCourseOutlineOrTag(tags,allTags)){
+                    //error will be displayed
+                }
+                else{
+                    Integer numberOfTags = Integer.valueOf(numOfTags.getText().toString())+1;
+                    allTags.add(tags.getEditText().getText().toString());
+                    numOfTags.setText(Integer.toString(numberOfTags));
+                }
+
+            }
+        });
+
+
         //Create course button on click
         requestQueue = Volley.newRequestQueue(getApplicationContext());
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isEmpty(name) | isEmpty(description) | isEmpty(outline) | isEmpty(tags) | noFacultySelected(facultySelected) | !validCourseCode(code,courseCodes)) {
+                if (isEmpty(name) | isEmpty(description) | validateOutlineAndTag(numOfOutlines,outline,numOfTags,tags) | noFacultySelected(facultySelected) | !validCourseCode(code,courseCodes)) {
                     //error messages will be displayed
                 } else {
+                    String finalOutline = convert(allOutlines);
+                    String finalTags = convert(allTags);
                     if (imgSelected) {
                         //    String ext = FilenameUtils.getExtension(getPath(filePath)); //get extension of image
                         StringRequest request = new StringRequest(Request.Method.POST, insertURL, new Response.Listener<String>() {
@@ -248,12 +296,12 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
                                 parameters.put("code", code.getEditText().getText().toString().trim());
                                 parameters.put("name", name.getEditText().getText().toString().trim());
                                 parameters.put("description", description.getEditText().getText().toString().trim());
-                                parameters.put("outline", outline.getEditText().getText().toString().trim());
+                                parameters.put("outline", finalOutline);
                                 parameters.put("visibility", visibility);
                                 parameters.put("instructor", USER.USERNAME);
                                 parameters.put("faculty", facultyIDs.get(facultyPos).toString());
                                 parameters.put("bitmap", getStringImage(bitmap));
-                                parameters.put("tags", tags.getEditText().getText().toString().trim());
+                                parameters.put("tags", finalTags);
                                 //   parameters.put("path", getPath(filePath));
                                 //   parameters.put("ext", ext);
                                 return parameters;
@@ -282,11 +330,11 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
                                 parameters.put("code", code.getEditText().getText().toString().trim());
                                 parameters.put("name", name.getEditText().getText().toString().trim());
                                 parameters.put("description", description.getEditText().getText().toString().trim());
-                                parameters.put("outline", outline.getEditText().getText().toString().trim());
+                                parameters.put("outline", finalOutline);
                                 parameters.put("visibility", visibility);
                                 parameters.put("instructor", USER.USERNAME);
                                 parameters.put("faculty", facultyIDs.get(facultyPos).toString());
-                                parameters.put("tags", tags.getEditText().getText().toString().trim());
+                                parameters.put("tags", finalTags);
                                 return parameters;
                             }
                         };
@@ -386,6 +434,31 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
 
     //START activity code
 
+    //This function converts course tags/outline so that they can be split using ; when displayed in curse home page
+    public String convert(ArrayList<String>list){
+        String out = list.get(0);
+        for(int i=1;i<list.size()-1;i++){
+            out = out+";"+list.get(i);
+        }
+        if(list.size()>1) {
+            out = out +";"+ list.get(list.size()-1);
+        }
+        return out;
+    }
+
+    //This function checks if course outlines and tags have been added
+    public boolean validateOutlineAndTag(TextView numOfOutlines,TextInputLayout outline, TextView numOfTags,TextInputLayout tag){
+        boolean invalid = false;
+        if(Integer.valueOf(numOfOutlines.getText().toString())==0){
+            outline.setError("Add course outline");
+            invalid = true;
+        }
+        if(Integer.valueOf(numOfTags.getText().toString())==0){
+            tag.setError("Add tags");
+            invalid = true;
+        }
+        return invalid;
+    }
     // This function checks if a required text is empty or not
     public boolean isEmpty(TextInputLayout text) {
         boolean empty = false;
@@ -409,6 +482,25 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         }
     }
 
+    //This function checks if the course outline has be added already
+    public boolean validateCourseOutlineOrTag(TextInputLayout text, ArrayList<String>outline){
+        String codeInput = text.getEditText().getText().toString().trim();
+        boolean valid = false;
+
+        if(isEmpty(text)){
+            valid = true;
+        }
+        else{
+            for (int i = 0; i < outline.size(); i++) {
+                if (codeInput.equals(outline.get(i).trim())) {
+                    valid= true;
+                    text.setError(text.getEditText().getText().toString()+" has been added already");
+                    break;
+                }
+            }
+        }
+        return valid;
+    }
     //This function checks if the course code already exists
     public boolean validCourseCode(TextInputLayout text,List<String> codes){
         String codeInput = text.getEditText().getText().toString().trim();

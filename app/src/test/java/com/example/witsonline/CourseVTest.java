@@ -153,6 +153,7 @@ public class CourseVTest {
     public void getCourseRatingWithNullValue() {
         CourseV temp=new CourseV();
         String expected="0.0";
+        temp.setCourseRating("null");
         String output=temp.getCourseRating();
         assertEquals(expected,output);
     }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateCourse">
+    tools:context=".EditCourse">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/courseImage"
+                android:id="@+id/courseEditImage"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="8dp"
@@ -39,7 +39,7 @@
                 android:layout_marginLeft="256dp"
                 android:layout_marginTop="8dp"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toTopOf="@+id/courseImage"
+                app:layout_constraintBottom_toTopOf="@+id/courseEditImage"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -65,8 +65,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
+            android:layout_height="match_parent"
             android:isScrollContainer="false">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -153,23 +152,23 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="10dp"
                     android:orientation="horizontal">
-                <Button
-                    android:id="@+id/buttonAddCourseOutline"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:background="@color/color1"
-                    android:layout_gravity="left"
-                    android:text="add outline"
-                    android:textColor="@color/color3" />
-                <TextView
-                    android:id="@+id/numberOfCourseOutlines"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="10dp"
-                    android:paddingRight="10dp"
-                    android:layout_alignParentRight="true"
-                    android:inputType="number"
-                    android:text="0" />
+                    <Button
+                        android:id="@+id/buttonAddCourseOutline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@color/color1"
+                        android:layout_gravity="left"
+                        android:text="add outline"
+                        android:textColor="@color/color3" />
+                    <TextView
+                        android:id="@+id/numberOfCourseOutlines"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:paddingRight="10dp"
+                        android:layout_alignParentRight="true"
+                        android:inputType="number"
+                        android:text="0" />
                 </RelativeLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -188,29 +187,29 @@
                         android:hint="Course Tag"
                         android:maxLength="500"
                         android:inputType="textMultiLine" />
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="10dp"
-                        android:orientation="horizontal">
-                        <Button
-                            android:id="@+id/buttonAddTag"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:background="@color/color1"
-                            android:layout_gravity="left"
-                            android:text="add tag"
-                            android:textColor="@color/color3" />
-                        <TextView
-                            android:id="@+id/numberOfTags"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="10dp"
-                            android:paddingRight="10dp"
-                            android:layout_alignParentRight="true"
-                            android:text="0" />
-                    </RelativeLayout>
                 </com.google.android.material.textfield.TextInputLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/buttonAddTag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@color/color1"
+                        android:layout_gravity="left"
+                        android:text="add tag"
+                        android:textColor="@color/color3" />
+                    <TextView
+                        android:id="@+id/numberOfTags"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
+                        android:paddingRight="10dp"
+                        android:layout_alignParentRight="true"
+                        android:text="0" />
+                </RelativeLayout>
                 <Spinner
                     android:id="@+id/spFaculty"
                     android:layout_width="match_parent"
@@ -218,13 +217,13 @@
                     android:hint="Select a Faculty" />
 
                 <Button
-                    android:id="@+id/buttonCreateCourse"
+                    android:id="@+id/buttonEditCourse"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     android:background="@color/color1"
-                    android:text="Create Course"
+                    android:text="Edit Course"
                     android:textColor="@color/color3" />
 
 
@@ -232,18 +231,13 @@
         </ScrollView>
 
     </LinearLayout>
-   <!-- <ProgressBar
-        android:id="@+id/progressBar1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" /> -->
+    <!-- <ProgressBar
+         android:id="@+id/progressBar1"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_centerInParent="true" /> -->
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-          android:id="@+id/dashboardBottomNavigation"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_alignParentBottom="true"
-          style="@style/AppTheme.BottomNavigation"/>
+
 
 
 </RelativeLayout>

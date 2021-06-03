@@ -6,6 +6,7 @@ public class LessonV {
     private String strLessonText;
     private String strLessonResource;
     private String strLessonUrl;
+    private String strLessonID;
 
 
     public void setLessonName(String lessonName){
@@ -15,6 +16,7 @@ public class LessonV {
     public void setLessonText(String lessonText){ this.strLessonText = lessonText;}
     public void setLessonResource(String lessonResource){this.strLessonResource = lessonResource;}
     public void setLessonUrl(String lessonUrl){this.strLessonUrl = lessonUrl;};
+    public void setLessonID(String lessonID){this.strLessonID = lessonID;};
 
 
     public String getLessonName(){ return strLessonName; }
@@ -26,4 +28,5 @@ public class LessonV {
     }
     public String getLessonResource(){ return strLessonResource; }
     public String getLessonUrl(){ return strLessonUrl; }
+    public String getLessonID(){ return strLessonID; }
 }

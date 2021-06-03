@@ -152,6 +152,7 @@ public class BrowseLessons extends AppCompatActivity implements View.OnScrollCha
                 lessonV.setLessonText(json.getString("lessonText"));
                 lessonV.setLessonResource(json.getString("lessonResource"));
                 lessonV.setLessonUrl(json.getString("lessonUrl"));
+                lessonV.setLessonID(json.getString("lessonID"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -248,6 +249,13 @@ public class BrowseLessons extends AppCompatActivity implements View.OnScrollCha
         }
 
         return false;
+    }
+
+    @Override
+    public void onBackPressed(){
+        Intent i = new Intent(this,CourseHomePageInstructor.class);
+        startActivity(i);
+        finish();
     }
 
 

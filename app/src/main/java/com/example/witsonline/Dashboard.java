@@ -83,9 +83,8 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
             featuredCourses.setVisibility(LinearLayout.INVISIBLE);
         }
 
-        if ((USER.FNAME != null) && (USER.LNAME != null)) {
-            name.setText(USER.FNAME + " " + USER.LNAME);
-        }
+        //display the user's name and surname
+        getName(USER.USER_NUM);
 
         progressBar = findViewById(R.id.dashboardProgressBar);
         progressBar.setVisibility(View.VISIBLE);
@@ -120,6 +119,60 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
             }
         });
 
+    }
+
+    private void getName(String user) {
+        String URL = "https://lamp.ms.wits.ac.za/home/s2105624/";
+
+        String getStudentNameMethod = "getStudentName";
+        String getInstructorNameMethod = "getInstructorName";
+
+        if (USER.STUDENT) {
+            PHPRequestBuilder requestBuilder = new PHPRequestBuilder(URL, getStudentNameMethod);
+
+            ArrayList<String> parameter = new ArrayList<String>();
+            parameter.add("Student_Number");
+            parameter.add(user);
+
+            ArrayList<ArrayList<String>> Parameters = new ArrayList<ArrayList<String>>();
+            Parameters.add(parameter);
+
+            requestBuilder.doBuild(Parameters);
+            requestBuilder.doRequest(Dashboard.this, response -> addName(response));
+        } else {
+            PHPRequestBuilder requestBuilder = new PHPRequestBuilder(URL, getInstructorNameMethod);
+
+            ArrayList<String> parameter = new ArrayList<String>();
+            parameter.add("Instructor_Username");
+            parameter.add(user);
+
+            ArrayList<ArrayList<String>> Parameters = new ArrayList<ArrayList<String>>();
+            Parameters.add(parameter);
+
+            requestBuilder.doBuild(Parameters);
+            requestBuilder.doRequest(Dashboard.this, response -> addName(response));
+        }
+    }
+
+    private void addName(String JSON) throws JSONException {
+        JSONObject NAMES = new JSONObject(JSON);
+
+        String FName;
+        String LName;
+
+        if (USER.STUDENT) {
+            FName = NAMES.getString("Student_FName");
+            LName = NAMES.getString("Student_LName");
+        } else {
+            FName = NAMES.getString("Instructor_FName");
+            LName = NAMES.getString("Instructor_LName");
+        }
+
+        USER.FNAME = FName;
+        USER.LNAME = LName;
+
+        name.setText(FName + " " + LName);
+        progressBar.setVisibility(View.GONE);
     }
 
     private void displayFeaturedCourses() {

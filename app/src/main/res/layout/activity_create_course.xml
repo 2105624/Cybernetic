@@ -144,10 +144,33 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Course Outline (separate modules with ';' )"
+                        android:hint="Course Outline"
                         android:maxLength="500"
                         android:inputType="textMultiLine" />
                 </com.google.android.material.textfield.TextInputLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:orientation="horizontal">
+                <Button
+                    android:id="@+id/buttonAddCourseOutline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/color1"
+                    android:layout_gravity="left"
+                    android:text="add outline"
+                    android:textColor="@color/color3" />
+                <TextView
+                    android:id="@+id/numberOfCourseOutlines"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_alignParentRight="true"
+                    android:inputType="number"
+                    android:text="0" />
+                </RelativeLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/courseTags"
@@ -162,9 +185,31 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Course Tags (separate tags with ';' )"
+                        android:hint="Course Tag"
                         android:maxLength="500"
                         android:inputType="textMultiLine" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="10dp"
+                        android:orientation="horizontal">
+                        <Button
+                            android:id="@+id/buttonAddTag"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:background="@color/color1"
+                            android:layout_gravity="left"
+                            android:text="add tag"
+                            android:textColor="@color/color3" />
+                        <TextView
+                            android:id="@+id/numberOfTags"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="10dp"
+                            android:paddingRight="10dp"
+                            android:layout_alignParentRight="true"
+                            android:text="0" />
+                    </RelativeLayout>
                 </com.google.android.material.textfield.TextInputLayout>
                 <Spinner
                     android:id="@+id/spFaculty"

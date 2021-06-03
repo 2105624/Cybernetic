@@ -25,6 +25,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -41,8 +42,7 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
 
     //delay for loading featured courses
     private ProgressBar progressBarFeatCourses;
-    private LinearLayout featuredCourses;  // for the featured courses
-
+    private LinearLayout featuredCourses;  // for the featured course
 
 
     //This is for the logout pop up menu
@@ -54,6 +54,8 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
+
+    String URL = "https://lamp.ms.wits.ac.za/home/s2105624/";
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -84,7 +86,9 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
             dashboardBottomNavigation.inflateMenu(R.menu.menu_student);
             dashboardBottomNavigation.getMenu().findItem(R.id.menuHomeStudent).setChecked(true);
             featuredCourses.setVisibility(LinearLayout.VISIBLE);
-            displayFeaturedCourses();
+            String getFeaturedCoursesMethod = "getFeaturedCourses";
+            ArrayList<CourseV> courses = new ArrayList<CourseV>();
+            getFeaturedCourses(URL, getFeaturedCoursesMethod, courses);
         } else {
             progressBarFeatCourses.setVisibility(View.GONE);
             dashboardBottomNavigation.inflateMenu(R.menu.menu_instructor);
@@ -288,5 +292,37 @@ public class Dashboard extends AppCompatActivity implements View.OnScrollChangeL
         if(isLastItemDistplaying(recyclerView)){
             //Calling the method getData again
         }
+    }
+
+    private void getFeaturedCourses(String URL, String method, ArrayList<CourseV> courses) {
+        PHPRequestBuilder requestBuilder = new PHPRequestBuilder(URL, method);
+        requestBuilder.doRequest(Dashboard.this, new ResponseHandler() {
+            @Override
+            public void processResponse(String response) throws JSONException {
+                setFeaturedCourses(response, courses);
+            }
+        });
+
+    }
+
+    private void setFeaturedCourses(String JSON, ArrayList<CourseV> courses) throws JSONException {
+        JSONArray featuredCourses = new JSONArray(JSON);
+        for (int index = 0; index < featuredCourses.length(); index++) {
+            JSONObject featuredCourse = featuredCourses.getJSONObject(index);
+            CourseV course = new CourseV();
+
+            course.setCourseCode(featuredCourse.getString("Course_Code"));
+            course.setCourseName(featuredCourse.getString("Course_Name"));
+            course.setCourseDescription(featuredCourse.getString("Course_Description"));
+            course.setCourseOutline(featuredCourse.getString("Course_Outline"));
+            course.setImageUrl(featuredCourse.getString("Course_Image"));
+            course.setCourseRating(featuredCourse.getString("Course_Rating"));
+            course.setCourseInstructor(featuredCourse.getString("Course_Instructor"));
+
+            courses.add(course);
+        }
+
+        USER.FEATURED_COURSES = courses;
+        displayFeaturedCourses();
     }
 }

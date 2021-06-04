@@ -105,8 +105,6 @@ public class EditCourse extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_course);
 
-        Toast.makeText(EditCourse.this, ""+COURSE.FACULTY, Toast.LENGTH_SHORT).show();
-
         //linking views
         image = findViewById(R.id.courseEditImage);
         btnEdit = findViewById(R.id.buttonEditCourse);
@@ -247,9 +245,9 @@ public class EditCourse extends AppCompatActivity {
                     };
                     requestQueue.add(request);
                     Toast.makeText(EditCourse.this, "Course update successful", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(EditCourse.this, CourseHomePageInstructor.class);
-                    startActivity(i);
-                    finish();
+                    //Intent i = new Intent(EditCourse.this, CourseHomePageInstructor.class);
+                    //startActivity(i);
+                    //finish();
                     // Toast.makeText(EditCourse.this, "Image changed", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -468,27 +466,6 @@ public class EditCourse extends AppCompatActivity {
             });
         }
 
-    }
-    public boolean validCourseCode(TextInputLayout text,List<String> codes){
-        String codeInput = text.getEditText().getText().toString().trim();
-        boolean codeExists = false;
-        boolean valid = false;
-        for (int i = 0; i < codes.size(); i++) {
-            if (codeInput.equals(codes.get(i)) && !codeInput.equals(COURSE.CODE)) {
-                codeExists = true;
-            }
-        }
-        if (codeExists){
-            text.setError("Course code already exists");
-        }
-        else if (codeInput.isEmpty()){
-            text.setError("Field can't be empty");
-        }
-        else{
-            text.setError(null);
-            valid = true;
-        }
-        return valid;
     }
 
     //This function checks if course outlines and tags have been added

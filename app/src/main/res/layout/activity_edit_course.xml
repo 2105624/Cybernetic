@@ -114,28 +114,25 @@
                         android:inputType="textMultiLine" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/courseOutline"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:orientation="horizontal"
-                    app:errorEnabled="true"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="500">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Course Outline"
-                        android:maxLength="500"
-                        android:inputType="textMultiLine" />
-                </com.google.android.material.textfield.TextInputLayout>
-                <RelativeLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="10dp"
-                    android:orientation="horizontal">
+                    android:text="Course outline"
+                    android:textStyle="bold"
+                    android:background="#F0F2F5"
+                    android:textSize="25dp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    />
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/courseOutline"
+                    android:background="#F0F2F5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="25dp">
+                </LinearLayout>
                     <Button
                         android:id="@+id/buttonAddCourseOutline"
                         android:layout_width="wrap_content"
@@ -144,39 +141,26 @@
                         android:layout_gravity="left"
                         android:text="add outline"
                         android:textColor="@color/color3" />
-                    <TextView
-                        android:id="@+id/numberOfCourseOutlines"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="10dp"
-                        android:paddingRight="10dp"
-                        android:layout_alignParentRight="true"
-                        android:inputType="number"
-                        android:text="0" />
-                </RelativeLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/courseTags"
+
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:orientation="horizontal"
-                    app:errorEnabled="true"
-                    app:counterEnabled="true"
-                    app:counterMaxLength="500">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Course Tag"
-                        android:maxLength="500"
-                        android:inputType="textMultiLine" />
-                </com.google.android.material.textfield.TextInputLayout>
-                <RelativeLayout
+                    android:text="Tags"
+                    android:textStyle="bold"
+                    android:background="#F0F2F5"
+                    android:textSize="25dp"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    />
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:id="@+id/courseTag"
+                    android:background="#F0F2F5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="10dp"
-                    android:orientation="horizontal">
+                    android:textSize="25dp">
+                </LinearLayout>
                     <Button
                         android:id="@+id/buttonAddTag"
                         android:layout_width="wrap_content"
@@ -185,15 +169,6 @@
                         android:layout_gravity="left"
                         android:text="add tag"
                         android:textColor="@color/color3" />
-                    <TextView
-                        android:id="@+id/numberOfTags"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="10dp"
-                        android:paddingRight="10dp"
-                        android:layout_alignParentRight="true"
-                        android:text="0" />
-                </RelativeLayout>
                 <Button
                     android:id="@+id/buttonEditCourse"
                     android:layout_width="match_parent"

@@ -501,6 +501,8 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         }
         return valid;
     }
+
+
     //This function checks if the course code already exists
     public boolean validCourseCode(TextInputLayout text,List<String> codes){
         String codeInput = text.getEditText().getText().toString().trim();

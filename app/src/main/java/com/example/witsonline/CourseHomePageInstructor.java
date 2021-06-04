@@ -99,7 +99,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
     private Button btnViewLesson;
 
     //button for editing a course
-    private Button btnEditCourse;
+    private ImageView imgEditCourse;
 
     //This is for the delay while loading correct course info
     private ProgressBar progressBar;
@@ -194,18 +194,8 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         });
 
         //edit course
-        btnEditCourse = findViewById(R.id.editCourse);
-        btnEditCourse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CourseHomePageInstructor.this, EditCourse.class);
-                startActivity(intent);
-            }
-        });
-
-        //edit course
-        btnEditCourse = findViewById(R.id.editCourse);
-        btnEditCourse.setOnClickListener(new View.OnClickListener() {
+        imgEditCourse = findViewById(R.id.editCourse);
+        imgEditCourse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CourseHomePageInstructor.this, EditCourse.class);
@@ -331,7 +321,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
                 for(String j : tagtemp){
                     TagV tagV = new TagV();
                     tagV.setTag(j);
-                    if(j != "null" && !j.equals("null")){
+                    if(!j.equals(null) && j.length()>0){
                         listTagVs.add(tagV);
                     }
                 }
@@ -422,15 +412,17 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
         //for each topic create a card to come up:
         for(int i=0; i < outlineTopics.length; i++)
         {
-            View topicView = View.inflate(this, R.layout.outline_topic_entry ,null);
-            TextView topicName = topicView.findViewById(R.id.outlineTopic);
+            if(outlineTopics[i].length()>0) {
+                View topicView = View.inflate(this, R.layout.outline_topic_entry, null);
+                TextView topicName = topicView.findViewById(R.id.outlineTopic);
 
-            topicName.setText("➤ "+ outlineTopics[i]);
+                topicName.setText("➤ " + outlineTopics[i]);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.setMargins(10,0,10,0);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.setMargins(10, 0, 10, 0);
 
-            outlineLayout.addView(topicView, params);
+                outlineLayout.addView(topicView, params);
+            }
         }
     }
     @Override
@@ -488,10 +480,11 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
 
     }
     private void doTagAdd(String phpFile, String tag)throws IOException {
+
         Log.i("newtag", "doTagAdd called");
         Log.i("newtag", COURSE.TAGS);
         String alltags;
-        if(COURSE.TAGS == "null" && COURSE.TAGS.equals("null")) {
+        if(COURSE.TAGS == "null" || COURSE.TAGS.equals("null")) {
             alltags = tag;
         }
         else{

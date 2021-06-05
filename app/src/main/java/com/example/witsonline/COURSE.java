@@ -14,6 +14,7 @@ public class COURSE {
 	public static int FACULTY;
 	public static String temp;
 	public static String TAGS;
+	public static String VISIBILITY;
 
 //      public static ArrayList<Content> CONTENT;
 

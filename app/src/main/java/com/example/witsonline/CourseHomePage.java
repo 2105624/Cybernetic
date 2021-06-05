@@ -284,7 +284,7 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
                 for(String j : tagtemp){
                     TagV tagV = new TagV();
                     tagV.setTag(j);
-                    if(j != "null" && !j.equals("null")){
+                    if(!j.equals(null) && j.length()>0){
                         listTagVs.add(tagV);
                     }
                 }
@@ -341,15 +341,17 @@ public class CourseHomePage extends AppCompatActivity implements  View.OnScrollC
         //for each topic create a card to come up:
         for(int i=0; i < outlineTopics.length; i++)
         {
-            View topicView = View.inflate(this, R.layout.outline_topic_entry ,null);
-            TextView topicName = topicView.findViewById(R.id.outlineTopic);
+            if (outlineTopics[i].length() > 0) {
+                View topicView = View.inflate(this, R.layout.outline_topic_entry, null);
+                TextView topicName = topicView.findViewById(R.id.outlineTopic);
 
-            topicName.setText("➤ "+ outlineTopics[i]);
+                topicName.setText("➤ " + outlineTopics[i]);
 
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            params.setMargins(10,0,10,0);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.setMargins(10, 0, 10, 0);
 
-            outlineLayout.addView(topicView, params);
+                outlineLayout.addView(topicView, params);
+            }
         }
     }
     @Override

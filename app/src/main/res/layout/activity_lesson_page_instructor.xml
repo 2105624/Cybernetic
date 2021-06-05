@@ -45,62 +45,75 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:orientation="horizontal">
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/editLesson"
-                        android:src="@drawable/edit_white"/>
+        <!--   <ImageButton
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/editLesson"
+              android:src="@drawable/edit_white"/> -->
 
-                    <TextView
-                        android:id="@+id/lessonPageName"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="Lesson Name"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="20dp" />
+          <TextView
+              android:id="@+id/lessonPageName"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:text="Lesson Name"
+              android:textAlignment="center"
+              android:textColor="@color/white"
+              android:textSize="20dp" />
 
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/lessonPageText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:text="Lesson Text"
-                android:textSize="15dp" />
-
-            <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
-                android:id="@+id/lessonYoutubePlayer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:showFullScreenButton="true" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:text="Lesson Notes"
-                android:textSize="20dp" />
-
-            <Button
-                android:id="@+id/lessonDownload"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="10dp"
-                android:background="@color/color1"
-                android:padding="10dp"
-                android:text="DOWNLOAD"
-                android:textColor="@color/white" />
+      </LinearLayout>
 
 
-        </LinearLayout>
-    </ScrollView>
+  </LinearLayout>
+
+  <TextView
+      android:id="@+id/lessonPageText"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingTop="10dp"
+      android:paddingBottom="10dp"
+      android:text="Lesson Text"
+      android:textSize="15dp" />
+
+  <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+      android:id="@+id/lessonYoutubePlayer"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:showFullScreenButton="true" />
+
+  <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingTop="10dp"
+      android:paddingBottom="10dp"
+      android:text="Lesson Notes"
+      android:textSize="20dp" />
+
+  <Button
+      android:id="@+id/lessonDownload"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_margin="10dp"
+      android:background="@color/color1"
+      android:padding="10dp"
+      android:text="DOWNLOAD"
+      android:textColor="@color/white" />
+
+
+</LinearLayout>
+</ScrollView>
+   <ImageButton
+  android:id="@+id/editLesson"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_centerInParent="true"
+  android:background="@drawable/shape_tag"
+  android:layout_alignParentBottom="true"
+  android:layout_alignParentEnd="true"
+  android:padding="10dp"
+  android:layout_margin="10dp"
+  android:text="Edit Lesson"
+  android:src="@drawable/edit_white"
+  />
     </RelativeLayout>
 </RelativeLayout>

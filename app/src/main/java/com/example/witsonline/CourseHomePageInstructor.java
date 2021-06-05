@@ -350,6 +350,7 @@ public class CourseHomePageInstructor extends AppCompatActivity implements  View
                 COURSE.IMAGE = json.getString("Course_Image");
                 COURSE.TAGS = json.getString("Course_Tags");
                 COURSE.FACULTY = json.getInt("Course_Faculty");
+                COURSE.VISIBILITY = json.getString("Course_Visibility");
                 //set views
                 if(!COURSE.IMAGE.equals("null")){
                     Glide.with(this).load(COURSE.IMAGE).into(image);

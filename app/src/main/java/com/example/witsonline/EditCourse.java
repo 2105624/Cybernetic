@@ -68,14 +68,10 @@ public class EditCourse extends AppCompatActivity {
     private RadioGroup rgVisibility;
     private RadioButton rbPublic;
     private RadioButton rbPrivate;
-    private TextView numOfTags;
-    private TextView numOfOutlines;
     private Button addOutline;
     private Button addTag;
-    private ArrayAdapter arrayAdapterTag;
     private ArrayList<String>allTags = new ArrayList<String>();
     private ArrayList<String>allOutlines=new ArrayList<String>();
-    private ListView tagList;
 
     //for editing image
     public static final int IMAGE_REQUEST_CODE = 3;
@@ -86,7 +82,6 @@ public class EditCourse extends AppCompatActivity {
     LinearLayout outlineLayout;
     LinearLayout tagLayout;
     private String visibility = "Public";
-    private int facultyPos;
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
     private Button btnDeleteOutline;
@@ -117,6 +112,13 @@ public class EditCourse extends AppCompatActivity {
         description = findViewById(R.id.courseDescription);
         addOutline = findViewById(R.id.buttonAddCourseOutline);
         addTag =  findViewById(R.id.buttonAddTag);
+
+        if (COURSE.VISIBILITY.equals("Public")){
+            rbPublic.setChecked(true);
+        }
+        else{
+            rbPrivate.setChecked(true);
+        }
 
 
         //setting views

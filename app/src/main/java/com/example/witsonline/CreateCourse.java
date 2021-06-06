@@ -365,7 +365,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
 
     //START dashboard code
     //This method will check if the recyclerview has reached the bottom or not
-    private boolean isLastItemDistplaying(RecyclerView recyclerView){
+    public boolean isLastItemDistplaying(RecyclerView recyclerView){
         if(recyclerView.getAdapter().getItemCount() != 0){
             int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
             if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() -1){
@@ -548,7 +548,7 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
     }
 
     //getting the bitmap of image and encoding it as a string
-    private String getStringImage(Bitmap bitmap) {
+    public String getStringImage(Bitmap bitmap) {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -623,6 +623,12 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
         }
 
     }
+    public List<String> getFaculties(){
+        return faculties;
+    }
+    public List<Integer> getFacultyIDs(){
+        return facultyIDs;
+    }
 
     //get course codes to see if course already exists
     public void getCourseCodes(String json){
@@ -639,6 +645,11 @@ public class CreateCourse extends AppCompatActivity implements BottomNavigationV
             e.printStackTrace();
         }
 
+    }
+    //For testing.
+    public List<String> getCourseCodeList(){
+
+        return courseCodes;
     }
 
     @Override

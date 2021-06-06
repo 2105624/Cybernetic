@@ -24,10 +24,10 @@ import static org.junit.Assert.*;
 public class RegisterActivityTest {
     //isEmpty Mocks
      private final TextInputLayout isEmptyTextLayout_empty=Mockito.mock(TextInputLayout.class);
-     private final EditText isEmptyEditText_empty=Mockito.mock(EditText.class);;
+     private final EditText isEmptyEditText_empty=Mockito.mock(EditText.class);
 
      private final TextInputLayout isEmptyTextLayout_notempty=Mockito.mock(TextInputLayout.class);;
-     private final EditText isEmptyEditText_notempty=Mockito.mock(EditText.class);;
+     private final EditText isEmptyEditText_notempty=Mockito.mock(EditText.class);
      //ValidatePassword Mocks
     private final TextInputLayout PasswordTextLayout_validInput=Mockito.mock(TextInputLayout.class);
     private final EditText PasswordEditText_validInput=Mockito.mock(EditText.class);

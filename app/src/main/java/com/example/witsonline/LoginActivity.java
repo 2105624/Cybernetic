@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private RadioButton rbStudent;
     private RadioButton rbInstructor;
-    private ArrayList<ArrayList<String> >  student = new ArrayList<>();
+    ArrayList<ArrayList<String> >  student = new ArrayList<>();
     private ArrayList<String> studentNumbers = new ArrayList<>();
     private ArrayList<String> instructorUsernames = new ArrayList<>();
     private ArrayList<ArrayList<String> > instructor = new ArrayList<>();
@@ -281,6 +281,10 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+    //For testing
+    public ArrayList<ArrayList<String> > getStudent(){
+        return student;
     }
 
     public void getInstructorLogin(String json){

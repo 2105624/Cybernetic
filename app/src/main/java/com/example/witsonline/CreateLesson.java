@@ -98,7 +98,7 @@ public class CreateLesson extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (isEmpty(lessonName) | isEmpty(lessonText) | !isYoutubeUrl()){
+                if (isEmpty(lessonName) | isEmpty(lessonText) | !isYoutubeUrl(lessonURL)){
                     //error messages will be displayed
                 }else{
                     String url = lessonURL.getEditText().getText().toString().trim();
@@ -210,23 +210,23 @@ public class CreateLesson extends AppCompatActivity {
     }
 
     // Test if URL is a valid URL
-    public boolean isYoutubeUrl()
+    public boolean isYoutubeUrl(TextInputLayout lesson)
     {
-        String youTubeURl = lessonURL.getEditText().getText().toString().trim();
+        String youTubeURl = lesson.getEditText().getText().toString().trim();
         boolean success;
         String pattern = "^(http(s)?:\\/\\/)?((w){3}.)?youtu(be|.be)?(\\.com)?\\/.+";
         if (!youTubeURl.isEmpty() && youTubeURl.matches(pattern))
         {
-            lessonURL.setError(null);
+            lesson.setError(null);
             success = true;
         }
         else
         {
             // Not Valid youtube URL
             if (youTubeURl.isEmpty()){
-                lessonURL.setError("Field can't be empty");
+                lesson.setError("Field can't be empty");
             }else{
-                lessonURL.setError("Invalid YouTube URL");
+                lesson.setError("Invalid YouTube URL");
             }
             success = false;
         }

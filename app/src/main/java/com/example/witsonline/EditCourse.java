@@ -582,6 +582,11 @@ public class EditCourse extends AppCompatActivity {
         }
 
     }
+    //For testing.
+    public List<String> getCourseCodeList(){
+
+        return courseCodes;
+    }
 
     @Override
     public void onBackPressed(){

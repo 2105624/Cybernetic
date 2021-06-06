@@ -2,24 +2,32 @@ package com.example.witsonline;
 
 import android.app.Activity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.common.base.Verify;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 @RunWith(MockitoJUnitRunner.class)
+
+
 public class LoginActivityTest {
     //Mocks for ValidateInstructorUserName
     private final TextInputLayout InstructorTextLayout_userDoesNotExist=Mockito.mock(TextInputLayout.class);
@@ -57,8 +65,9 @@ public class LoginActivityTest {
     private final TextInputLayout StudentPasswordTextLayout_wrong=Mockito.mock(TextInputLayout.class);
     private final EditText StudentPasswordEditText_wrong=Mockito.mock(EditText.class);
 
-    //Mock for getStudentLogin
-    LoginActivity loginActivity =Mockito.mock(LoginActivity.class);
+    //Mock for Oncreate
+
+
 
 
 
@@ -100,10 +109,33 @@ public class LoginActivityTest {
         Mockito.when(StudentPasswordTextLayout_wrong.getEditText()).thenReturn(StudentPasswordEditText_wrong);
         Mockito.when(StudentPasswordEditText_wrong.getText()).thenReturn(new MockEditable("password2"));
 
-        //setUp for getStudentLogin
-        Mockito.doNothing().when(loginActivity).getStudentLogin(Mockito.anyString());
-        Mockito.doNothing().when(loginActivity).getInstructorLogin(Mockito.anyString());
+        //setup
+
+
+
+
+
     }
+    @Test
+    public void TestGetSrudentLogin(){
+        LoginActivity login = Mockito.spy(new LoginActivity());
+        String json="[{Student_Number:test,Student_Password:test}]";
+        ArrayList<ArrayList<String>> temp;
+        login.getStudentLogin(json);
+        temp=login.getStudent();
+        assertNotNull(temp);
+    }
+
+    @Test
+    public void TestGetInstructorLogin(){
+        LoginActivity login = Mockito.spy(new LoginActivity());
+        String json="[{Instructor_Username:test,Instructor_Password:test}]";
+        ArrayList<ArrayList<String>> temp;
+        login.getInstructorLogin(json);
+        temp=login.getStudent();
+        assertNotNull(temp);
+    }
+
 
     @Test
     public void validateInstructorUsername_valid() {
@@ -283,19 +315,6 @@ public class LoginActivityTest {
     }
 
 
-    @Test
-    public void getStudentLogin() {
-        String json="";
-        loginActivity.getStudentLogin("test");
-        Mockito.verify(loginActivity).getStudentLogin("test");
-    }
-
-    @Test
-    public void getInstructorLogin() {
-        String json="";
-        loginActivity.getInstructorLogin("test");
-        Mockito.verify(loginActivity).getInstructorLogin("test");
-    }
     @Test
     public void testonChekedChanged(){
         LoginActivity loginActivity=Mockito.spy(new LoginActivity());

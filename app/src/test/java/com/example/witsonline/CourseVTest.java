@@ -1,5 +1,7 @@
 package com.example.witsonline;
 
+import com.google.common.base.Verify;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;

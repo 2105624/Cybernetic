@@ -186,7 +186,7 @@ public class BrowseCourses extends AppCompatActivity implements View.OnScrollCha
     }
 
     //This method will check if the recyclerview has reached the bottom or not
-    private boolean isLastItemDistplaying(RecyclerView recyclerView){
+    public boolean isLastItemDistplaying(RecyclerView recyclerView){
         if(recyclerView.getAdapter().getItemCount() != 0){
             int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
             if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() -1){
